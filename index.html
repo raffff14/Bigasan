@@ -20,6 +20,7 @@
   --bodega:#2D6A8C; --stall:#C08417;
   --danger:#B9332A; --danger-soft:#FBE4E1; --ok:#2B7A4B; --ok-soft:#DDF0E4; --warn:#9A5B00; --warn-soft:#FBEBCB;
   --shadow:0 1px 2px rgba(20,40,28,.06),0 4px 14px rgba(20,40,28,.05);
+  --sm-move:#24597A; --sm-move-fg:#FFFFFF;
   --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
   --f-body:"Atkinson Hyperlegible Next","Segoe UI",system-ui,-apple-system,sans-serif;
   --f-num:"Atkinson Hyperlegible Next","Segoe UI",system-ui,sans-serif;
@@ -31,6 +32,7 @@
   --bodega:#6BB3DA; --stall:#E5B04B;
   --danger:#F07A6E; --danger-soft:#3A1E1B; --ok:#6BCB8F; --ok-soft:#183223; --warn:#E9B35A; --warn-soft:#352812;
   --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark;
+  --sm-move:#2F6F95; --sm-move-fg:#FFFFFF;
 }}
 :root[data-theme="dark"]{
   --bg:#101512; --surface:#18201B; --surface-2:#212B25; --fg:#E6ECE7; --muted:#9BA9A0; --line:#2C3830;
@@ -38,6 +40,7 @@
   --bodega:#6BB3DA; --stall:#E5B04B;
   --danger:#F07A6E; --danger-soft:#3A1E1B; --ok:#6BCB8F; --ok-soft:#183223; --warn:#E9B35A; --warn-soft:#352812;
   --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark;
+  --sm-move:#2F6F95; --sm-move-fg:#FFFFFF;
 }
 *{box-sizing:border-box}
 html,body{background:var(--bg);color:var(--fg)}
@@ -217,6 +220,68 @@ input[readonly]{background:var(--surface-2)}
 .form-err{color:var(--danger);font-weight:700;background:var(--danger-soft);border-radius:var(--r-sm);padding:12px 14px}
 .form-err:empty{display:none}
 .side-note{display:flex;flex-direction:column;gap:12px}
+/* simple mode for staff phones */
+body.simple .side,body.simple .tabbar{display:none!important}
+body.simple .app{grid-template-columns:minmax(0,1fr)}
+body.simple main{max-width:620px;margin-inline:auto;padding-block:18px 48px}
+.sm{display:flex;flex-direction:column;gap:18px;font-size:1.15rem}
+.sm h1{font-size:2rem}
+.sm-head{display:flex;flex-direction:column;gap:4px}
+.sm-date,.sm-who{color:var(--muted);font-size:1.05rem}
+.sm-big{display:grid;gap:14px}
+.sm-btn{display:flex;align-items:center;gap:18px;width:100%;min-height:118px;padding:18px 22px;border:0;border-radius:20px;text-align:left;cursor:pointer;box-shadow:var(--shadow)}
+.sm-btn svg{width:46px;height:46px;flex:none}
+.sm-btn b{display:block;font-family:var(--f-display);font-size:1.75rem;letter-spacing:.02em;line-height:1.1}
+.sm-btn small{display:block;font-size:1.05rem;opacity:.92;margin-top:4px}
+.sm-btn.sell{background:var(--accent);color:var(--accent-fg)}
+.sm-btn.move{background:var(--sm-move);color:var(--sm-move-fg)}
+.sm-btn:active,.sm-save:active{transform:scale(.985)}
+.sm-left{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.sm-left h2{font-size:1.25rem;margin-bottom:4px}
+.sm-stock{display:flex;justify-content:space-between;align-items:center;gap:6px 12px;flex-wrap:wrap;padding:11px 0;border-top:1px solid var(--line);font-size:1.1rem}
+.sm-left h2 + .sm-stock{border-top:0}
+.sm-stock-v{display:flex;align-items:center;gap:8px}
+.sm-exit{align-self:center;background:none;border:0;color:var(--muted);text-decoration:underline;font-size:.95rem;padding:12px;min-height:44px;cursor:pointer}
+.sm-back{align-self:flex-start;background:var(--surface);color:var(--fg);border:2px solid var(--line);border-radius:14px;font-size:1.2rem;font-weight:700;padding:10px 20px;min-height:56px;cursor:pointer}
+.sm-q{font-size:1.9rem}
+.sm-list{display:grid;gap:10px}
+.sm-rice{display:flex;flex-direction:column;align-items:flex-start;gap:4px;width:100%;min-height:86px;padding:14px 18px;border:2px solid var(--line);border-radius:16px;background:var(--surface);color:var(--fg);text-align:left;cursor:pointer}
+.sm-rice b{font-size:1.35rem}
+.sm-rice small{font-size:1.05rem;color:var(--muted)}
+.sm-rice:active{border-color:var(--accent);background:var(--accent-soft)}
+.sm-rice[disabled]{opacity:.5;cursor:not-allowed}
+.sm-rice-name{font-weight:700;color:var(--accent);font-size:1.25rem}
+.sm-units{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sm-units button{min-height:62px;border:2px solid var(--line);border-radius:14px;background:var(--surface);color:var(--fg);font-size:1.2rem;font-weight:700;cursor:pointer}
+.sm-units button.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.sm-amount{display:grid;grid-template-columns:78px minmax(0,1fr) 78px;gap:10px}
+.sm-amount button{min-height:88px;border-radius:16px;border:2px solid var(--line);background:var(--surface-2);color:var(--fg);font-size:2.4rem;font-weight:700;cursor:pointer}
+.sm-amount input{min-height:88px;text-align:center;font-size:2.6rem;font-weight:700;border-radius:16px;border:2px solid var(--accent);background:var(--surface)}
+.sm-chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sm-chips button{min-height:58px;border-radius:14px;border:2px solid var(--line);background:var(--surface);color:var(--fg);font-size:1.2rem;font-weight:700;cursor:pointer}
+.sm-chips button:active{border-color:var(--accent);background:var(--accent-soft)}
+.sm-info{font-size:1.15rem;padding:14px 16px;border-radius:14px;background:var(--surface-2);line-height:1.5}
+.sm-info.bad{background:var(--danger-soft);color:var(--danger);font-weight:700}
+.sm-price{padding:14px 16px;border-radius:14px;background:var(--accent-soft)}
+.sm-total-line{display:flex;justify-content:space-between;align-items:baseline;gap:10px;color:var(--accent);font-weight:700}
+.sm-total-line b{font-family:var(--f-display);font-size:2.3rem}
+.sm-unitprice{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font-size:1.05rem;margin-top:4px}
+.sm-unitprice input{width:140px;min-height:52px;font-size:1.25rem;font-weight:700}
+.sm-link{background:none;border:0;color:var(--accent);font-weight:700;font-size:1.05rem;text-decoration:underline;cursor:pointer;min-height:44px;padding:4px}
+.sm-link.danger{color:var(--danger);align-self:center;font-size:1.15rem}
+.sm-err{color:var(--danger);font-weight:700;font-size:1.15rem}
+.sm-err:empty{display:none}
+.sm-save{width:100%;min-height:78px;border:0;border-radius:18px;background:var(--accent);color:var(--accent-fg);font-family:var(--f-display);font-size:1.55rem;font-weight:700;letter-spacing:.02em;cursor:pointer;box-shadow:var(--shadow)}
+.sm-save[disabled]{opacity:.45;cursor:not-allowed}
+.sm-btn2{width:100%;min-height:66px;border-radius:18px;border:2px solid var(--line);background:var(--surface);color:var(--fg);font-size:1.25rem;font-weight:700;cursor:pointer}
+.sm-done{text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;padding:22px 18px;border-radius:20px;background:var(--ok-soft)}
+.sm-done.undone{background:var(--surface-2)}
+.sm-check{width:96px;height:96px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:3.2rem;font-weight:700;line-height:1}
+.sm-done.undone .sm-check{background:var(--muted)}
+.sm-sum{font-size:1.3rem;line-height:1.5}
+.sm-total{font-family:var(--f-display);font-size:2.3rem;font-weight:700;color:var(--ok)}
+.sm-left-now{font-size:1.15rem;line-height:1.6}
+@media (prefers-reduced-motion:reduce){.sm-btn:active,.sm-save:active{transform:none}}
 /* counting: steppers, count page, pile counter */
 .stepper{display:inline-flex;align-items:stretch}
 .stepper button{width:52px;min-height:52px;border:1px solid var(--line);background:var(--surface-2);color:var(--fg);font-size:1.5rem;font-weight:700;line-height:1;cursor:pointer}
@@ -387,7 +452,7 @@ function weekStart(s){ const d = parseD(s); const wd = (d.getDay()+6)%7; d.setDa
 
 /* ---------- domain helpers ---------- */
 const prod = id => S.products[id];
-const sackKgOf = id => +(prod(id) && prod(id).sackKg) || 50;
+const sackKgOf = id => +(prod(id) && prod(id).sackKg) || 25;
 function bal(id){ const s = S.stock[id] || {}; const b = r3(s.bodega||0), st = r3(s.stall||0); return {bodega:b, stall:st, total:r3(b+st)}; }
 function costKgOf(p){ if (!p) return 0; if (+p.costKg) return +p.costKg; return +p.sackKg ? r2((+p.costSack||0)/(+p.sackKg)) : 0; }
 function priceKgOf(p){ if (!p) return 0; if (+p.priceKg) return +p.priceKg; return +p.sackKg ? r2((+p.priceSack||0)/(+p.sackKg)) : 0; }
@@ -401,7 +466,7 @@ const staffList = () => Array.isArray(S.settings.staff) ? S.settings.staff.filte
 function sacksTxt(n){ return nf(n, 2) + (Math.abs(n - 1) < 1e-9 ? ' sack' : ' sacks'); }
 /* "8 sacks + 12.5 kg" */
 function fmtStock(kg, skg, short){
-  kg = r3(kg); const neg = kg < 0; const a = Math.abs(kg); skg = +skg || 50;
+  kg = r3(kg); const neg = kg < 0; const a = Math.abs(kg); skg = +skg || 25;
   const full = Math.floor(a / skg + 1e-9); const rem = r3(a - full * skg);
   const sk = n => short ? 'sk' : (n === 1 ? 'sack' : 'sacks');
   let s;
@@ -573,6 +638,7 @@ function openSheet(){
 }
 function closeSheet(){ $('#sheet-root').innerHTML = ''; }
 function go(page){
+  if (simpleCfg()) page = 'simple'; else if (page === 'simple') page = 'dashboard';
   if (!PAGES[page]) page = 'dashboard';
   S.page = page;
   try { if (location.hash !== '#' + page) history.replaceState(null, '', '#' + page); } catch(e){}
@@ -790,7 +856,7 @@ function mountStockIn(el){
     const p = prod($('#in-prod').value); const unit = segVal(f, 'in-unit');
     $('#in-sack-w').hidden = unit !== 'sack';
     $('#in-cost-u').textContent = unit === 'sack' ? 'sack' : 'kg';
-    if (p) { $('#in-sack').value = p.sackKg || 50; $('#in-cost').value = unit === 'sack' ? (p.costSack || '') : (costKgOf(p) || ''); $('#in-sup').value = p.supplierId && S.suppliers[p.supplierId] ? p.supplierId : ''; }
+    if (p) { $('#in-sack').value = p.sackKg || 25; $('#in-cost').value = unit === 'sack' ? (p.costSack || '') : (costKgOf(p) || ''); $('#in-sup').value = p.supplierId && S.suppliers[p.supplierId] ? p.supplierId : ''; }
     calcIn();
   };
   f.addEventListener('change', e => {
@@ -1187,7 +1253,7 @@ function updateProducts(){
   }).join('')}</div>`;
 }
 function openProduct(id){
-  const p = id ? S.products[id] : {sackKg: 50, minSacks: 10};
+  const p = id ? S.products[id] : {sackKg: 25, minSacks: 10};
   if (id && !p) return;
   const b = id ? bal(id) : null;
   openModal(`<h2>${id ? 'Edit rice variety' : 'Add rice variety'}</h2>
@@ -1197,7 +1263,7 @@ function openProduct(id){
       <div class="field"><label for="pf-sup">Supplier</label><select id="pf-sup">${supplierOptions(p.supplierId || '')}</select></div>
       <div class="field"><label for="pf-sack">Sack size (kg)</label><input type="number" id="pf-sack" min="1" step="any" inputmode="decimal" value="${esc(p.sackKg || '')}"></div>
       <div class="field"><label for="pf-min">Minimum stock level (sacks)</label><input type="number" id="pf-min" min="0" step="any" inputmode="decimal" value="${esc(p.minSacks == null ? '' : p.minSacks)}"><span class="hint">Shows LOW STOCK when Bodega + Stall falls below this.</span></div>
-      <div class="field"><label>Current stock</label><input readonly value="${b ? esc(fmtStock(b.total, p.sackKg || 50)) : 'Set with opening stock below'}"><span class="hint">Changes only through Stock In, Sales, Transfers or Adjust count.</span></div>
+      <div class="field"><label>Current stock</label><input readonly value="${b ? esc(fmtStock(b.total, p.sackKg || 25)) : 'Set with opening stock below'}"><span class="hint">Changes only through Stock In, Sales, Transfers or Adjust count.</span></div>
       <div class="field"><label for="pf-cs">Cost per sack (₱)</label><input type="number" id="pf-cs" min="0" step="any" inputmode="decimal" value="${esc(p.costSack || '')}"></div>
       <div class="field"><label for="pf-ps">Selling price per sack (₱)</label><input type="number" id="pf-ps" min="0" step="any" inputmode="decimal" value="${esc(p.priceSack || '')}"></div>
       <div class="field"><label for="pf-ck">Cost per kg (₱)</label><input type="number" id="pf-ck" min="0" step="any" inputmode="decimal" value="${esc(p.costKg || '')}" data-auto="${p.costKg ? 0 : 1}"><span class="hint">Fills in from sack cost ÷ sack size. Type to override.</span></div>
@@ -1537,6 +1603,7 @@ function mountSettings(el){
     <div class="field"><label for="set-staff">Staff names (one per line)</label><textarea id="set-staff" rows="3" placeholder="Owner&#10;Stall staff">${esc(staffList().join('\n'))}</textarea><span class="hint">Shown as “Recorded by” on every form and in the history.</span></div></div>
     <div><button class="btn primary" id="set-go" ${S.canWrite === false ? 'disabled' : ''}>Save</button></div></form></section>
   <section class="panel"><h2 style="margin-bottom:4px">This device</h2>
+    <div class="setting-row"><div><b>Simple mode</b><span class="small muted">For staff phones: two big buttons, Sell and Move to Stall, with large text.</span></div><button class="btn" id="simple-on">Turn on</button></div>
     <div class="setting-row" id="inst-row" hidden><div><b>Install on this phone or computer</b><span class="small muted">Adds Bigasan to your home screen so it opens like an app.</span></div><button class="btn primary" id="inst-go">Install app</button></div>
     <div class="setting-row"><div><b>Signed in</b><span class="small muted" id="acct-email"></span></div><button class="btn" id="acct-out">Sign out</button></div>
   </section>
@@ -1564,10 +1631,190 @@ function mountSettings(el){
   const app = window.bigasanApp || {};
   $('#acct-email').textContent = app.email || '';
   $('#acct-out').addEventListener('click', () => app.signOut && app.signOut());
+  $('#simple-on').addEventListener('click', openSimpleSetup);
   const inst = () => { const row = $('#inst-row'); if (row) row.hidden = !app.canInstall; };
   inst(); window.addEventListener('bigasan:installable', inst);
   $('#inst-go').addEventListener('click', async () => { if (await app.install()) toast('Installed. Open Bigasan from your home screen.'); });
   $('#rs-file').addEventListener('change', e => { const f = e.target.files && e.target.files[0]; e.target.value = ''; if (f) restoreBackup(f); });
+}
+
+/* ---------- SIMPLE MODE: big, plain-English screens for staff, selling and moving only ---------- */
+function simpleCfg(){ try { const c = JSON.parse(localStorage.getItem('bigasan.simple') || 'null'); return c && c.on ? c : null; } catch(e){ return null; } }
+function setSimpleCfg(c){ try { if (c) localStorage.setItem('bigasan.simple', JSON.stringify(c)); else localStorage.removeItem('bigasan.simple'); } catch(e){} }
+const SM = {view:'home', task:null, pid:null, unit:'kg', qty:'', price:null, editPrice:false, last:null, busy:false};
+function applySimple(){
+  const on = !!simpleCfg();
+  document.body.classList.toggle('simple', on);
+  Object.assign(SM, {view:'home', task:null, pid:null, qty:'', price:null, editPrice:false, last:null});
+  go(on ? 'simple' : 'dashboard');
+}
+/* "2 sacks + 12 kg" */
+function fmtTL(kg, k){
+  kg = r3(kg); k = +k || 25;
+  const full = Math.floor(kg / k + 1e-9), rem = r3(kg - full * k);
+  const sk = n => n === 1 ? 'sack' : 'sacks';
+  if (full && rem) return `${nf(full, 0)} ${sk(full)} + ${nf(rem)} kg`;
+  if (full) return `${nf(full, 0)} ${sk(full)}`;
+  return `${nf(rem)} kg`;
+}
+const smFrom = () => SM.task === 'sell' ? ((simpleCfg() || {}).loc || 'stall') : 'bodega';
+function kulangMsg(have, loc, k){ return have > 0.0005 ? `Not enough rice at the ${LOC[loc]}. Only ${fmtTL(have, k)} left.` : `None of this rice left at the ${LOC[loc]}.`; }
+function smErr(e){
+  const c = e && e.code;
+  if (c === 'unavailable' || c === 'resource_exhausted') return 'No internet or slow connection. Not saved. Please try again.';
+  if (c === 'invalid_argument') return 'This account cannot save. Please call the owner.';
+  return 'Not saved. Please try again.';
+}
+function smUnitPrice(){
+  const p = prod(SM.pid); if (!p) return 0;
+  if (SM.price != null && !isNaN(SM.price)) return +SM.price;
+  return SM.unit === 'kg' ? priceKgOf(p) : (+p.priceSack || r2(priceKgOf(p) * sackKgOf(SM.pid)));
+}
+const smBack = to => `<button type="button" class="sm-back" data-sm="back" data-to="${to}">‹ Back</button>`;
+
+function smHome(){
+  const c = simpleCfg() || {loc:'stall'};
+  const d = new Date().toLocaleDateString('en-PH', {weekday:'long', month:'long', day:'numeric'});
+  const ps = activeProducts();
+  return `<header class="sm-head"><p class="sm-date">${esc(d)}</p><h1>${esc(bizName())}</h1>${c.staff ? `<p class="sm-who">Used by: <b>${esc(c.staff)}</b></p>` : ''}</header>
+    <div class="sm-big">
+      <button type="button" class="sm-btn sell" data-sm="start-sell">${svg('stock-out', 2.4)}<span><b>SELL</b><small>Take from the ${LOC[c.loc]}</small></span></button>
+      <button type="button" class="sm-btn move" data-sm="start-move">${svg('transfer', 2.4)}<span><b>MOVE TO STALL</b><small>From the Bodega to the Stall</small></span></button>
+    </div>
+    <section class="sm-left"><h2>Left at the ${LOC[c.loc]}</h2>${ps.length ? ps.map(p => { const k = sackKgOf(p.id); return `<div class="sm-stock"><span>${esc(p.name)}</span><span class="sm-stock-v"><b>${fmtTL(bal(p.id)[c.loc], k)}</b>${isLow(p.id) ? '<i class="pill low">LOW</i>' : ''}</span></div>`; }).join('') : '<p class="muted">No rice added yet.</p>'}</section>
+    <button type="button" class="sm-exit" data-sm="exit">For the owner: open the full app</button>`;
+}
+function smPick(){
+  const sell = SM.task === 'sell', from = smFrom();
+  return `${smBack('home')}<h1 class="sm-q">${sell ? 'Which rice was sold?' : 'Which rice are you moving?'}</h1>
+    <div class="sm-list">${activeProducts().map(p => {
+      const k = sackKgOf(p.id), have = bal(p.id)[from];
+      return `<button type="button" class="sm-rice" data-sm="pick" data-id="${esc(p.id)}" ${have <= 0.0005 ? 'disabled' : ''}><b>${esc(p.name)}</b><small>${have > 0.0005 ? `At the ${LOC[from]}: ${fmtTL(have, k)}` : `None left at the ${LOC[from]}`}</small></button>`;
+    }).join('')}</div>`;
+}
+function smAmount(){
+  const sell = SM.task === 'sell', p = prod(SM.pid), k = sackKgOf(SM.pid);
+  const chips = SM.unit === 'kg' ? [1, 2, 3, 5, 10, 25] : [1, 2, 3, 4, 5, 10];
+  return `${smBack('pick')}<p class="sm-rice-name">${esc(p ? p.name : '')}</p>
+    <h1 class="sm-q">${SM.unit === 'kg' ? 'How many kilos?' : 'How many sacks?'}</h1>
+    <div class="sm-units">${[['kg', 'Kilos'], ['sack', `Sacks (${nf(k)} kg)`]].map(([u, l]) => `<button type="button" data-sm="unit" data-u="${u}" class="${SM.unit === u ? 'on' : ''}">${l}</button>`).join('')}</div>
+    <div class="sm-amount"><button type="button" data-sm="minus" aria-label="One less">−</button><input id="sm-qty" type="number" inputmode="decimal" min="0" step="any" value="${esc(SM.qty)}" placeholder="0" aria-label="${SM.unit === 'kg' ? 'How many kilos' : 'How many sacks'}"><button type="button" data-sm="plus" aria-label="One more">+</button></div>
+    <div class="sm-chips">${chips.map(n => `<button type="button" data-sm="chip" data-n="${n}">${n} ${SM.unit === 'kg' ? 'kg' : (n === 1 ? 'sack' : 'sacks')}</button>`).join('')}</div>
+    <div id="sm-info" class="sm-info"></div>
+    ${sell ? `<div class="sm-price"><div class="sm-total-line"><span>Total</span><b id="sm-total"></b></div>
+      <div class="sm-unitprice"><span id="sm-up"></span><button type="button" class="sm-link" data-sm="price" id="sm-pr-btn" ${SM.editPrice ? 'hidden' : ''}>Different price?</button><input id="sm-pr" type="number" inputmode="decimal" min="0" step="any" value="${smUnitPrice()}" aria-label="Price" ${SM.editPrice ? '' : 'hidden'}></div></div>` : ''}
+    <div id="sm-err" class="sm-err" role="alert"></div>
+    <button type="button" class="sm-save" id="sm-save" data-sm="save" ${S.canWrite === false ? 'disabled' : ''}>${sell ? 'SAVE SALE' : 'SAVE MOVE'}</button>`;
+}
+function smCalc(){
+  const info = $('#sm-info'); if (!info || !prod(SM.pid)) return;
+  const sell = SM.task === 'sell', k = sackKgOf(SM.pid), from = smFrom(), have = bal(SM.pid)[from];
+  const qty = Math.max(0, +SM.qty || 0), kg = SM.unit === 'kg' ? qty : qty * k, over = kg > have + 0.0005;
+  info.className = 'sm-info' + (over ? ' bad' : '');
+  info.innerHTML = over ? esc(kulangMsg(have, from, k))
+    : `At the ${LOC[from]}: <b>${fmtTL(have, k)}</b>` + (!sell && qty > 0 ? `<br>Stall after moving: <b>${fmtTL(bal(SM.pid).stall + kg, k)}</b>` : '');
+  const err = $('#sm-err'); if (err && over) err.textContent = '';
+  const save = $('#sm-save'); if (save && S.canWrite !== false) save.disabled = over;
+  if (sell) {
+    const up = smUnitPrice();
+    $('#sm-total').textContent = over ? '—' : peso(qty * up);
+    $('#sm-up').textContent = `${peso(up)} per ${SM.unit === 'kg' ? 'kilo' : 'sack'}`;
+  }
+}
+function smDone(){
+  const L = SM.last, p = prod(L.pid), k = sackKgOf(L.pid), b = bal(L.pid);
+  const what = L.unit === 'kg' ? `${nf(L.qty)} kg` : `${nf(L.qty)} ${L.qty === 1 ? 'sack' : 'sacks'}`;
+  return `<div class="sm-done ${L.undone ? 'undone' : ''}"><div class="sm-check" aria-hidden="true">${L.undone ? '↺' : '✓'}</div>
+      <h1>${L.undone ? 'Undone' : 'Saved!'}</h1>
+      <p class="sm-sum">${L.task === 'sell' ? 'Sold' : 'Moved to Stall'}: <b>${what}</b> ${esc(p ? p.name : '')}${L.task === 'sell' && !L.undone ? `<br><span class="sm-total">${peso(L.amount)}</span>` : ''}${L.undone ? '<br>Put back in stock.' : ''}</p>
+      <p class="sm-left-now">Left at the Stall: <b>${fmtTL(b.stall, k)}</b>${L.task === 'move' || L.from === 'bodega' ? `<br>Left at the Bodega: <b>${fmtTL(b.bodega, k)}</b>` : ''}</p></div>
+    <button type="button" class="sm-save" data-sm="again">${L.task === 'sell' ? 'NEW SALE' : 'MOVE MORE'}</button>
+    <button type="button" class="sm-btn2" data-sm="back" data-to="home">Back to start</button>
+    ${L.undone ? '' : `<button type="button" class="sm-link danger" data-sm="undo">Wrong? Undo this</button>`}
+    <div id="sm-err" class="sm-err" role="alert"></div>`;
+}
+function renderSimple(){
+  const box = $('#sm'); if (!box) return;
+  if (SM.view !== 'home' && !prod(SM.pid) && SM.view !== 'pick') SM.view = 'home';
+  box.innerHTML = SM.view === 'pick' ? smPick() : SM.view === 'amount' ? smAmount() : SM.view === 'done' && SM.last ? smDone() : smHome();
+  if (SM.view === 'amount') smCalc();
+}
+function smShow(view){ SM.view = view; renderSimple(); try { window.scrollTo(0, 0); } catch(e){} }
+function mountSimple(el){
+  el.innerHTML = `<div class="sm" id="sm"></div>`;
+  el.addEventListener('click', e => {
+    const b = e.target.closest('[data-sm]'); if (!b || b.disabled) return;
+    const a = b.dataset.sm;
+    if (a === 'start-sell' || a === 'start-move') { Object.assign(SM, {task: a === 'start-sell' ? 'sell' : 'move', unit: a === 'start-sell' ? 'kg' : 'sack', pid: null, qty: '', price: null, editPrice: false}); smShow('pick'); }
+    else if (a === 'pick') { Object.assign(SM, {pid: b.dataset.id, qty: '', price: null, editPrice: false}); smShow('amount'); }
+    else if (a === 'back') smShow(b.dataset.to);
+    else if (a === 'unit') { if (SM.unit !== b.dataset.u) { Object.assign(SM, {unit: b.dataset.u, qty: '', price: null, editPrice: false}); renderSimple(); } }
+    else if (a === 'minus' || a === 'plus' || a === 'chip') {
+      const cur = +SM.qty || 0;
+      SM.qty = String(a === 'chip' ? +b.dataset.n : Math.max(0, r3((a === 'plus' ? Math.floor(cur) + 1 : Math.ceil(cur) - 1))));
+      const i = $('#sm-qty'); if (i) i.value = SM.qty; $('#sm-err').textContent = ''; smCalc();
+    }
+    else if (a === 'price') { SM.editPrice = true; const btn = $('#sm-pr-btn'), inp = $('#sm-pr'); if (btn) btn.hidden = true; if (inp) { inp.hidden = false; inp.value = smUnitPrice(); inp.focus(); inp.select(); } }
+    else if (a === 'save') smSave();
+    else if (a === 'again') { Object.assign(SM, {pid: null, qty: '', price: null, editPrice: false}); smShow('pick'); }
+    else if (a === 'undo') smUndo();
+    else if (a === 'exit') confirmBox('Open the full app?', '<p>This phone will leave simple mode. This is for the owner.</p>', 'Yes, open it').then(ok => { if (ok) { setSimpleCfg(null); applySimple(); } });
+  });
+  el.addEventListener('input', e => {
+    if (e.target.id === 'sm-qty') { SM.qty = e.target.value; const err = $('#sm-err'); if (err) err.textContent = ''; smCalc(); }
+    if (e.target.id === 'sm-pr') { SM.price = e.target.value === '' ? null : Math.max(0, +e.target.value); smCalc(); }
+  });
+  renderSimple();
+}
+function updateSimple(){ if (SM.view === 'amount') smCalc(); else renderSimple(); }
+async function smSave(){
+  if (SM.busy) return;
+  const c = simpleCfg() || {loc:'stall'}, sell = SM.task === 'sell', p = prod(SM.pid), k = sackKgOf(SM.pid), err = $('#sm-err');
+  const qty = r3(Math.max(0, +SM.qty || 0));
+  if (!(qty > 0)) { err.textContent = SM.unit === 'kg' ? 'Enter how many kilos first.' : 'Enter how many sacks first.'; return; }
+  const kg = SM.unit === 'kg' ? qty : r3(qty * k), from = smFrom(), have = bal(SM.pid)[from];
+  if (kg > have + 0.0005) { smCalc(); return; }
+  SM.busy = true; const btn = $('#sm-save'), label = btn.textContent; btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const price = sell ? smUnitPrice() : 0, amount = r2(qty * price);
+    if (sell) await commit(SM.pid, [{loc: from, kg: -kg}], {type:'out', date: today(), unit: SM.unit, qty, sackKg: k, reason:'Sale', unitPrice: price, amount, costKg: costKgOf(p), customer:'', notes:'', staff: c.staff || ''});
+    else await commit(SM.pid, [{loc:'bodega', kg: -kg}, {loc:'stall', kg}], {type:'transfer', date: today(), unit: SM.unit, qty, sackKg: k, from:'bodega', to:'stall', notes:'', staff: c.staff || ''});
+    SM.last = {task: SM.task, pid: SM.pid, unit: SM.unit, qty, kg, price, amount, from, undone: false};
+    smShow('done');
+  } catch(e){
+    if (err) err.textContent = e instanceof StockError ? kulangMsg(e.avail, e.loc, k) : smErr(e);
+    if (btn) { btn.disabled = false; btn.textContent = label; }
+  } finally { SM.busy = false; }
+}
+async function smUndo(){
+  const L = SM.last; if (!L || L.undone || SM.busy) return;
+  const what = L.unit === 'kg' ? `${nf(L.qty)} kg` : `${nf(L.qty)} ${L.qty === 1 ? 'sack' : 'sacks'}`;
+  const ok = await confirmBox('Undo this?', `<p><b>${what}</b> ${esc(prod(L.pid) ? prod(L.pid).name : '')} will go back to the ${L.task === 'sell' ? LOC[L.from] : 'Bodega'}.</p>`, 'Yes, undo');
+  if (!ok) return;
+  SM.busy = true; const c = simpleCfg() || {}, k = sackKgOf(L.pid);
+  try {
+    if (L.task === 'sell') await commit(L.pid, [{loc: L.from, kg: L.kg}], {type:'out', date: today(), unit: L.unit, qty: -L.qty, sackKg: k, reason:'Sale', unitPrice: L.price, amount: -L.amount, costKg: costKgOf(prod(L.pid)), customer:'', notes:'Undone: sale entered by mistake', staff: c.staff || ''});
+    else await commit(L.pid, [{loc:'stall', kg: -L.kg}, {loc:'bodega', kg: L.kg}], {type:'transfer', date: today(), unit: L.unit, qty: L.qty, sackKg: k, from:'stall', to:'bodega', notes:'Undone: move entered by mistake', staff: c.staff || ''});
+    L.undone = true; renderSimple();
+  } catch(e){ const err = $('#sm-err'); if (err) err.textContent = e instanceof StockError ? 'Cannot undo because the stock has changed. Please call the owner.' : smErr(e); }
+  finally { SM.busy = false; }
+}
+function openSimpleSetup(){
+  const staff = staffList();
+  openModal(`<h2>Turn on simple mode</h2>
+    <p>This phone will show only two big buttons: <b>SELL</b> (by kilo) and <b>MOVE TO STALL</b> (from the Bodega). Large text, nothing else to get lost in.</p>
+    <p class="muted small">To return to the full app later, tap the small link at the bottom of its home screen.</p>
+    <form id="smf" class="form" novalidate>
+      ${staff.length ? `<div class="field"><label for="smf-staff">Who uses this phone?</label><select id="smf-staff">${staff.map(n => `<option ${n === pref('staff', '') ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select><span class="hint">Shown as “Recorded by” on every sale.</span></div>` : ''}
+      <div class="field"><span class="lbl">Sales come from</span>${seg('smf-loc', locSegOpts, 'stall')}</div>
+      <div class="modal-actions"><button type="button" class="btn" data-act="close-modal">Cancel</button><button class="btn primary">Turn on simple mode</button></div>
+    </form>`, m => {
+    $('#smf', m).addEventListener('submit', e => {
+      e.preventDefault();
+      setSimpleCfg({on: true, staff: $('#smf-staff', m) ? $('#smf-staff', m).value : '', loc: segVal($('#smf', m), 'smf-loc') || 'stall'});
+      closeModal(); applySimple();
+    });
+  });
 }
 
 /* ---------- page table ---------- */
@@ -1581,7 +1828,8 @@ const PAGES = {
   products:{mount: mountProducts, update: updateProducts},
   suppliers:{mount: mountSuppliers, update: updateSuppliers},
   reports:{mount: mountReports, update: () => { if (S.ui.rep.tab === 'inventory') runReport(); else updateReports(); }},
-  settings:{mount: mountSettings}
+  settings:{mount: mountSettings},
+  simple:{mount: mountSimple, update: updateSimple}
 };
 
 /* ---------- global events ---------- */
@@ -1631,7 +1879,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { if ($('#mo
 window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (h && h !== S.page && PAGES[h]) go(h); });
 
 const start = location.hash.slice(1);
-if (PAGES[start]) S.page = start;
+if (PAGES[start] && start !== 'simple') S.page = start;
+if (simpleCfg()) { S.page = 'simple'; document.body.classList.add('simple'); }
 mountPage();
 boot();
 })();
