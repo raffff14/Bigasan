@@ -1,7 +1,7 @@
 // Bigasan Inventory service worker: makes the app installable and lets it open quickly.
 // Stock data is never cached here — it always comes live from Supabase.
 // When you change any app file, bump VERSION so phones pick up the new files.
-const VERSION = 'bigasan-v1';
+const VERSION = 'bigasan-v2';
 const SHELL = [
   './', './index.html', './config.js', './db-supabase.js', './vendor/supabase-2.117.3.js',
   './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png'

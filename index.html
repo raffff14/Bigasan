@@ -217,6 +217,35 @@ input[readonly]{background:var(--surface-2)}
 .form-err{color:var(--danger);font-weight:700;background:var(--danger-soft);border-radius:var(--r-sm);padding:12px 14px}
 .form-err:empty{display:none}
 .side-note{display:flex;flex-direction:column;gap:12px}
+/* counting: steppers, count page, pile counter */
+.stepper{display:inline-flex;align-items:stretch}
+.stepper button{width:52px;min-height:52px;border:1px solid var(--line);background:var(--surface-2);color:var(--fg);font-size:1.5rem;font-weight:700;line-height:1;cursor:pointer}
+.stepper button:first-child{border-radius:var(--r-sm) 0 0 var(--r-sm)}
+.stepper button:last-child{border-radius:0 var(--r-sm) var(--r-sm) 0}
+.stepper button:active{background:var(--accent-soft)}
+.stepper input{width:84px;min-height:52px;border-radius:0;border-inline:0;text-align:center;font-size:1.2rem;font-weight:700}
+.cinputs{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center}
+.cinputs .c-k{width:92px;min-height:52px;text-align:center;font-size:1.1rem}
+.link-btn{background:none;border:0;padding:6px 0;min-height:36px;color:var(--accent);font-weight:700;cursor:pointer;text-align:left;align-self:flex-start}
+.count-loc{max-width:420px;margin-bottom:14px}
+.count-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.crow{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.crow.changed{border-color:var(--accent);background:var(--accent-soft)}
+.crow .ctop{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;align-items:baseline}
+.crow .cname{font-weight:700}
+.cdiff{font-size:.9rem;color:var(--muted)}
+.cdiff.up,.calc .up{color:var(--ok);font-weight:700}
+.cdiff.down,.calc .down{color:var(--danger);font-weight:700}
+.count-bar{position:sticky;bottom:12px;z-index:5;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 16px;padding:12px 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);font-weight:700}
+@media (max-width:899px){.count-bar{bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
+#modal-root-2 .modal-back{z-index:55}
+.piles{display:flex;flex-direction:column;gap:10px}
+.pile{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.pile input{width:80px;min-height:52px;text-align:center;font-size:1.2rem;font-weight:700}
+.pile span{color:var(--muted)}
+.pile .pl-sum{min-width:60px;font-size:1.1rem}
+.pile-total{padding:12px 16px;border-radius:var(--r-sm);background:var(--accent-soft);color:var(--accent);font-size:1.05rem}
+.pile-total b{font-family:var(--f-display);font-size:1.5rem;margin-left:4px}
 details.more{border-top:1px solid var(--line);padding-top:6px}
 details.more summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;min-height:44px;font-weight:700;color:var(--accent)}
 details.more summary::-webkit-details-marker{display:none}
@@ -290,6 +319,7 @@ body{margin:0}
 </div>
 <div id="sheet-root"></div>
 <div id="modal-root"></div>
+<div id="modal-root-2"></div>
 <div id="toast-root" aria-live="polite"></div>
 
 <script src="vendor/supabase-2.117.3.js"></script>
@@ -313,6 +343,7 @@ const ICON = {
   'stock-in':'<path d="M12 3v11m-4.5-4.5L12 14l4.5-4.5M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/>',
   'stock-out':'<path d="M12 14V3M7.5 7.5 12 3l4.5 4.5M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/>',
   transfer:'<path d="M4 8h15m-4-4 4 4-4 4M20 16H5m4-4-4 4 4 4"/>',
+  count:'<path d="M9 3h6v3H9z"/><path d="M15 4.5h2a2 2 0 0 1 2 2V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2h2"/><path d="m9 13.5 2 2 4-4"/>',
   products:'<path d="M3 12V4h8l9.5 9.5-8 8z"/><circle cx="7.5" cy="8.5" r="1.4"/>',
   suppliers:'<path d="M2 6h12v10H2zM14 10h4.5L22 13.5V16h-8"/><circle cx="6.5" cy="18" r="2"/><circle cx="17.5" cy="18" r="2"/>',
   reports:'<path d="M5 20V11m7 9V4m7 16v-6M3 20.5h18"/>',
@@ -519,7 +550,7 @@ function onData(){
 
 /* ---------- navigation ---------- */
 const NAV = [
-  ['dashboard','Dashboard'],['inventory','Inventory'],['stock-in','Stock In'],['stock-out','Stock Out'],['transfer','Transfer'],
+  ['dashboard','Dashboard'],['inventory','Inventory'],['stock-in','Stock In'],['stock-out','Stock Out'],['transfer','Transfer'],['count','Count stock'],
   ['products','Products'],['suppliers','Suppliers'],['reports','Reports'],['settings','Settings']
 ];
 function lowCount(){ return activeProducts().filter(p => isLow(p.id)).length; }
@@ -620,7 +651,7 @@ function emptyNoProducts(){ return `<div class="empty"><p>No rice varieties yet.
 function mountDashboard(el){
   const d = new Date().toLocaleDateString('en-PH', {weekday:'long', month:'long', day:'numeric', year:'numeric'});
   el.innerHTML = head(esc(bizName()), `<span class="eyebrow">${esc(d)}</span>`,
-    `<div class="quick"><a class="btn primary big" href="#stock-out" data-nav="stock-out">${svg('stock-out')}Record sale</a><a class="btn big" href="#stock-in" data-nav="stock-in">${svg('stock-in')}Stock in</a><a class="btn big" href="#transfer" data-nav="transfer">${svg('transfer')}Transfer</a></div>`) +
+    `<div class="quick"><a class="btn primary big" href="#stock-out" data-nav="stock-out">${svg('stock-out')}Record sale</a><a class="btn big" href="#stock-in" data-nav="stock-in">${svg('stock-in')}Stock in</a><a class="btn big" href="#transfer" data-nav="transfer">${svg('transfer')}Transfer</a><a class="btn big" href="#count" data-nav="count">${svg('count')}Count stock</a></div>`) +
     `<div id="d-banner"></div><section class="kpis" id="d-kpis" aria-label="Stock summary"></section>
      <div class="dash-grid"><section class="panel" id="d-low"></section><section class="panel" id="d-recent"></section></div>
      <section class="panel" id="d-inv"></section>`;
@@ -660,13 +691,13 @@ function varietyRows(ps, withActions){
       <div class="cell num"><span class="lbl">Bodega</span>${fmtStock(b.bodega,k,1)}<span class="kg">${nf(b.bodega)} kg</span></div>
       <div class="cell num"><span class="lbl">Stall</span>${fmtStock(b.stall,k,1)}<span class="kg">${nf(b.stall)} kg</span></div>
       <div class="cell num"><span class="lbl">Total</span><b>${fmtStock(b.total,k,1)}</b><span class="kg">${nf(b.total)} kg</span></div>
-      <div class="act">${withActions ? `<button class="btn sm" data-act="adjust" data-id="${esc(p.id)}">Adjust count</button>` : status}</div></div>`;
+      <div class="act">${withActions ? `<button class="btn sm" data-act="adjust" data-id="${esc(p.id)}">Count</button>` : status}</div></div>`;
   }).join('') + `</div>`;
 }
 
 /* ---------- INVENTORY ---------- */
 function mountInventory(el){
-  el.innerHTML = head('Inventory') + readOnlyNotice() +
+  el.innerHTML = head('Inventory', '', `<div class="quick"><a class="btn primary big" href="#count" data-nav="count">${svg('count')}Count stock</a></div>`) + readOnlyNotice() +
     `<div class="tabs" role="tablist"><button role="tab" data-tab-inv="onhand" aria-selected="${S.ui.invTab === 'onhand'}">Stock on hand</button><button role="tab" data-tab-inv="history" aria-selected="${S.ui.invTab === 'history'}">Inventory history</button></div><div id="inv-body"></div>`;
   el.addEventListener('click', e => {
     const b = e.target.closest('[data-tab-inv]'); if (!b) return;
@@ -678,7 +709,7 @@ function renderInvBody(full){
   const body = $('#inv-body'); if (!body) return;
   if (S.ui.invTab === 'onhand') {
     const ps = activeProducts();
-    body.innerHTML = `<section class="panel"><div class="panel-head"><h2>By rice variety</h2><span class="small muted">Adjust count = fix the number after a physical count.</span></div>${ps.length ? varietyRows(ps, true) : emptyNoProducts()}</section>`;
+    body.innerHTML = `<section class="panel"><div class="panel-head"><h2>By rice variety</h2><span class="small muted">Tap Count to fix one variety, or Count stock to go through all of them.</span></div>${ps.length ? varietyRows(ps, true) : emptyNoProducts()}</section>`;
     return;
   }
   if (full || !$('#h-results')) {
@@ -740,7 +771,7 @@ function mountStockIn(el){
     <div class="grid2">
       <div class="field"><span class="lbl">Receive at</span>${seg('in-loc', locSegOpts, pref('in.loc','bodega'))}</div>
       <div class="field"><span class="lbl">Unit</span>${seg('in-unit', [['sack','Sacks'],['kg','Kilograms']], pref('in.unit','sack'))}</div>
-      <div class="field"><label for="in-qty">Quantity</label><input type="number" id="in-qty" min="0" step="any" inputmode="decimal" placeholder="0"></div>
+      <div class="field"><label for="in-qty">Quantity</label><input type="number" id="in-qty" min="0" step="any" inputmode="decimal" placeholder="0"><button type="button" class="link-btn" data-pile-for="in">Count by piles</button></div>
       <div class="field"><label for="in-cost">Cost per <span id="in-cost-u">sack</span> (₱)</label><input type="number" id="in-cost" min="0" step="any" inputmode="decimal"></div>
     </div>
     ${moreBox('in', `
@@ -903,7 +934,7 @@ function mountTransfer(el){
     <div class="field"><label for="tr-prod">Rice variety</label><select id="tr-prod">${productOptions(pref('tr.prod',''))}</select></div>
     <div class="grid2">
       <div class="field"><span class="lbl">Unit</span>${seg('tr-unit', [['sack','Sacks'],['kg','Kilograms']], pref('tr.unit','sack'))}</div>
-      <div class="field"><label for="tr-qty">Quantity</label><input type="number" id="tr-qty" min="0" step="any" inputmode="decimal" placeholder="0"></div>
+      <div class="field"><label for="tr-qty">Quantity</label><input type="number" id="tr-qty" min="0" step="any" inputmode="decimal" placeholder="0"><button type="button" class="link-btn" data-pile-for="tr">Count by piles</button></div>
       <div class="field full"><div class="avail" id="tr-avail"></div></div>
     </div>
     ${moreBox('tr', `
@@ -961,52 +992,179 @@ function updateTransfer(){
   calcTr(); $('#tr-recent').innerHTML = recentList('transfer', 8);
 }
 
-/* ---------- ADJUST (modal) ---------- */
+/* ---------- COUNTING HELPERS: + / − steppers and the pile counter ---------- */
+function stepper(id, val, cls){
+  return `<div class="stepper"><button type="button" data-step="-1" data-for="${id}" aria-label="One less">−</button><input type="number" id="${id}" class="${cls || ''}" min="0" step="1" inputmode="numeric" value="${val}"><button type="button" data-step="1" data-for="${id}" aria-label="One more">+</button></div>`;
+}
+function splitKg(kg, k){ const s = Math.floor(kg / k + 1e-9); return {sacks: s, kg: r3(kg - s * k)}; }
+/* "24 high × 5 in the row" for each pile, plus loose sacks and an open sack → total */
+function openPileCounter(pid, onUse, opts){
+  const p = prod(pid); if (!p) return;
+  const k = sackKgOf(pid), withKg = !(opts && opts.noKg);
+  const root = $('#modal-root-2');
+  root.innerHTML = `<div class="modal-back"><div class="modal" role="dialog" aria-modal="true" aria-label="Count by piles">
+    <h2>Count by piles</h2>
+    <p class="muted">${esc(p.name)} · ${nf(k)} kg sacks. For each pile, enter how many sacks high it is and how many sacks are in its row.</p>
+    <div class="piles" id="pl-list"></div>
+    <div><button type="button" class="btn sm" id="pl-add">${svg('plus')}Add another pile</button></div>
+    <div class="grid2"><div class="field"><label for="pl-extra">Extra loose sacks</label>${stepper('pl-extra', 0)}</div>${withKg ? `<div class="field"><label for="pl-kg">Open sack (kg)</label><input type="number" id="pl-kg" min="0" step="any" inputmode="decimal" value="0"></div>` : ''}</div>
+    <div class="pile-total" id="pl-total" aria-live="polite"></div>
+    <div class="modal-actions"><button type="button" class="btn" id="pl-cancel">Cancel</button><button type="button" class="btn primary" id="pl-use">Use this count</button></div>
+  </div></div>`;
+  const back = root.firstElementChild, list = $('#pl-list', back);
+  const addRow = () => {
+    const row = document.createElement('div'); row.className = 'pile';
+    row.innerHTML = `<input type="number" class="pl-h" min="0" step="1" inputmode="numeric" placeholder="24" aria-label="Sacks high"><span>high ×</span><input type="number" class="pl-w" min="0" step="1" inputmode="numeric" placeholder="5" aria-label="Sacks in the row"><span>in the row</span><b class="pl-sum">= 0</b><button type="button" class="btn sm ghost pl-del" aria-label="Remove this pile">✕</button>`;
+    list.appendChild(row); return row;
+  };
+  const whole = v => Math.max(0, Math.floor(+v || 0));
+  const total = () => {
+    let s = 0;
+    $$('.pile', list).forEach(row => { const n = whole($('.pl-h', row).value) * whole($('.pl-w', row).value); s += n; $('.pl-sum', row).textContent = '= ' + nf(n, 0); });
+    s += whole($('#pl-extra', back).value);
+    return {sacks: s, kg: withKg ? Math.max(0, r3(+$('#pl-kg', back).value || 0)) : 0};
+  };
+  const show = () => { const t = total(); $('#pl-total', back).innerHTML = `Total <b>${nf(t.sacks, 0)} ${t.sacks === 1 ? 'sack' : 'sacks'}${t.kg ? ' + ' + nf(t.kg) + ' kg' : ''}</b> <span class="small">(${nf(t.sacks * k + t.kg)} kg)</span>`; };
+  back.addEventListener('input', show);
+  back.addEventListener('click', e => {
+    if (e.target === back || e.target.closest('#pl-cancel')) { closePile(); return; }
+    const del = e.target.closest('.pl-del');
+    if (del) { const row = del.closest('.pile'); if ($$('.pile', list).length > 1) row.remove(); else { $('.pl-h', row).value = ''; $('.pl-w', row).value = ''; } show(); }
+  });
+  $('#pl-add', back).addEventListener('click', () => { const row = addRow(); show(); $('.pl-h', row).focus(); });
+  $('#pl-use', back).addEventListener('click', () => { const t = total(); closePile(); onUse(t.sacks, t.kg); });
+  addRow(); show();
+  setTimeout(() => { const i = $('.pl-h', list); if (i) i.focus(); }, 30);
+}
+function closePile(){ $('#modal-root-2').innerHTML = ''; }
+
+/* ---------- COUNT ONE VARIETY (modal from Inventory) ---------- */
 function openAdjust(pid){
   const p = prod(pid); if (!p) return;
   const k = sackKgOf(pid);
-  openModal(`<h2>Adjust count · ${esc(p.name)}</h2>
-    <p class="muted">Enter what is physically there now. The difference is saved as an Adjustment in the history.</p>
+  openModal(`<h2>Count · ${esc(p.name)}</h2>
     <form id="adj-f" class="form" novalidate>
-      <div class="field"><span class="lbl">Location</span>${seg('adj-loc', locSegOpts, 'stall')}</div>
+      <div class="field"><span class="lbl">Location</span>${seg('adj-loc', locSegOpts, pref('count.loc', 'bodega'))}</div>
       <div class="avail" id="adj-cur"></div>
-      <div class="grid2">
-        <div class="field"><label for="adj-sacks">Full sacks counted (${nf(k)} kg)</label><input type="number" id="adj-sacks" min="0" step="1" inputmode="numeric"></div>
-        <div class="field"><label for="adj-kg">Plus loose kg</label><input type="number" id="adj-kg" min="0" step="any" inputmode="decimal" value="0"></div>
-        <div class="field"><label for="adj-reason">Reason</label><select id="adj-reason">${ADJ_REASONS.map(r => `<option>${r}</option>`).join('')}</select></div>
-        <div class="field"><label for="adj-date">Date</label><input type="date" id="adj-date" value="${today()}"></div>
-        <div class="field full"><label for="adj-notes">Notes</label><input id="adj-notes" autocomplete="off" placeholder="e.g. 2 sacks wet from roof leak"></div>
-      </div>
+      <div class="field"><span class="lbl">What is really there</span>
+        <div class="cinputs">${stepper('adj-sacks', 0)}<span class="muted">sacks +</span><input type="number" id="adj-kg" class="c-k" min="0" step="any" inputmode="decimal" value="0" aria-label="Loose kilograms"><span class="muted">kg</span></div>
+        <button type="button" class="link-btn" id="adj-pile">Count by piles (e.g. 24 high × 5)</button></div>
       <div class="calc" id="adj-calc"></div>
+      ${moreBox('adj', `<div class="field"><label for="adj-reason">Reason</label><select id="adj-reason">${ADJ_REASONS.map(r => `<option>${r}</option>`).join('')}</select></div>
+        <div class="field"><label for="adj-date">Date</label><input type="date" id="adj-date" value="${today()}"></div>
+        <div class="field full"><label for="adj-notes">Notes</label><input id="adj-notes" autocomplete="off" placeholder="e.g. 2 sacks wet from roof leak"></div>`)}
       <div class="form-err" id="adj-err" role="alert"></div>
-      <div class="modal-actions"><button type="button" class="btn" data-act="close-modal">Cancel</button><button class="btn primary" id="adj-go" ${S.canWrite === false ? 'disabled' : ''}>Save adjustment</button></div>
+      <div class="modal-actions"><button type="button" class="btn" data-act="close-modal">Cancel</button><button class="btn primary" id="adj-go" ${S.canWrite === false ? 'disabled' : ''}>Save count</button></div>
     </form>`, m => {
       const f = $('#adj-f', m);
       const loc = () => segVal(f, 'adj-loc');
-      const counted = () => r3((+$('#adj-sacks', m).value || 0) * k + (+$('#adj-kg', m).value || 0));
+      const counted = () => r3(Math.max(0, Math.floor(+$('#adj-sacks', m).value || 0)) * k + Math.max(0, +$('#adj-kg', m).value || 0));
       const show = () => {
-        const cur = bal(pid)[loc()];
-        $('#adj-cur', m).innerHTML = `System says ${LOC[loc()]} has <b class="num">${fmtStock(cur, k)}</b> (${nf(cur)} kg)`;
-        const filled = $('#adj-sacks', m).value !== '' || +$('#adj-kg', m).value > 0;
-        const d = r3(counted() - cur);
-        $('#adj-calc', m).innerHTML = filled ? `<span>New count <b>${fmtStock(counted(), k)}</b></span><span>Difference <b>${d >= 0 ? '+' : '−'}${nf(Math.abs(d))} kg</b></span>` : '';
+        const cur = bal(pid)[loc()], d = r3(counted() - cur);
+        $('#adj-cur', m).innerHTML = `System says ${LOC[loc()]} has <b class="num">${fmtStock(cur, k)}</b>`;
+        $('#adj-calc', m).innerHTML = Math.abs(d) < 0.0005 ? `<span>Same as the system. Change the numbers if the count is different.</span>`
+          : `<span>New count <b>${fmtStock(counted(), k)}</b></span><span>Difference <b class="${d > 0 ? 'up' : 'down'}">${d > 0 ? '+' : '−'}${fmtStock(Math.abs(d), k)}</b></span>`;
+        moreSum('adj');
       };
-      const preset = () => { const cur = bal(pid)[loc()]; $('#adj-sacks', m).value = Math.floor(cur / k + 1e-9); $('#adj-kg', m).value = r3(cur - Math.floor(cur / k + 1e-9) * k); show(); };
-      f.addEventListener('change', e => { if (e.target.name === 'adj-loc') preset(); else show(); });
+      const preset = () => { const s = splitKg(bal(pid)[loc()], k); $('#adj-sacks', m).value = s.sacks; $('#adj-kg', m).value = s.kg; show(); };
+      f.addEventListener('change', e => { if (e.target.name === 'adj-loc') { setPref('count.loc', e.target.value); preset(); } else show(); });
       f.addEventListener('input', show);
+      $('#adj-pile', m).addEventListener('click', () => openPileCounter(pid, (sacks, kg) => { $('#adj-sacks', m).value = sacks; $('#adj-kg', m).value = kg; show(); }));
       f.addEventListener('submit', async e => {
         e.preventDefault(); const err = $('#adj-err', m); err.textContent = '';
-        if ($('#adj-sacks', m).value === '' && $('#adj-kg', m).value === '') return err.textContent = 'Enter the counted stock.';
-        if (+$('#adj-sacks', m).value < 0 || +$('#adj-kg', m).value < 0) return err.textContent = 'Counted stock cannot be negative.';
+        if (Math.abs(counted() - bal(pid)[loc()]) < 0.0005) return err.textContent = 'Nothing to save. The count matches the system.';
         const btn = $('#adj-go', m); btn.disabled = true; btn.textContent = 'Saving…';
         try {
           await commit(pid, [{loc: loc(), setTo: counted()}], {type:'adjust', date: $('#adj-date', m).value || today(), reason: $('#adj-reason', m).value, unit:'kg', sackKg: k,
-            notes: [$('#adj-reason', m).value, $('#adj-notes', m).value.trim()].filter(Boolean).join(' — '), staff: staffList().length ? pref('staff', staffList()[0]) : ''});
-          closeModal(); toast(`${p.name} at ${LOC[loc()]} set to ${fmtStock(counted(), k)}`);
-        } catch(e2){ err.textContent = explainDbError(e2); btn.disabled = false; btn.textContent = 'Save adjustment'; }
+            notes: $('#adj-notes', m).value.trim(), staff: staffList().length ? pref('staff', staffList()[0]) : ''});
+          closeModal(); toast(`${p.name} at ${LOC[loc()]} is now ${fmtStock(counted(), k)}`);
+        } catch(e2){ err.textContent = e2 instanceof UserError ? e2.message : explainDbError(e2); btn.disabled = false; btn.textContent = 'Save count'; }
       });
       preset();
   });
+}
+
+/* ---------- COUNT STOCK PAGE: every variety at one location, save only what changed ---------- */
+function mountCount(el){
+  const C = S.ui.count = {loc: pref('count.loc', 'bodega'), rows: {}};
+  el.innerHTML = head('Count stock', 'Type what is really there, or tap + and −. Only the varieties you change are saved.') + readOnlyNotice() +
+    `<div class="field count-loc"><span class="lbl">Counting at</span>${seg('cnt-loc', locSegOpts, C.loc)}</div>
+     <div id="cnt-list" class="count-list"></div>
+     <div class="count-bar"><span id="cnt-sum">Nothing changed yet</span><button type="button" class="btn primary big" id="cnt-go" disabled>Save count</button></div>`;
+  el.addEventListener('change', async e => {
+    if (e.target.name !== 'cnt-loc') return;
+    const next = e.target.value;
+    if (countChanges().length && !(await confirmBox('Switch location?', '<p>The changes you typed here have not been saved and will be cleared.</p>', 'Switch'))) {
+      const back = el.querySelector(`input[name="cnt-loc"][value="${C.loc}"]`); if (back) back.checked = true; return;
+    }
+    C.loc = next; setPref('count.loc', next); C.rows = {}; renderCount(true);
+  });
+  el.addEventListener('input', e => {
+    const row = e.target.closest('.crow'); if (!row) return;
+    C.rows[row.dataset.pid] = {sacks: $('.c-s', row).value, kg: $('.c-k', row).value, touched: true};
+    paintRow(row); paintBar();
+  });
+  el.addEventListener('click', e => {
+    const b = e.target.closest('[data-pile]'); if (!b) return;
+    const row = b.closest('.crow');
+    openPileCounter(row.dataset.pid, (sacks, kg) => { $('.c-s', row).value = sacks; $('.c-k', row).value = kg; $('.c-s', row).dispatchEvent(new Event('input', {bubbles: true})); });
+  });
+  $('#cnt-go').addEventListener('click', saveCount);
+  renderCount(true);
+}
+function renderCount(full){
+  const C = S.ui.count, list = $('#cnt-list'); if (!list || !C) return;
+  const ps = activeProducts(), ids = ps.map(p => p.id).join('|');
+  if (full || list.dataset.ids !== ids) {
+    list.dataset.ids = ids;
+    list.innerHTML = ps.length ? ps.map(p => {
+      const k = sackKgOf(p.id), r = C.rows[p.id], sys = splitKg(bal(p.id)[C.loc], k);
+      return `<div class="crow" data-pid="${esc(p.id)}">
+        <div class="ctop"><div class="cname">${esc(p.name)} <span class="muted small">· ${nf(k)} kg sacks</span></div><div class="csys small muted"></div></div>
+        <div class="cinputs">${stepper('cs-' + p.id, r ? r.sacks : sys.sacks, 'c-s')}<span class="muted">sacks +</span><input type="number" class="c-k" min="0" step="any" inputmode="decimal" value="${r ? r.kg : sys.kg}" aria-label="Loose kilograms of ${esc(p.name)}"><span class="muted">kg</span><button type="button" class="btn sm" data-pile>Count by piles</button></div>
+        <div class="cdiff"></div></div>`;
+    }).join('') : `<div class="panel">${emptyNoProducts()}</div>`;
+  }
+  $$('.crow', list).forEach(row => {
+    const pid = row.dataset.pid, r = C.rows[pid];
+    if (!r || !r.touched) { const sys = splitKg(bal(pid)[C.loc], sackKgOf(pid)); $('.c-s', row).value = sys.sacks; $('.c-k', row).value = sys.kg; }
+    paintRow(row);
+  });
+  paintBar();
+}
+function countedKg(row){ return r3(Math.max(0, Math.floor(+$('.c-s', row).value || 0)) * sackKgOf(row.dataset.pid) + Math.max(0, +$('.c-k', row).value || 0)); }
+function paintRow(row){
+  const C = S.ui.count, pid = row.dataset.pid, k = sackKgOf(pid), sys = bal(pid)[C.loc], d = r3(countedKg(row) - sys);
+  const changed = !!(C.rows[pid] && C.rows[pid].touched) && Math.abs(d) >= 0.0005;
+  $('.csys', row).textContent = `System: ${fmtStock(sys, k)}`;
+  row.classList.toggle('changed', changed);
+  const el = $('.cdiff', row);
+  el.className = 'cdiff' + (changed ? (d > 0 ? ' up' : ' down') : '');
+  el.textContent = changed ? `${d > 0 ? '+' : '−'}${fmtStock(Math.abs(d), k)} compared with the system` : 'Matches the system';
+}
+function countChanges(){
+  const C = S.ui.count; if (!C) return [];
+  return $$('#cnt-list .crow').map(row => ({pid: row.dataset.pid, kg: countedKg(row)}))
+    .filter(x => C.rows[x.pid] && C.rows[x.pid].touched && Math.abs(x.kg - bal(x.pid)[C.loc]) >= 0.0005);
+}
+function paintBar(){
+  const s = $('#cnt-sum'), b = $('#cnt-go'); if (!s || !b) return;
+  const n = countChanges().length;
+  s.textContent = n ? `${n} ${n === 1 ? 'variety' : 'varieties'} changed` : 'Nothing changed yet';
+  b.disabled = !n || S.canWrite === false;
+}
+async function saveCount(){
+  const C = S.ui.count, list = countChanges(); if (!list.length) return;
+  const b = $('#cnt-go'); b.disabled = true; b.textContent = 'Saving…';
+  let done = 0;
+  try {
+    for (const x of list) {
+      await commit(x.pid, [{loc: C.loc, setTo: x.kg}], {type:'adjust', date: today(), reason:'Physical count', unit:'kg', sackKg: sackKgOf(x.pid), notes:'', staff: staffList().length ? pref('staff', staffList()[0]) : ''});
+      delete C.rows[x.pid]; done++;
+    }
+    toast(`Saved ${done} ${done === 1 ? 'count' : 'counts'} at ${LOC[C.loc]}`);
+  } catch(e){ toast((done ? `Saved ${done}, then stopped. ` : '') + (e instanceof UserError ? e.message : explainDbError(e)), 'err'); }
+  finally { b.textContent = 'Save count'; renderCount(false); }
 }
 
 /* ---------- PRODUCTS ---------- */
@@ -1419,6 +1577,7 @@ const PAGES = {
   'stock-in':{mount: mountStockIn, update: updateStockIn},
   'stock-out':{mount: mountStockOut, update: updateStockOut},
   transfer:{mount: mountTransfer, update: updateTransfer},
+  count:{mount: mountCount, update: () => renderCount(false)},
   products:{mount: mountProducts, update: updateProducts},
   suppliers:{mount: mountSuppliers, update: updateSuppliers},
   reports:{mount: mountReports, update: () => { if (S.ui.rep.tab === 'inventory') runReport(); else updateReports(); }},
@@ -1433,6 +1592,23 @@ document.addEventListener('click', e => {
     if (nav.dataset.prod) S.ui.pendingProd = nav.dataset.prod;
     if (nav.dataset.tab) S.ui.invTab = nav.dataset.tab;
     go(nav.dataset.nav); return;
+  }
+  const st = e.target.closest('[data-step]');
+  if (st) {
+    const inp = document.getElementById(st.dataset.for);
+    if (inp) { inp.value = Math.max(0, Math.round(+inp.value || 0) + (+st.dataset.step)); inp.dispatchEvent(new Event('input', {bubbles: true})); }
+    return;
+  }
+  const pf = e.target.closest('[data-pile-for]');
+  if (pf) {
+    const pre = pf.dataset.pileFor, sel = $('#' + pre + '-prod'), pid = sel && sel.value;
+    if (!prod(pid)) { toast('Choose a rice variety first.', 'err'); return; }
+    openPileCounter(pid, sacks => {
+      const sk = document.querySelector('input[name="' + pre + '-unit"][value="sack"]');
+      if (sk && !sk.checked) { sk.checked = true; sk.dispatchEvent(new Event('change', {bubbles: true})); }
+      const q = $('#' + pre + '-qty'); q.value = sacks; q.dispatchEvent(new Event('input', {bubbles: true}));
+    }, {noKg: true});
+    return;
   }
   const a = e.target.closest('[data-act]'); if (!a) return;
   const act = a.dataset.act;
@@ -1451,7 +1627,7 @@ document.addEventListener('click', e => {
   else if (act === 'hist-csv') exportHistory();
   else if (act === 'rep-csv') exportReport(a.dataset.key);
 });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { if ($('#modal-root').innerHTML) closeModal(); else closeSheet(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { if ($('#modal-root-2').innerHTML) closePile(); else if ($('#modal-root').innerHTML) closeModal(); else closeSheet(); } });
 window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (h && h !== S.page && PAGES[h]) go(h); });
 
 const start = location.hash.slice(1);
