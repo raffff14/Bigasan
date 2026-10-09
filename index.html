@@ -44,6 +44,8 @@
 }
 *{box-sizing:border-box}
 html,body{background:var(--bg);color:var(--fg)}
+html.big-text{font-size:118.75%}
+html.big-text body{font-size:1rem}
 body{font-family:var(--f-body);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-family:var(--f-display);font-weight:700;letter-spacing:-.01em;text-wrap:balance;margin:0}
 h1{font-size:clamp(1.6rem,1.2rem + 1.4vw,2.2rem);line-height:1.1}
@@ -114,6 +116,24 @@ main{min-width:0;padding-inline:clamp(16px,3vw,40px);padding-block:28px 60px;max
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;min-width:0}
 .panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
 .stack{display:flex;flex-direction:column;gap:18px}
+.quick-rice{margin-bottom:18px}
+.qgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:12px}
+@media (max-width:520px){.qgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
+.qtile{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-height:112px;padding:14px 14px 12px;border-radius:16px;border:1px solid var(--line);border-bottom:5px solid var(--line);background:var(--surface);color:var(--fg);text-align:left;cursor:pointer;box-shadow:var(--shadow);transition:transform .08s ease,border-bottom-width .08s ease,background-color .15s}
+.qtile:hover{background:var(--surface-2)}
+.qtile:active{transform:translateY(3px);border-bottom-width:2px;box-shadow:none}
+.qtile:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.qtile.low{border-color:var(--danger);border-bottom-color:var(--danger)}
+.qtile .qt-name{font-weight:700;font-size:1rem;line-height:1.2}
+.qtile.low .qt-name{padding-right:44px}
+.qtile .qt-total{font-family:var(--f-display);font-weight:700;font-size:1.35rem;line-height:1.15;margin-top:auto}
+.qtile .qt-split{display:flex;flex-wrap:wrap;gap:2px 10px;font-size:.8rem;color:var(--muted)}
+.qtile .qt-split span{display:inline-flex;align-items:center;gap:4px}
+.qtile .qt-badge{position:absolute;top:10px;right:10px;font-size:.68rem;padding:2px 7px}
+.qtile.saved{animation:qtflash 1.2s ease-out}
+@media (max-width:520px){.qtile{padding:12px 12px 10px}.qtile .qt-total{font-size:1.12rem}}
+@keyframes qtflash{0%{background:var(--ok-soft)}100%{background:var(--surface)}}
+@media (prefers-reduced-motion:reduce){.qtile{transition:none}.qtile:active{transform:none}.qtile.saved{animation:none}}
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}
 .kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0}
 .kpi .k-label{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--muted);font-size:.9rem}
@@ -220,6 +240,59 @@ input[readonly]{background:var(--surface-2)}
 .form-err{color:var(--danger);font-weight:700;background:var(--danger-soft);border-radius:var(--r-sm);padding:12px 14px}
 .form-err:empty{display:none}
 .side-note{display:flex;flex-direction:column;gap:12px}
+/* tappable rice + rice details */
+.vlink{background:none;border:0;padding:0;font:inherit;font-weight:700;color:inherit;text-align:left;cursor:pointer;min-height:32px}
+.vlink::after{content:" ›";color:var(--accent);font-weight:700}
+.vlink:hover{color:var(--accent)}
+.vrow[data-rice],.feed-row[data-rice],.pcard[data-rice],.prow[data-rice]{cursor:pointer}
+.vrow[data-rice]:hover,.feed-row[data-rice]:hover,.prow[data-rice]:hover{background:var(--surface-2)}
+.pcard[data-rice]:hover{border-color:var(--accent)}
+.rd-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.rd-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.rd-tile{border:1px solid var(--line);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.rd-tile .k-label{display:flex;align-items:center;gap:6px;font-weight:600;color:var(--muted);font-size:.85rem}
+.rd-tile b{font-family:var(--f-display);font-size:1.3rem;line-height:1.15}
+.rd-tile.total{background:var(--accent-soft);border-color:var(--accent)}
+@media (max-width:480px){.rd-tiles{grid-template-columns:1fr 1fr}.rd-tile.total{grid-column:1/-1}}
+.rd-prices{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.95rem;padding:10px 12px;border-radius:var(--r-sm);background:var(--surface-2)}
+.rd-count{border-top:1px solid var(--line);padding-top:14px;gap:12px}
+.rd-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (min-width:620px){.rd-actions{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.rd-h{margin-bottom:6px}
+/* price list */
+.pl-costtoggle{display:inline-flex;gap:8px;align-items:center;margin-bottom:12px;min-height:40px}
+.plist{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin-bottom:16px}
+.prow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;align-items:center;padding:14px 16px;border-top:1px solid var(--line)}
+.prow:first-child{border-top:0}
+.prow .pname{font-weight:700;font-size:1.1rem}
+.prow .psub{font-size:.85rem;color:var(--muted)}
+.prow .pright{text-align:right}
+.prow .pkg{font-family:var(--f-display);font-size:1.6rem;font-weight:700;color:var(--accent);line-height:1.1;white-space:nowrap}
+.prow .pkg small{font-size:.55em;color:var(--muted);font-weight:600}
+.prow .psack{font-size:.95rem;white-space:nowrap}
+.prow .pcost{grid-column:1/-1;font-size:.85rem;color:var(--muted)}
+.prow.edit{grid-template-columns:minmax(0,1fr)}
+.prow.changed{background:var(--accent-soft)}
+.pedit{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (min-width:760px){.pedit{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.board{position:fixed;inset:0;z-index:70;background:#0F3A28;color:#FFFFFF;overflow-y:auto;padding:calc(64px + env(safe-area-inset-top,0px)) clamp(20px,5vw,64px) 32px;display:flex;flex-direction:column;gap:6px}
+.board h1{font-size:clamp(2rem,6vw,3.6rem);color:#FFFFFF}
+.board .bdate{color:#CFE7DA;font-size:clamp(1rem,2.5vw,1.3rem);margin-bottom:10px}
+.board .brow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 16px;align-items:baseline;padding:14px 0;border-top:1px solid rgba(255,255,255,.2)}
+.board .bname{font-size:clamp(1.3rem,4.5vw,2.3rem);font-weight:700}
+.board .bprice{font-family:var(--f-display);font-size:clamp(1.9rem,7vw,3.8rem);font-weight:700;color:#FFD27A;text-align:right;white-space:nowrap}
+.board .bprice small{font-size:.4em;color:#FFFFFF}
+.board .bsack{grid-column:1/-1;font-size:clamp(1rem,3vw,1.4rem);color:#CFE7DA}
+.board .bclose{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;min-height:48px;padding:8px 18px;border-radius:12px;border:2px solid rgba(255,255,255,.5);background:#0F3A28;color:#FFFFFF;font-size:1.05rem;font-weight:700;cursor:pointer}
+#print-area{display:none}
+@media print{
+  body > *:not(#print-area){display:none!important}
+  #print-area{display:block!important;color:#000;font-family:Arial,sans-serif;padding:12mm}
+  #print-area h1{font-size:24pt;margin:0 0 4pt}
+  #print-area table{width:100%;border-collapse:collapse;font-size:16pt;margin-top:10pt}
+  #print-area th,#print-area td{border-bottom:1px solid #999;padding:8pt 6pt;text-align:left}
+  #print-area .r{text-align:right}
+}
 /* simple mode for staff phones */
 body.simple .side,body.simple .tabbar{display:none!important}
 body.simple .app{grid-template-columns:minmax(0,1fr)}
@@ -236,6 +309,12 @@ body.simple main{max-width:620px;margin-inline:auto;padding-block:18px 48px}
 .sm-btn.sell{background:var(--accent);color:var(--accent-fg)}
 .sm-btn.move{background:var(--sm-move);color:var(--sm-move-fg)}
 .sm-btn:active,.sm-save:active{transform:scale(.985)}
+.sm-pl{display:flex;align-items:center;justify-content:center;gap:12px}
+.sm-pl svg{width:28px;height:28px}
+.sm .prow .pname{font-size:1.3rem}
+.sm .prow .psub{font-size:1rem}
+.sm .prow .pkg{font-size:2rem}
+.sm .prow .psack{font-size:1.1rem}
 .sm-left{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
 .sm-left h2{font-size:1.25rem;margin-bottom:4px}
 .sm-stock{display:flex;justify-content:space-between;align-items:center;gap:6px 12px;flex-wrap:wrap;padding:11px 0;border-top:1px solid var(--line);font-size:1.1rem}
@@ -305,10 +384,22 @@ body.simple main{max-width:620px;margin-inline:auto;padding-block:18px 48px}
 @media (max-width:899px){.count-bar{bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
 #modal-root-2 .modal-back{z-index:55}
 .piles{display:flex;flex-direction:column;gap:10px}
-.pile{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
-.pile input{width:80px;min-height:52px;text-align:center;font-size:1.2rem;font-weight:700}
-.pile span{color:var(--muted)}
-.pile .pl-sum{min-width:60px;font-size:1.1rem}
+.pile-modal{gap:14px}
+.pile-pic svg{display:block;max-width:100%;height:auto;margin-inline:auto;color:var(--muted)}
+.pile-pic .drop{animation:sackdrop .38s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes sackdrop{from{transform:translateY(-16px);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.pile-pic .drop{animation:none}}
+.pile{border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;display:flex;flex-direction:column;gap:12px;background:var(--surface)}
+.pile-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pile-name{font-size:1.1rem}
+.pile-line{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px}
+.pile .pile-q{font-weight:700;font-size:1.05rem;color:var(--fg)}
+.pl-tops{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pl-top{width:52px;min-height:52px;border-radius:var(--r-sm);border:2px solid var(--line);background:var(--surface);color:var(--fg);font-size:1.25rem;font-weight:700;cursor:pointer}
+.pl-top.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.pl-more{min-height:52px;padding:0 14px;border-radius:var(--r-sm);border:2px dashed var(--line);background:none;color:var(--muted);font-size:1.05rem;font-weight:700;cursor:pointer}
+.pl-tops .pl-t{width:72px;min-height:52px;text-align:center;font-size:1.1rem;font-weight:700}
+.pile .pl-sum{font-weight:700;color:var(--accent);font-size:1.05rem}
 .pile-total{padding:12px 16px;border-radius:var(--r-sm);background:var(--accent-soft);color:var(--accent);font-size:1.05rem}
 .pile-total b{font-family:var(--f-display);font-size:1.5rem;margin-left:4px}
 details.more{border-top:1px solid var(--line);padding-top:6px}
@@ -408,6 +499,7 @@ const ICON = {
   'stock-in':'<path d="M12 3v11m-4.5-4.5L12 14l4.5-4.5M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/>',
   'stock-out':'<path d="M12 14V3M7.5 7.5 12 3l4.5 4.5M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/>',
   transfer:'<path d="M4 8h15m-4-4 4 4-4 4M20 16H5m4-4-4 4 4 4"/>',
+  prices:'<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/>',
   count:'<path d="M9 3h6v3H9z"/><path d="M15 4.5h2a2 2 0 0 1 2 2V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2h2"/><path d="m9 13.5 2 2 4-4"/>',
   products:'<path d="M3 12V4h8l9.5 9.5-8 8z"/><circle cx="7.5" cy="8.5" r="1.4"/>',
   suppliers:'<path d="M2 6h12v10H2zM14 10h4.5L22 13.5V16h-8"/><circle cx="6.5" cy="18" r="2"/><circle cx="17.5" cy="18" r="2"/>',
@@ -611,12 +703,13 @@ function onData(){
   renderNav(); renderTabbar();
   if (!S.mounted) { if (dataReady()) mountPage(); return; }
   const pg = PAGES[S.page]; if (pg.update) pg.update();
+  if (S.ui.riceRefresh) S.ui.riceRefresh();
 }
 
 /* ---------- navigation ---------- */
 const NAV = [
   ['dashboard','Dashboard'],['inventory','Inventory'],['stock-in','Stock In'],['stock-out','Stock Out'],['transfer','Transfer'],['count','Count stock'],
-  ['products','Products'],['suppliers','Suppliers'],['reports','Reports'],['settings','Settings']
+  ['products','Products'],['prices','Price list'],['suppliers','Suppliers'],['reports','Reports'],['settings','Settings']
 ];
 function lowCount(){ return activeProducts().filter(p => isLow(p.id)).length; }
 function renderNav(){
@@ -719,6 +812,7 @@ function mountDashboard(el){
   el.innerHTML = head(esc(bizName()), `<span class="eyebrow">${esc(d)}</span>`,
     `<div class="quick"><a class="btn primary big" href="#stock-out" data-nav="stock-out">${svg('stock-out')}Record sale</a><a class="btn big" href="#stock-in" data-nav="stock-in">${svg('stock-in')}Stock in</a><a class="btn big" href="#transfer" data-nav="transfer">${svg('transfer')}Transfer</a><a class="btn big" href="#count" data-nav="count">${svg('count')}Count stock</a></div>`) +
     `<div id="d-banner"></div><section class="kpis" id="d-kpis" aria-label="Stock summary"></section>
+     <section class="panel quick-rice" id="d-quick" aria-label="Rice quick access"></section>
      <div class="dash-grid"><section class="panel" id="d-low"></section><section class="panel" id="d-recent"></section></div>
      <section class="panel" id="d-inv"></section>`;
 }
@@ -733,9 +827,25 @@ function updateDashboard(){
     <div class="kpi"><div class="k-label"><i class="dot bodega"></i>Bodega stock</div><div class="k-val">${nf(sb,1)}<small>sacks</small></div><div class="k-sub num">${nf(tb)} kg</div></div>
     <div class="kpi"><div class="k-label"><i class="dot stall"></i>Stall stock</div><div class="k-val">${nf(ss,1)}<small>sacks</small></div><div class="k-sub num">${nf(ts)} kg</div></div>
     <a class="kpi ${low.length ? 'alert' : ''}" href="#inventory" data-nav="inventory" style="text-decoration:none;color:inherit"><div class="k-label">Low stock items</div><div class="k-val">${low.length}</div><div class="k-sub">${low.length ? esc(low.map(p => p.name).join(', ')) : 'All varieties above minimum'}</div></a>`;
+  const qb = $('#d-quick');
+  if (qb) {
+    const before = S.ui.quickSeen || {}, seen = {}, now = Date.now(), flashAt = S.ui.quickFlash || (S.ui.quickFlash = {});
+    qb.innerHTML = `<div class="panel-head"><h2>Rice</h2><span class="small muted">Tap a rice to see its stock or change it</span></div>` + (ps.length ? `<div class="qgrid">${ps.map(p => {
+      const b = bal(p.id), k = sackKgOf(p.id), low = isLow(p.id), sig = b.bodega + '|' + b.stall;
+      seen[p.id] = sig;
+      if (before[p.id] !== undefined && before[p.id] !== sig) flashAt[p.id] = now;
+      const age = flashAt[p.id] ? now - flashAt[p.id] : 1e9, flash = age < 1200;
+      return `<button type="button" class="qtile${low ? ' low' : ''}${flash ? ' saved' : ''}"${flash ? ` style="animation-delay:-${age}ms"` : ''} data-rice="${esc(p.id)}" aria-label="${esc(p.name)}: ${esc(fmtStock(b.total, k))} in total${low ? ', low stock' : ''}">
+        <span class="qt-name">${esc(p.name)}</span>${low ? '<span class="pill low qt-badge">LOW</span>' : ''}
+        <span class="qt-total num">${fmtStock(b.total, k, 1)}</span>
+        <span class="qt-split num"><span><i class="dot bodega"></i>${fmtStock(b.bodega, k, 1)}</span><span><i class="dot stall"></i>${fmtStock(b.stall, k, 1)}</span></span>
+      </button>`;
+    }).join('')}</div>` : emptyNoProducts());
+    S.ui.quickSeen = seen;
+  }
   $('#d-low').innerHTML = `<div class="panel-head"><h2>Low stock</h2></div>` + (low.length ? `<div class="feed">${low.map(p => {
       const b = bal(p.id), k = sackKgOf(p.id);
-      return `<div class="feed-row"><span class="pill low">LOW STOCK</span><div class="what"><b>${esc(p.name)}</b><span class="small muted num">${fmtStock(b.total, k)} left (minimum ${nf(p.minSacks)})</span></div><a class="btn sm" href="#stock-in" data-nav="stock-in" data-prod="${esc(p.id)}">Restock</a></div>`;
+      return `<div class="feed-row" data-rice="${esc(p.id)}"><span class="pill low">LOW STOCK</span><div class="what"><button type="button" class="vlink" data-rice="${esc(p.id)}">${esc(p.name)}</button><span class="small muted num">${fmtStock(b.total, k)} left (minimum ${nf(p.minSacks)})</span></div><a class="btn sm" href="#stock-in" data-nav="stock-in" data-prod="${esc(p.id)}">Restock</a></div>`;
     }).join('')}</div>` : `<div class="empty"><span class="pill ok">All good</span><p>Every variety is above its minimum stock level.</p></div>`);
   const recent = [];
   for (const t of S.txns) { for (const r of rowsOf(t)) { recent.push(r); } if (recent.length >= 8) break; }
@@ -753,7 +863,7 @@ function varietyRows(ps, withActions){
     const b = bal(p.id), k = sackKgOf(p.id), tot = b.total || 1;
     const low = isLow(p.id);
     const status = low ? `<span class="pill low">LOW STOCK</span>` : (b.stall <= 0 && b.bodega > 0 ? `<span class="pill warn">Stall empty</span>` : `<span class="pill ok">OK</span>`);
-    return `<div class="vrow"><div class="vname"><span>${esc(p.name)} <span class="sub">· ${nf(k)} kg sacks${+p.minSacks ? ` · min ${nf(p.minSacks)}` : ''}</span></span>${withActions ? status : ''}<div class="split" title="Bodega ${nf(b.bodega)} kg · Stall ${nf(b.stall)} kg"><span class="b" style="width:${b.total ? b.bodega/tot*100 : 0}%"></span><span class="s" style="width:${b.total ? b.stall/tot*100 : 0}%"></span></div></div>
+    return `<div class="vrow" data-rice="${esc(p.id)}"><div class="vname"><span><button type="button" class="vlink" data-rice="${esc(p.id)}">${esc(p.name)}</button> <span class="sub">· ${nf(k)} kg sacks${+p.minSacks ? ` · min ${nf(p.minSacks)}` : ''}</span></span>${withActions ? status : ''}<div class="split" title="Bodega ${nf(b.bodega)} kg · Stall ${nf(b.stall)} kg"><span class="b" style="width:${b.total ? b.bodega/tot*100 : 0}%"></span><span class="s" style="width:${b.total ? b.stall/tot*100 : 0}%"></span></div></div>
       <div class="cell num"><span class="lbl">Bodega</span>${fmtStock(b.bodega,k,1)}<span class="kg">${nf(b.bodega)} kg</span></div>
       <div class="cell num"><span class="lbl">Stall</span>${fmtStock(b.stall,k,1)}<span class="kg">${nf(b.stall)} kg</span></div>
       <div class="cell num"><span class="lbl">Total</span><b>${fmtStock(b.total,k,1)}</b><span class="kg">${nf(b.total)} kg</span></div>
@@ -1063,30 +1173,91 @@ function stepper(id, val, cls){
   return `<div class="stepper"><button type="button" data-step="-1" data-for="${id}" aria-label="One less">−</button><input type="number" id="${id}" class="${cls || ''}" min="0" step="1" inputmode="numeric" value="${val}"><button type="button" data-step="1" data-for="${id}" aria-label="One more">+</button></div>`;
 }
 function splitKg(kg, k){ const s = Math.floor(kg / k + 1e-9); return {sacks: s, kg: r3(kg - s * k)}; }
-/* "24 high × 5 in the row" for each pile, plus loose sacks and an open sack → total */
+/* "how high × how many in one row + extra on top" for each pile, plus loose sacks and an open sack → total */
+/* Live picture of one pile. Tall or wide piles are shortened with ⋮ / … so they fit;
+   sacks that were just added drop into place. Empty piles show a faded example. */
+function drawPile(h, w, t, prev){
+  const example = !(h > 0 && w > 0);
+  if (example) { h = 4; w = 5; t = 3; prev = null; }
+  const W = 30, H = 18, G = 4, GAP = 18, L = 78, TOPY = 30;
+  const colSlots = w > 8 ? [0, 1, 2, 3, 4, 5, 'gap', w - 1] : [...Array(w).keys()];
+  const rowSlots = h > 6 ? [h - 1, h - 2, h - 3, 'gap', 1, 0] : [...Array(h).keys()].reverse();
+  const xs = []; let x = L;
+  colSlots.forEach(c => { xs.push(x); x += c === 'gap' ? GAP : W + G; });
+  const right = x - G;
+  const ys = []; let y = TOPY + H + G;
+  rowSlots.forEach(r => { ys.push(y); y += r === 'gap' ? GAP : H + G; });
+  const bottom = y - G;
+  const fresh = !!prev && !(prev.h > 0 && prev.w > 0);   // pile just filled in: every sack drops
+  const grew = (key, now) => fresh || (prev && now > prev[key]);
+  const sack = (sx, sy, top, isNew, i) => `<rect class="${isNew ? 'drop' : ''}" ${isNew ? `style="animation-delay:${Math.min(i, 12) * 35}ms;${top ? 'fill:var(--accent-soft);stroke:var(--accent)' : 'fill:var(--surface-2);stroke:currentColor'}"` : `style="${top ? 'fill:var(--accent-soft);stroke:var(--accent)' : 'fill:var(--surface-2);stroke:currentColor'}"`} x="${sx}" y="${sy}" width="${W}" height="${H}" rx="5" stroke-width="${top ? 2 : 1.5}"/>`;
+  let out = '', n = 0;
+  rowSlots.forEach((r, ri) => {
+    colSlots.forEach((c, ci) => {
+      if (r === 'gap' && c === 'gap') return;
+      if (r === 'gap') { out += `<text x="${xs[ci] + W / 2}" y="${ys[ri] + 14}" text-anchor="middle" style="fill:currentColor;font:700 16px var(--f-body)">⋮</text>`; return; }
+      if (c === 'gap') { out += `<text x="${xs[ci] + GAP / 2 - 2}" y="${ys[ri] + 14}" text-anchor="middle" style="fill:currentColor;font:700 14px var(--f-body)">…</text>`; return; }
+      const isNew = (r === h - 1 && grew('h', h)) || (c === w - 1 && grew('w', w));
+      out += sack(xs[ci], ys[ri], false, isNew, n++);
+    });
+  });
+  // extra sacks on top, left to right over the top row
+  const topSlots = colSlots.map((c, i) => c === 'gap' ? -1 : i).filter(i => i >= 0);
+  const shown = Math.min(t, topSlots.length);
+  for (let i = 0; i < shown; i++) out += sack(xs[topSlots[i]], TOPY, true, fresh || !!(prev && i >= (prev.t || 0)), i);
+  const mid = (ys[0] + bottom) / 2;
+  const lbl = (tx, ty, anchor, text, accent) => `<text x="${tx}" y="${ty}" text-anchor="${anchor}" style="fill:${accent ? 'var(--accent)' : 'currentColor'};font:700 14px var(--f-body)">${text}</text>`;
+  out += `<path d="M${L - 10} ${ys[0]} v${bottom - ys[0]} M${L - 14} ${ys[0]} h8 M${L - 14} ${bottom} h8" stroke="currentColor" stroke-width="2" fill="none"/>`;
+  out += lbl(L - 18, mid + 5, 'end', example ? 'high' : `${nf(h, 0)} high`);
+  out += `<path d="M${L} ${bottom + 10} h${right - L} M${L} ${bottom + 6} v8 M${right} ${bottom + 6} v8" stroke="currentColor" stroke-width="2" fill="none"/>`;
+  out += lbl((L + right) / 2, bottom + 30, 'middle', example ? 'in one row' : `${nf(w, 0)} in one row`);
+  const topRight = shown ? xs[topSlots[shown - 1]] + W + 8 : L;
+  if (t > 0) out += lbl(topRight, TOPY + 14, 'start', example ? '← on top' : `← ${nf(t, 0)} on top`, true);
+  const vbW = Math.max(right, topRight + 100) + 8, vbH = bottom + 40;
+  return `<svg width="${vbW}" height="${vbH}" viewBox="0 0 ${vbW} ${vbH}" role="img" aria-label="${example ? 'Example pile: 4 high, 5 in one row, 3 on top' : `Pile: ${h} high, ${w} in one row, ${t} on top`}">${example ? `<g opacity=".5">${out}</g>${lbl(4, 18, 'start', 'Example')}` : out}</svg>`;
+}
 function openPileCounter(pid, onUse, opts){
   const p = prod(pid); if (!p) return;
   const k = sackKgOf(pid), withKg = !(opts && opts.noKg);
   const root = $('#modal-root-2');
-  root.innerHTML = `<div class="modal-back"><div class="modal" role="dialog" aria-modal="true" aria-label="Count by piles">
+  let seq = 0;
+  root.innerHTML = `<div class="modal-back"><div class="modal pile-modal" role="dialog" aria-modal="true" aria-label="Count by piles">
     <h2>Count by piles</h2>
-    <p class="muted">${esc(p.name)} · ${nf(k)} kg sacks. For each pile, enter how many sacks high it is and how many sacks are in its row.</p>
+    <p class="muted">${esc(p.name)} · ${nf(k)} kg sacks</p>
     <div class="piles" id="pl-list"></div>
-    <div><button type="button" class="btn sm" id="pl-add">${svg('plus')}Add another pile</button></div>
-    <div class="grid2"><div class="field"><label for="pl-extra">Extra loose sacks</label>${stepper('pl-extra', 0)}</div>${withKg ? `<div class="field"><label for="pl-kg">Open sack (kg)</label><input type="number" id="pl-kg" min="0" step="any" inputmode="decimal" value="0"></div>` : ''}</div>
+    <div><button type="button" class="btn" id="pl-add">${svg('plus')}Add another pile</button></div>
+    <div class="grid2"><div class="field"><label for="pl-extra">Loose sacks not in a pile</label>${stepper('pl-extra', 0)}</div>${withKg ? `<div class="field"><label for="pl-kg">Open sack (kg)</label><input type="number" id="pl-kg" min="0" step="any" inputmode="decimal" value="0"></div>` : ''}</div>
     <div class="pile-total" id="pl-total" aria-live="polite"></div>
-    <div class="modal-actions"><button type="button" class="btn" id="pl-cancel">Cancel</button><button type="button" class="btn primary" id="pl-use">Use this count</button></div>
+    <div class="modal-actions"><button type="button" class="btn" id="pl-cancel">Cancel</button><button type="button" class="btn primary big" id="pl-use">Use this count</button></div>
   </div></div>`;
   const back = root.firstElementChild, list = $('#pl-list', back);
-  const addRow = () => {
-    const row = document.createElement('div'); row.className = 'pile';
-    row.innerHTML = `<input type="number" class="pl-h" min="0" step="1" inputmode="numeric" placeholder="24" aria-label="Sacks high"><span>high ×</span><input type="number" class="pl-w" min="0" step="1" inputmode="numeric" placeholder="5" aria-label="Sacks in the row"><span>in the row</span><b class="pl-sum">= 0</b><button type="button" class="btn sm ghost pl-del" aria-label="Remove this pile">✕</button>`;
-    list.appendChild(row); return row;
-  };
   const whole = v => Math.max(0, Math.floor(+v || 0));
+  const addRow = () => {
+    seq++;
+    const row = document.createElement('div'); row.className = 'pile';
+    row.innerHTML = `<div class="pile-head"><b class="pile-name"></b><button type="button" class="btn sm ghost pl-del">✕ Remove</button></div>
+      <div class="pile-pic"></div>
+      <div class="pile-line"><span class="pile-q">How many sacks high?</span>${stepper('pl-h-' + seq, '', 'pl-h')}</div>
+      <div class="pile-line"><span class="pile-q">How many in one row?</span>${stepper('pl-w-' + seq, '', 'pl-w')}</div>
+      <div class="pile-line"><span class="pile-q">Extra sacks on top?</span><div class="pl-tops">${[0, 1, 2, 3, 4].map(v => `<button type="button" class="pl-top${v === 0 ? ' on' : ''}" data-top="${v}" aria-label="${v} on top">${v}</button>`).join('')}<button type="button" class="pl-more">More…</button><input type="number" class="pl-t" min="0" step="1" inputmode="numeric" value="0" aria-label="Extra sacks on top, 5 or more" hidden></div></div>
+      <div class="pl-sum"></div>`;
+    list.appendChild(row); name(); return row;
+  };
+  const name = () => $$('.pile', list).forEach((r, i) => { $('.pile-name', r).textContent = 'Pile ' + (i + 1); });
   const total = () => {
     let s = 0;
-    $$('.pile', list).forEach(row => { const n = whole($('.pl-h', row).value) * whole($('.pl-w', row).value); s += n; $('.pl-sum', row).textContent = '= ' + nf(n, 0); });
+    $$('.pile', list).forEach(row => {
+      const h = whole($('.pl-h', row).value), w = whole($('.pl-w', row).value), t = whole($('.pl-t', row).value), n = h * w + t;
+      s += n;
+      $$('.pl-top', row).forEach(b => b.classList.toggle('on', +b.dataset.top === t));
+      const key = h + 'x' + w + '+' + t;
+      if (row.dataset.drawn !== key) {
+        const prev = row.dataset.drawn ? (([hh, rest]) => { const [ww, tt] = rest.split('+'); return {h: +hh, w: +ww, t: +tt}; })(row.dataset.drawn.split('x')) : null;
+        $('.pile-pic', row).innerHTML = drawPile(h, w, t, prev);
+        row.dataset.drawn = key;
+      }
+      $('.pl-sum', row).textContent = h && w ? `${nf(h, 0)} high × ${nf(w, 0)} in a row${t ? ` + ${nf(t, 0)} on top` : ''} = ${nf(n, 0)} sacks` : (t ? `${nf(t, 0)} on top = ${nf(n, 0)} sacks` : 'Enter how high and how many in a row');
+    });
     s += whole($('#pl-extra', back).value);
     return {sacks: s, kg: withKg ? Math.max(0, r3(+$('#pl-kg', back).value || 0)) : 0};
   };
@@ -1094,13 +1265,20 @@ function openPileCounter(pid, onUse, opts){
   back.addEventListener('input', show);
   back.addEventListener('click', e => {
     if (e.target === back || e.target.closest('#pl-cancel')) { closePile(); return; }
+    const more = e.target.closest('.pl-more');
+    if (more) { const inp = $('.pl-t', more.closest('.pile')); more.hidden = true; inp.hidden = false; inp.value = ''; inp.focus(); show(); return; }
+    const top = e.target.closest('.pl-top');
+    if (top) { $('.pl-t', top.closest('.pile')).value = top.dataset.top; show(); return; }
     const del = e.target.closest('.pl-del');
-    if (del) { const row = del.closest('.pile'); if ($$('.pile', list).length > 1) row.remove(); else { $('.pl-h', row).value = ''; $('.pl-w', row).value = ''; } show(); }
+    if (del) {
+      const row = del.closest('.pile');
+      if ($$('.pile', list).length > 1) row.remove(); else { $('.pl-h', row).value = ''; $('.pl-w', row).value = ''; $('.pl-t', row).value = 0; }
+      name(); show();
+    }
   });
-  $('#pl-add', back).addEventListener('click', () => { const row = addRow(); show(); $('.pl-h', row).focus(); });
+  $('#pl-add', back).addEventListener('click', () => { const row = addRow(); show(); row.scrollIntoView({block: 'nearest'}); $('.pl-h', row).focus(); });
   $('#pl-use', back).addEventListener('click', () => { const t = total(); closePile(); onUse(t.sacks, t.kg); });
   addRow(); show();
-  setTimeout(() => { const i = $('.pl-h', list); if (i) i.focus(); }, 30);
 }
 function closePile(){ $('#modal-root-2').innerHTML = ''; }
 
@@ -1245,7 +1423,7 @@ function updateProducts(){
   if (!list.length) { box.innerHTML = `<div class="panel">${emptyNoProducts()}</div>`; return; }
   box.innerHTML = `<div class="pgrid">${list.map(p => {
     const b = bal(p.id), k = sackKgOf(p.id), low = isLow(p.id);
-    return `<article class="pcard ${low ? 'low' : ''}"><div class="top"><div><h3>${esc(p.name)}</h3><p class="small muted">${esc(supName(p.supplierId) || 'No supplier')} · ${nf(k)} kg sacks</p></div>${p.archived ? '<span class="pill muted">Archived</span>' : low ? '<span class="pill low">LOW STOCK</span>' : ''}</div>
+    return `<article class="pcard ${low ? 'low' : ''}" data-rice="${esc(p.id)}"><div class="top"><div><h3><button type="button" class="vlink" data-rice="${esc(p.id)}">${esc(p.name)}</button></h3><p class="small muted">${esc(supName(p.supplierId) || 'No supplier')} · ${nf(k)} kg sacks</p></div>${p.archived ? '<span class="pill muted">Archived</span>' : low ? '<span class="pill low">LOW STOCK</span>' : ''}</div>
       <div class="stockline num"><span>${locTag('bodega')} ${fmtStock(b.bodega,k,1)}</span><span>${locTag('stall')} ${fmtStock(b.stall,k,1)}</span></div>
       <div class="stockline"><b>Current stock</b><b class="num">${fmtStock(b.total,k)}</b></div>
       <dl><dt>Minimum stock</dt><dd>${+p.minSacks ? sacksTxt(+p.minSacks) : '—'}</dd><dt>Cost per sack</dt><dd>${peso(p.costSack)}</dd><dt>Selling price per sack</dt><dd>${peso(p.priceSack)}</dd><dt>Cost per kg</dt><dd>${peso(costKgOf(p))}</dd><dt>Selling price per kg</dt><dd>${peso(priceKgOf(p))}</dd></dl>
@@ -1603,6 +1781,7 @@ function mountSettings(el){
     <div class="field"><label for="set-staff">Staff names (one per line)</label><textarea id="set-staff" rows="3" placeholder="Owner&#10;Stall staff">${esc(staffList().join('\n'))}</textarea><span class="hint">Shown as “Recorded by” on every form and in the history.</span></div></div>
     <div><button class="btn primary" id="set-go" ${S.canWrite === false ? 'disabled' : ''}>Save</button></div></form></section>
   <section class="panel"><h2 style="margin-bottom:4px">This device</h2>
+    <div class="setting-row"><div><b>Bigger text</b><span class="small muted">Makes all words and numbers larger on this phone or computer.</span></div><button class="btn" id="bigtext-go"></button></div>
     <div class="setting-row"><div><b>Simple mode</b><span class="small muted">For staff phones: two big buttons, Sell and Move to Stall, with large text.</span></div><button class="btn" id="simple-on">Turn on</button></div>
     <div class="setting-row" id="inst-row" hidden><div><b>Install on this phone or computer</b><span class="small muted">Adds Bigasan to your home screen so it opens like an app.</span></div><button class="btn primary" id="inst-go">Install app</button></div>
     <div class="setting-row"><div><b>Signed in</b><span class="small muted" id="acct-email"></span></div><button class="btn" id="acct-out">Sign out</button></div>
@@ -1632,6 +1811,8 @@ function mountSettings(el){
   $('#acct-email').textContent = app.email || '';
   $('#acct-out').addEventListener('click', () => app.signOut && app.signOut());
   $('#simple-on').addEventListener('click', openSimpleSetup);
+  const bt = () => { $('#bigtext-go').textContent = document.documentElement.classList.contains('big-text') ? 'Turn off' : 'Turn on'; };
+  bt(); $('#bigtext-go').addEventListener('click', () => { const on = !document.documentElement.classList.contains('big-text'); document.documentElement.classList.toggle('big-text', on); setPref('bigtext', on ? '1' : '0'); bt(); toast(on ? 'Bigger text is on' : 'Bigger text is off'); });
   const inst = () => { const row = $('#inst-row'); if (row) row.hidden = !app.canInstall; };
   inst(); window.addEventListener('bigasan:installable', inst);
   $('#inst-go').addEventListener('click', async () => { if (await app.install()) toast('Installed. Open Bigasan from your home screen.'); });
@@ -1681,6 +1862,7 @@ function smHome(){
       <button type="button" class="sm-btn sell" data-sm="start-sell">${svg('stock-out', 2.4)}<span><b>SELL</b><small>Take from the ${LOC[c.loc]}</small></span></button>
       <button type="button" class="sm-btn move" data-sm="start-move">${svg('transfer', 2.4)}<span><b>MOVE TO STALL</b><small>From the Bodega to the Stall</small></span></button>
     </div>
+    <button type="button" class="sm-btn2 sm-pl" data-sm="prices">${svg('prices', 2.2)}<span>PRICE LIST</span></button>
     <section class="sm-left"><h2>Left at the ${LOC[c.loc]}</h2>${ps.length ? ps.map(p => { const k = sackKgOf(p.id); return `<div class="sm-stock"><span>${esc(p.name)}</span><span class="sm-stock-v"><b>${fmtTL(bal(p.id)[c.loc], k)}</b>${isLow(p.id) ? '<i class="pill low">LOW</i>' : ''}</span></div>`; }).join('') : '<p class="muted">No rice added yet.</p>'}</section>
     <button type="button" class="sm-exit" data-sm="exit">For the owner: open the full app</button>`;
 }
@@ -1735,8 +1917,8 @@ function smDone(){
 }
 function renderSimple(){
   const box = $('#sm'); if (!box) return;
-  if (SM.view !== 'home' && !prod(SM.pid) && SM.view !== 'pick') SM.view = 'home';
-  box.innerHTML = SM.view === 'pick' ? smPick() : SM.view === 'amount' ? smAmount() : SM.view === 'done' && SM.last ? smDone() : smHome();
+  if (SM.view !== 'home' && SM.view !== 'pick' && SM.view !== 'prices' && !prod(SM.pid)) SM.view = 'home';
+  box.innerHTML = SM.view === 'prices' ? `${smBack('home')}<h1 class="sm-q">Price list</h1>${priceRows(false, false)}` : SM.view === 'pick' ? smPick() : SM.view === 'amount' ? smAmount() : SM.view === 'done' && SM.last ? smDone() : smHome();
   if (SM.view === 'amount') smCalc();
 }
 function smShow(view){ SM.view = view; renderSimple(); try { window.scrollTo(0, 0); } catch(e){} }
@@ -1756,6 +1938,7 @@ function mountSimple(el){
     }
     else if (a === 'price') { SM.editPrice = true; const btn = $('#sm-pr-btn'), inp = $('#sm-pr'); if (btn) btn.hidden = true; if (inp) { inp.hidden = false; inp.value = smUnitPrice(); inp.focus(); inp.select(); } }
     else if (a === 'save') smSave();
+    else if (a === 'prices') smShow('prices');
     else if (a === 'again') { Object.assign(SM, {pid: null, qty: '', price: null, editPrice: false}); smShow('pick'); }
     else if (a === 'undo') smUndo();
     else if (a === 'exit') confirmBox('Open the full app?', '<p>This phone will leave simple mode. This is for the owner.</p>', 'Yes, open it').then(ok => { if (ok) { setSimpleCfg(null); applySimple(); } });
@@ -1817,6 +2000,166 @@ function openSimpleSetup(){
   });
 }
 
+/* ---------- RICE DETAILS: tap any rice to see its stock, change the count, or act on it ---------- */
+function priceOf(p){ const kg = priceKgOf(p); return {kg, sack: +p.priceSack || r2(kg * (+p.sackKg || 25))}; }
+const pesoP = x => '₱' + (+x || 0).toLocaleString('en-PH', {minimumFractionDigits: (+x || 0) % 1 ? 2 : 0, maximumFractionDigits: 2});
+function openRice(pid){
+  const p = prod(pid); if (!p) return;
+  const k = sackKgOf(pid);
+  let touched = false;
+  openModal(`<div class="rd-head"><div><h2>${esc(p.name)}</h2><p class="muted small">${nf(k)} kg sacks${supName(p.supplierId) ? ' · ' + esc(supName(p.supplierId)) : ''}</p></div><span id="rd-pill"></span></div>
+    <div class="rd-tiles" id="rd-tiles"></div>
+    <div class="rd-prices" id="rd-prices"></div>
+    <form id="rd-f" class="rd-count form" novalidate>
+      <h3>Change stock</h3>
+      <div class="field"><span class="lbl">Location</span>${seg('rd-loc', locSegOpts, pref('count.loc', 'bodega'))}</div>
+      <div class="field"><span class="lbl">What is really there</span>
+        <div class="cinputs">${stepper('rd-sacks', 0)}<span class="muted">sacks +</span><input type="number" id="rd-kg" class="c-k" min="0" step="any" inputmode="decimal" value="0" aria-label="Loose kilograms"><span class="muted">kg</span></div>
+        <button type="button" class="link-btn" id="rd-pile">Count by piles (e.g. 24 high × 5)</button></div>
+      <div class="calc" id="rd-calc"></div>
+      <div class="form-err" id="rd-err" role="alert"></div>
+      <button class="btn primary block" id="rd-go" disabled>Save new count</button>
+    </form>
+    <div class="rd-actions">
+      <button type="button" class="btn" data-rd="stock-in">${svg('stock-in')}Stock in</button>
+      <button type="button" class="btn" data-rd="stock-out">${svg('stock-out')}Sell</button>
+      <button type="button" class="btn" data-rd="transfer">${svg('transfer')}Transfer</button>
+      <button type="button" class="btn" data-rd="edit">${svg('products')}Edit prices</button>
+    </div>
+    <div><h3 class="rd-h">Recent movements</h3><div id="rd-feed"></div></div>
+    <div class="modal-actions"><button type="button" class="btn" data-act="close-modal">Close</button></div>`, m => {
+    const f = $('#rd-f', m);
+    const loc = () => segVal(f, 'rd-loc');
+    const counted = () => r3(Math.max(0, Math.floor(+$('#rd-sacks', m).value || 0)) * k + Math.max(0, +$('#rd-kg', m).value || 0));
+    const showCount = () => {
+      const cur = bal(pid)[loc()], d = r3(counted() - cur);
+      $('#rd-calc', m).innerHTML = Math.abs(d) < 0.0005
+        ? `<span>${LOC[loc()]} has <b>${fmtStock(cur, k)}</b>. Change the numbers if the real count is different.</span>`
+        : `<span>New count <b>${fmtStock(counted(), k)}</b></span><span>Difference <b class="${d > 0 ? 'up' : 'down'}">${d > 0 ? '+' : '−'}${fmtStock(Math.abs(d), k)}</b></span>`;
+      $('#rd-go', m).disabled = Math.abs(d) < 0.0005 || S.canWrite === false;
+    };
+    const preset = () => { const s = splitKg(bal(pid)[loc()], k); $('#rd-sacks', m).value = s.sacks; $('#rd-kg', m).value = s.kg; touched = false; showCount(); };
+    const paint = () => {
+      if (!document.body.contains(f)) { if (S.ui.riceRefresh === paint) S.ui.riceRefresh = null; return; }
+      const pp = prod(pid); if (!pp) { closeModal(); return; }
+      const b = bal(pid), pr = priceOf(pp);
+      $('#rd-pill', m).innerHTML = isLow(pid) ? '<span class="pill low">LOW STOCK</span>' : '<span class="pill ok">OK</span>';
+      $('#rd-tiles', m).innerHTML = [['bodega', 'Bodega'], ['stall', 'Stall'], ['total', 'Total']].map(([key, l]) =>
+        `<div class="rd-tile ${key}"><span class="k-label"><i class="dot ${key}"></i>${l}</span><b class="num">${fmtStock(b[key], k)}</b><span class="small muted num">${nf(b[key])} kg</span></div>`).join('');
+      $('#rd-prices', m).innerHTML = `<span>Sells for <b>${pesoP(pr.kg)}</b> a kilo · <b>${pesoP(pr.sack)}</b> a sack</span><span class="muted">Minimum: ${+pp.minSacks ? sacksTxt(+pp.minSacks) : 'not set'}</span>`;
+      const rows = []; for (const t of S.txns) { if (t.productId !== pid) continue; rows.push(...rowsOf(t)); if (rows.length >= 6) break; }
+      $('#rd-feed', m).innerHTML = rows.length ? `<div class="feed">${rows.slice(0, 6).map(feedRow).join('')}</div>` : '<p class="muted small">No movements yet.</p>';
+      if (!touched) preset(); else showCount();
+    };
+    S.ui.riceRefresh = paint;
+    f.addEventListener('input', () => { touched = true; showCount(); });
+    f.addEventListener('change', e => { if (e.target.name === 'rd-loc') { setPref('count.loc', e.target.value); preset(); } });
+    $('#rd-pile', m).addEventListener('click', () => openPileCounter(pid, (s, kg) => { $('#rd-sacks', m).value = s; $('#rd-kg', m).value = kg; touched = true; showCount(); }));
+    f.addEventListener('submit', async e => {
+      e.preventDefault();
+      const err = $('#rd-err', m), btn = $('#rd-go', m); err.textContent = '';
+      if (Math.abs(counted() - bal(pid)[loc()]) < 0.0005) return;
+      btn.disabled = true; btn.textContent = 'Saving…';
+      try {
+        await commit(pid, [{loc: loc(), setTo: counted()}], {type:'adjust', date: today(), reason:'Physical count', unit:'kg', sackKg: k, notes:'', staff: staffList().length ? pref('staff', staffList()[0]) : ''});
+        toast(`${p.name} at ${LOC[loc()]} is now ${fmtStock(counted(), k)}`);
+        touched = false; paint();
+      } catch(e2){ err.textContent = e2 instanceof UserError ? e2.message : explainDbError(e2); }
+      finally { btn.textContent = 'Save new count'; showCount(); }
+    });
+    m.addEventListener('click', e => {
+      const a = e.target.closest('[data-rd]'); if (!a) return;
+      const act = a.dataset.rd; closeModal();
+      if (act === 'stock-in') { S.ui.pendingProd = pid; go('stock-in'); }
+      else if (act === 'stock-out') { setPref('out.prod', pid); go('stock-out'); }
+      else if (act === 'transfer') { setPref('tr.prod', pid); go('transfer'); }
+      else if (act === 'edit') openProduct(pid);
+    });
+    paint();
+  });
+}
+
+/* ---------- PRICE LIST ---------- */
+function priceRows(showCost, clickable){
+  const ps = activeProducts();
+  if (!ps.length) return `<div class="panel"><div class="empty"><p>No rice varieties yet.</p></div></div>`;
+  return `<div class="plist">${ps.map(p => {
+    const k = sackKgOf(p.id), pr = priceOf(p), ck = costKgOf(p), cs = +p.costSack || r2(ck * k);
+    const margin = pr.kg && ck ? (pr.kg - ck) / pr.kg * 100 : null;
+    const upd = p.pricesUpdatedAt ? ' · updated ' + fmtDateShort(localDate(new Date(p.pricesUpdatedAt))) : '';
+    return `<div class="prow"${clickable ? ` data-rice="${esc(p.id)}"` : ''}>
+      <div class="pleft">${clickable ? `<button type="button" class="vlink pname" data-rice="${esc(p.id)}">${esc(p.name)}</button>` : `<div class="pname">${esc(p.name)}</div>`}<div class="psub">${nf(k)} kg sack${upd}</div></div>
+      <div class="pright"><div class="pkg">${pesoP(pr.kg)}<small> / kilo</small></div><div class="psack">${pesoP(pr.sack)} / sack</div></div>
+      ${showCost ? `<div class="pcost">Cost ${pesoP(ck)} / kilo · ${pesoP(cs)} / sack · profit ${pesoP(r2(pr.kg - ck))} a kilo${margin != null ? ` (${nf(margin, 1)}%)` : ''}</div>` : ''}
+    </div>`;
+  }).join('')}</div>`;
+}
+function mountPrices(el){
+  S.ui.priceEdit = false;
+  el.innerHTML = head('Price list', 'Selling prices for every rice.', `<div class="quick"><button type="button" class="btn big" id="pl-board">Show to customers</button><button type="button" class="btn big" id="pl-print">Print</button><button type="button" class="btn primary big" id="pl-edit" ${S.canWrite === false ? 'disabled' : ''}>Edit prices</button></div>`) + readOnlyNotice() +
+    `<label class="small pl-costtoggle"><input type="checkbox" id="pl-cost" ${pref('prices.cost', '0') === '1' ? 'checked' : ''}> Show cost and profit (for the owner)</label><div id="pl-body"></div>`;
+  $('#pl-cost', el).addEventListener('change', e => { setPref('prices.cost', e.target.checked ? '1' : '0'); if (!S.ui.priceEdit) updatePrices(); });
+  $('#pl-edit', el).addEventListener('click', () => { S.ui.priceEdit = true; renderPriceEdit(); });
+  $('#pl-board', el).addEventListener('click', openBoard);
+  $('#pl-print', el).addEventListener('click', printPrices);
+  updatePrices();
+}
+function updatePrices(){ if (S.ui.priceEdit) return; const b = $('#pl-body'); if (b) b.innerHTML = priceRows(pref('prices.cost', '0') === '1', true); }
+function renderPriceEdit(){
+  const b = $('#pl-body'); if (!b) return;
+  const ps = activeProducts();
+  const num = (cls, label, v) => `<label class="field"><span class="lbl">${label}</span><input type="number" class="${cls}" min="0" step="any" inputmode="decimal" value="${v || ''}"></label>`;
+  b.innerHTML = `<form id="pe-f" class="form" novalidate><div class="plist">${ps.map(p => `<div class="prow edit" data-pid="${esc(p.id)}">
+      <div><div class="pname">${esc(p.name)}</div><div class="psub">${nf(sackKgOf(p.id))} kg sack</div></div>
+      <div class="pedit">${num('pe-pk', 'Selling / kilo (₱)', p.priceKg)}${num('pe-ps', 'Selling / sack (₱)', p.priceSack)}${num('pe-ck', 'Cost / kilo (₱)', p.costKg)}${num('pe-cs', 'Cost / sack (₱)', p.costSack)}</div>
+    </div>`).join('')}</div>
+    <div class="form-err" id="pe-err" role="alert"></div>
+    <div class="count-bar"><span id="pe-sum">No changes yet</span><span class="quick"><button type="button" class="btn" id="pe-cancel">Cancel</button><button class="btn primary big" id="pe-go" disabled>Save prices</button></span></div></form>`;
+  const F = ['priceKg', 'priceSack', 'costKg', 'costSack'], C = ['.pe-pk', '.pe-ps', '.pe-ck', '.pe-cs'];
+  const changes = () => $$('#pe-f .prow').map(row => {
+    const p = prod(row.dataset.pid); if (!p) return null;
+    const next = {}; let diff = false;
+    F.forEach((f, i) => { const v = +$(C[i], row).value || 0; next[f] = v; if (v !== (+p[f] || 0)) diff = true; });
+    return diff ? {id: row.dataset.pid, next} : null;
+  }).filter(Boolean);
+  const paint = () => { const n = changes().length; $('#pe-sum').textContent = n ? `${n} ${n === 1 ? 'rice' : 'rices'} changed` : 'No changes yet'; $('#pe-go').disabled = !n; };
+  $('#pe-f').addEventListener('input', e => { const row = e.target.closest('.prow'); if (row) row.classList.toggle('changed', !!changes().find(c => c.id === row.dataset.pid)); paint(); });
+  $('#pe-cancel').addEventListener('click', () => { S.ui.priceEdit = false; updatePrices(); });
+  $('#pe-f').addEventListener('submit', async e => {
+    e.preventDefault();
+    const list = changes(); if (!list.length) return;
+    const btn = $('#pe-go'); btn.disabled = true; btn.textContent = 'Saving…';
+    let done = 0;
+    try {
+      for (const c of list) { await withRetry(() => S.db.collection('products').doc(c.id).update(Object.assign({}, c.next, {pricesUpdatedAt: new Date().toISOString()}))); done++; }
+      toast(`Saved new prices for ${done} ${done === 1 ? 'rice' : 'rices'}`);
+      S.ui.priceEdit = false; updatePrices();
+    } catch(e2){ $('#pe-err').textContent = (done ? `Saved ${done}, then stopped. ` : '') + explainDbError(e2); btn.disabled = false; btn.textContent = 'Save prices'; }
+  });
+}
+/* full-screen board to show customers at the stall */
+function openBoard(){
+  const ps = activeProducts();
+  const el = document.createElement('div');
+  el.className = 'board'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', 'Price list for customers');
+  el.innerHTML = `<button type="button" class="bclose">✕ Close</button>
+    <h1>${esc(bizName())}</h1><p class="bdate">Rice prices · ${esc(new Date().toLocaleDateString('en-PH', {month:'long', day:'numeric', year:'numeric'}))}</p>
+    ${ps.map(p => { const pr = priceOf(p); return `<div class="brow"><div class="bname">${esc(p.name)}</div><div class="bprice">${pesoP(pr.kg)}<small> / kilo</small></div><div class="bsack">${pesoP(pr.sack)} per ${nf(sackKgOf(p.id))} kg sack</div></div>`; }).join('')}`;
+  document.body.appendChild(el);
+  const onKey = e => { if (e.key === 'Escape') close(); };
+  const close = () => { el.remove(); document.removeEventListener('keydown', onKey); try { if (document.fullscreenElement) document.exitFullscreen(); } catch(e){} };
+  el.querySelector('.bclose').addEventListener('click', close);
+  document.addEventListener('keydown', onKey);
+  try { const r = el.requestFullscreen && el.requestFullscreen(); if (r && r.catch) r.catch(() => {}); } catch(e){}
+}
+function printPrices(){
+  let a = document.getElementById('print-area');
+  if (!a) { a = document.createElement('div'); a.id = 'print-area'; document.body.appendChild(a); }
+  a.innerHTML = `<h1>${esc(bizName())}: rice prices</h1><p>${esc(new Date().toLocaleDateString('en-PH', {month:'long', day:'numeric', year:'numeric'}))}</p>
+    <table><thead><tr><th>Rice</th><th class="r">Per kilo</th><th class="r">Per sack</th></tr></thead><tbody>${activeProducts().map(p => { const pr = priceOf(p); return `<tr><td>${esc(p.name)}</td><td class="r">${pesoP(pr.kg)}</td><td class="r">${pesoP(pr.sack)} (${nf(sackKgOf(p.id))} kg)</td></tr>`; }).join('')}</tbody></table>`;
+  try { window.print(); } catch(e){ toast('Printing is not available on this device.', 'err'); }
+}
+
 /* ---------- page table ---------- */
 const PAGES = {
   dashboard:{mount: mountDashboard, update: updateDashboard},
@@ -1829,6 +2172,7 @@ const PAGES = {
   suppliers:{mount: mountSuppliers, update: updateSuppliers},
   reports:{mount: mountReports, update: () => { if (S.ui.rep.tab === 'inventory') runReport(); else updateReports(); }},
   settings:{mount: mountSettings},
+  prices:{mount: mountPrices, update: updatePrices},
   simple:{mount: mountSimple, update: updateSimple}
 };
 
@@ -1847,6 +2191,8 @@ document.addEventListener('click', e => {
     if (inp) { inp.value = Math.max(0, Math.round(+inp.value || 0) + (+st.dataset.step)); inp.dispatchEvent(new Event('input', {bubbles: true})); }
     return;
   }
+  const rc = e.target.closest('[data-rice]');
+  if (rc && !S.ui.priceEdit && (e.target.closest('.vlink, .qtile') || !e.target.closest('button, a, input, select, label, textarea, [data-act]'))) { openRice(rc.dataset.rice); return; }
   const pf = e.target.closest('[data-pile-for]');
   if (pf) {
     const pre = pf.dataset.pileFor, sel = $('#' + pre + '-prod'), pid = sel && sel.value;
@@ -1878,6 +2224,7 @@ document.addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { if ($('#modal-root-2').innerHTML) closePile(); else if ($('#modal-root').innerHTML) closeModal(); else closeSheet(); } });
 window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (h && h !== S.page && PAGES[h]) go(h); });
 
+if (pref('bigtext', '0') === '1') document.documentElement.classList.add('big-text');
 const start = location.hash.slice(1);
 if (PAGES[start] && start !== 'simple') S.page = start;
 if (simpleCfg()) { S.page = 'simple'; document.body.classList.add('simple'); }
