@@ -240,6 +240,61 @@ input[readonly]{background:var(--surface-2)}
 .form-err{color:var(--danger);font-weight:700;background:var(--danger-soft);border-radius:var(--r-sm);padding:12px 14px}
 .form-err:empty{display:none}
 .side-note{display:flex;flex-direction:column;gap:12px}
+/* receipts */
+.rc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+@media (max-width:520px){.rc-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
+.rc-card{display:flex;flex-direction:column;padding:0;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--fg);overflow:hidden;cursor:pointer;text-align:left;min-width:0}
+.rc-card:hover{border-color:var(--accent)}
+.rc-card img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;background:var(--surface-2)}
+.rc-meta{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 12px;font-size:.88rem;min-width:0}
+.rc-meta .rc-sup{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.rc-amt{font-weight:700}
+.rc-sum{margin-bottom:10px}
+.rc-empty svg{width:42px;height:42px;color:var(--muted)}
+.rc-preview{display:flex;flex-direction:column;align-items:center;gap:4px}
+.rc-preview img{max-width:100%;max-height:44vh;border-radius:var(--r-sm);border:1px solid var(--line)}
+.rc-view{display:flex;flex-direction:column;gap:14px}
+.rc-img{display:flex;justify-content:center;max-height:62vh;overflow:auto;border-radius:var(--r-sm);background:var(--surface-2)}
+.rc-img img{display:block;max-width:100%;height:auto}
+.rc-img img.loading-img{filter:blur(3px)}
+.rc-dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 16px;margin:0}
+.rc-dl dt{color:var(--muted)} .rc-dl dd{margin:0}
+.rc-attach{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.rc-attach img{width:56px;height:72px;object-fit:cover;border-radius:6px;border:1px solid var(--line);vertical-align:middle;margin-right:6px}
+.btn.is-off{opacity:.55;pointer-events:none}
+/* price outlook */
+.ol-now{border:2px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-bottom:14px;display:flex;flex-direction:column;gap:6px}
+.ol-now.ok{background:var(--ok-soft);border-color:var(--ok)}
+.ol-now.warn{background:var(--warn-soft);border-color:var(--warn)}
+.ol-now.low{background:var(--danger-soft);border-color:var(--danger)}
+.ol-now-k{font-size:.78rem;letter-spacing:.07em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.ol-now-v{font-family:var(--f-display);font-size:clamp(1.5rem,1.2rem + 1.4vw,2.1rem);font-weight:700;display:flex;align-items:center;gap:12px;line-height:1.15}
+.ol-now.ok .ol-now-v{color:var(--ok)} .ol-now.warn .ol-now-v{color:var(--warn)} .ol-now.low .ol-now-v{color:var(--danger)}
+.ol-now p{max-width:70ch;font-size:1.05rem}
+.ol-icon{width:42px;height:42px;flex:none;border-radius:50%;border:3px solid currentColor;display:grid;place-items:center;font-size:1.4rem}
+.ol-kind{margin-top:4px}
+.ol-seasons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}
+@media (max-width:1150px){.ol-seasons{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.ol-seasons{grid-template-columns:minmax(0,1fr)}}
+.ol-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.ol-card-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;flex-wrap:wrap}
+.ol-price{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:var(--r-sm);background:var(--surface-2)}
+.ol-price b{font-family:var(--f-display);font-size:1.35rem;font-variant-numeric:tabular-nums}
+.ol-tip{font-weight:700}
+.ol-chart-panel{margin-bottom:18px}
+.ol-chart{position:relative}
+.ol-chart svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.ol-tip-box{position:absolute;background:var(--fg);color:var(--bg);padding:8px 10px;border-radius:8px;font-size:.85rem;pointer-events:none;max-width:180px;line-height:1.35}
+.ol-cal{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:6px;margin-bottom:10px}
+@media (max-width:860px){.ol-cal{grid-template-columns:repeat(6,minmax(0,1fr))}}
+@media (max-width:420px){.ol-cal{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.ol-m{border:1px solid var(--line);border-radius:var(--r-sm);padding:8px 4px;text-align:center;display:flex;flex-direction:column;gap:2px;min-width:0}
+.ol-m.cheap{background:var(--ok-soft)} .ol-m.dear{background:var(--warn-soft)}
+.ol-m small{font-size:.68rem;color:var(--muted);line-height:1.2}
+.ol-risks{margin-bottom:18px}
+.ol-risks ul{margin:8px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.ol-src{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px;font-size:.92rem}
+.ol-how{display:flex;flex-direction:column;gap:8px;margin-top:8px;max-width:75ch}
 /* tappable rice + rice details */
 .vlink{background:none;border:0;padding:0;font:inherit;font-weight:700;color:inherit;text-align:left;cursor:pointer;min-height:32px}
 .vlink::after{content:" ›";color:var(--accent);font-weight:700}
@@ -499,6 +554,10 @@ const ICON = {
   'stock-in':'<path d="M12 3v11m-4.5-4.5L12 14l4.5-4.5M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/>',
   'stock-out':'<path d="M12 14V3M7.5 7.5 12 3l4.5 4.5M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/>',
   transfer:'<path d="M4 8h15m-4-4 4 4-4 4M20 16H5m4-4-4 4 4 4"/>',
+  receipts:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+  camera:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+  image:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m21 16-5-5-8 8"/>',
+  outlook:'<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
   prices:'<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/>',
   count:'<path d="M9 3h6v3H9z"/><path d="M15 4.5h2a2 2 0 0 1 2 2V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2h2"/><path d="m9 13.5 2 2 4-4"/>',
   products:'<path d="M3 12V4h8l9.5 9.5-8 8z"/><circle cx="7.5" cy="8.5" r="1.4"/>',
@@ -669,10 +728,10 @@ async function boot(){
   renderNav(); renderTabbar();
   const c = window.claude;
   if (!c || typeof c.use !== 'function') { S.status = 'nodb'; mountPage(); return; }
-  const [db, user, downloads] = await Promise.all([
-    c.use('db').catch(() => null), c.use('user').catch(() => null), c.use('downloads').catch(() => null)
+  const [db, user, downloads, files] = await Promise.all([
+    c.use('db').catch(() => null), c.use('user').catch(() => null), c.use('downloads').catch(() => null), c.use('files').catch(() => null)
   ]);
-  S.db = db; S.user = user; S.downloads = downloads;
+  S.db = db; S.user = user; S.downloads = downloads; S.files = files;
   if (!db) { S.status = 'nodb'; mountPage(); return; }
   if (user) {
     try { S.uid = await user.id(); } catch(e){}
@@ -709,7 +768,7 @@ function onData(){
 /* ---------- navigation ---------- */
 const NAV = [
   ['dashboard','Dashboard'],['inventory','Inventory'],['stock-in','Stock In'],['stock-out','Stock Out'],['transfer','Transfer'],['count','Count stock'],
-  ['products','Products'],['prices','Price list'],['suppliers','Suppliers'],['reports','Reports'],['settings','Settings']
+  ['products','Products'],['prices','Price list'],['outlook','Price outlook'],['suppliers','Suppliers'],['receipts','Receipts'],['reports','Reports'],['settings','Settings']
 ];
 function lowCount(){ return activeProducts().filter(p => isLow(p.id)).length; }
 function renderNav(){
@@ -956,6 +1015,7 @@ function mountStockIn(el){
       <div class="field"><label for="in-ref">Reference / receipt no.</label><input id="in-ref" autocomplete="off" placeholder="e.g. DR-10482"></div>
       <div class="field" id="in-sack-w"><label for="in-sack">Sack size (kg)</label><input type="number" id="in-sack" min="1" step="any" inputmode="decimal"><span class="hint">Only change this if the delivery came in a different sack size.</span></div>
       ${staffField('in-staff')}
+      <div class="field full"><span class="lbl">Receipt photo</span><div class="rc-attach" id="in-photo-box"><label class="btn${S.files ? '' : ' is-off'}">${svg('camera')}Add receipt photo<input type="file" id="in-photo" accept="image/*" capture="environment" hidden></label><span class="small muted" id="in-photo-st">Optional. Saved with this delivery.</span></div></div>
       <div class="field full"><label for="in-notes">Notes</label><textarea id="in-notes" rows="2" placeholder="Optional"></textarea></div>`)}
     <div class="calc" id="in-calc"></div>
     <div class="form-err" id="in-err" role="alert"></div>
@@ -980,6 +1040,15 @@ function mountStockIn(el){
   f.addEventListener('input', calcIn);
   f.addEventListener('submit', e => { e.preventDefault(); submitIn(); });
   applyDefaults(); moreSum('in');
+  S.ui.inPhoto = null;
+  const photoIdle = () => { const st = $('#in-photo-st'); if (st) st.textContent = 'Optional. Saved with this delivery.'; };
+  $('#in-photo').addEventListener('change', async e => {
+    const file = e.target.files && e.target.files[0]; e.target.value = ''; if (!file) return;
+    const st = $('#in-photo-st'); st.textContent = 'Getting the photo ready…';
+    try { S.ui.inPhoto = await prepPhoto(file); st.innerHTML = `<img src="${S.ui.inPhoto.preview}" alt="Receipt photo">Ready. It uploads when you tap Add to stock. <button type="button" class="link-btn" id="in-photo-x">Remove</button>`; }
+    catch(_){ S.ui.inPhoto = null; st.textContent = 'This photo could not be read. Try taking it again.'; }
+  });
+  $('#in-photo-box').addEventListener('click', e => { if (e.target.closest('#in-photo-x')) { S.ui.inPhoto = null; photoIdle(); } });
 }
 function readIn(){
   const f = $('#f-in'); const pid = $('#in-prod').value; const p = prod(pid);
@@ -1001,9 +1070,15 @@ async function submitIn(){
   if (v.unit === 'sack' && !(v.skg > 0)) return err.textContent = 'Enter the sack size in kg.';
   const btn = $('#in-go'); btn.disabled = true; btn.textContent = 'Saving…';
   try {
-    await commit(v.pid, [{loc: v.loc, kg: v.kg}], {type:'in', date: v.date, unit: v.unit, qty: v.qty, sackKg: v.unit === 'sack' ? v.skg : +v.p.sackKg, unitCost: v.cost, amount: v.amount,
+    const txn = await commit(v.pid, [{loc: v.loc, kg: v.kg}], {type:'in', date: v.date, unit: v.unit, qty: v.qty, sackKg: v.unit === 'sack' ? v.skg : +v.p.sackKg, unitCost: v.cost, amount: v.amount,
       supplierId: $('#in-sup').value || null, ref: $('#in-ref').value.trim(), notes: $('#in-notes').value.trim(), staff: $('#in-staff') ? $('#in-staff').value : ''});
     toast(`Added ${v.unit === 'kg' ? nf(v.qty) + ' kg' : sacksTxt(v.qty)} of ${v.p.name} to ${LOC[v.loc]}`);
+    if (S.ui.inPhoto) {
+      const photo = S.ui.inPhoto, meta = {date: v.date, supplierId: $('#in-sup').value || null, amount: v.amount, ref: $('#in-ref').value.trim(), txnId: txn && txn.id};
+      S.ui.inPhoto = null; const st = $('#in-photo-st'); if (st) st.textContent = 'Uploading receipt…';
+      saveReceipt(photo, meta).then(() => { toast('Delivery and receipt saved'); const s2 = $('#in-photo-st'); if (s2) s2.textContent = 'Optional. Saved with this delivery.'; },
+        e2 => { toast('Delivery saved, but the receipt photo did not upload. ' + receiptErr(e2), 'err'); const s2 = $('#in-photo-st'); if (s2) s2.textContent = 'Optional. Saved with this delivery.'; });
+    }
     ['in-qty','in-ref','in-notes'].forEach(id => $('#' + id).value = ''); calcIn();
   } catch(e){ err.textContent = e instanceof StockError ? insufficientMsg(e.avail, v.unit, sackKgOf(v.pid)) : explainDbError(e); }
   finally { btn.disabled = S.canWrite === false; btn.textContent = 'Add to stock'; }
@@ -2160,6 +2235,293 @@ function printPrices(){
   try { window.print(); } catch(e){ toast('Printing is not available on this device.', 'err'); }
 }
 
+/* ---------- PRICE OUTLOOK: seasonal forecast from official prices + current weather/policy evidence ---------- */
+/* Research snapshot. Refresh monthly when the PSA releases new prices. */
+const OUTLOOK = {
+  asOf: '2026-10-09',
+  // PSA OpenSTAT, national wholesale selling price, ₱/kg (table 0052M4AWB01)
+  hist: {"rmr":[["2024-01",46.86],["2024-02",47.69],["2024-03",47.49],["2024-04",47.09],["2024-05",47],["2024-06",46.71],["2024-07",46.5],["2024-08",46.34],["2024-09",45.62],["2024-10",44.79],["2024-11",43.89],["2024-12",43.6],["2025-01",42.74],["2025-02",41.32],["2025-03",39.86],["2025-04",38.33],["2025-05",37.13],["2025-06",36.5],["2025-07",35.44],["2025-08",35.23],["2025-09",35.14],["2025-10",34.93],["2025-11",36.02],["2025-12",38.1],["2026-01",39.78],["2026-02",41.62],["2026-03",45.36],["2026-04",47.46],["2026-05",46.1],["2026-06",45.25],["2026-07",45.11],["2026-08",45.68],["2026-09",45.45]],"wmr":[["2024-01",50.07],["2024-02",50.73],["2024-03",50.86],["2024-04",50.5],["2024-05",50.54],["2024-06",50.37],["2024-07",50.08],["2024-08",49.84],["2024-09",49.25],["2024-10",48.47],["2024-11",47.75],["2024-12",47.57],["2025-01",46.91],["2025-02",45.79],["2025-03",44.46],["2025-04",42.94],["2025-05",41.62],["2025-06",40.97],["2025-07",40.05],["2025-08",39.69],["2025-09",39.61],["2025-10",39.47],["2025-11",40.42],["2025-12",42.89],["2026-01",44.98],["2026-02",47.23],["2026-03",50.57],["2026-04",52],["2026-05",50.18],["2026-06",49.27],["2026-07",49.07],["2026-08",49.41],["2026-09",49.08]]},
+  // latest national retail averages, ₱/kg (PSA price situationer, September 2026)
+  retail: {rmr: 49.96, wmr: 56.07},
+  // typical month vs. its 12-month average, %, median of 2010-2025 (PSA wholesale RMR); share of years the price rose that month
+  season: [[-1.15, 53], [-1.21, 47], [-1.22, 53], [-1.01, 80], [-0.38, 73], [0.24, 67], [0.40, 75], [1.37, 63], [0.45, 31], [-0.65, 6], [-0.89, 38], [-0.75, 56]],
+  // change from September, % — low = median of 2010-2025, high = average of the usual high (75th percentile) and the last strong El Niño (2023-24)
+  periods: [
+    {id: 'harvest', name: 'Main harvest', months: 'Oct – Dec 2026', end: '2026-12',
+     rmr: [-1.0, 3.5], wmr: [-1.1, 2.6], advice: 'stock', confidence: 'Medium',
+     usual: 'The wet-season harvest arrives. October prices fell in 15 of the last 16 years; Sept → Dec usually ends about 1% lower.',
+     thisYear: 'Monsoon damage cut part of this harvest and world prices are rising, so a big drop is unlikely this year.',
+     tip: 'Likely the cheapest stretch of the next 12 months. Stock up moderately: enough for about 2–3 months, not more.'},
+    {id: 'dry', name: 'Dry-season growing', months: 'Jan – Mar 2027', end: '2027-03',
+     rmr: [0.5, 7.1], wmr: [-0.1, 6.1], advice: 'need', confidence: 'Low–medium',
+     usual: 'Usually the cheapest months of the year, but only by about 1%.',
+     thisYear: 'PAGASA expects a very strong El Niño through mid-2027, and the DA expects farm output to shrink through March. In the 2023–24 El Niño, prices rose about 10% by March.',
+     tip: 'Use the stock you bought in Nov–Dec. Buy as needed; don’t wait for prices to fall.'},
+    {id: 'dryharvest', name: 'Dry-season harvest', months: 'Apr – Jun 2027', end: '2027-06',
+     rmr: [2.9, 7.8], wmr: [1.7, 6.8], advice: 'hold', confidence: 'Low',
+     usual: 'A smaller harvest. Prices start rising from April (up in 80% of years).',
+     thisYear: 'El Niño may shrink this harvest. Imports (tariff is at the 15% floor) usually cap how far prices go.',
+     tip: 'Avoid big orders unless prices dip after the harvest. Buy what you need for 3–4 weeks.'},
+    {id: 'lean', name: 'Lean months', months: 'Jul – Sep 2027', end: '2027-09',
+     rmr: [3.0, 9.1], wmr: [1.7, 8.3], advice: 'hold', confidence: 'Low',
+     usual: 'Supply is tightest and prices peak, highest in August.',
+     thisYear: 'After an El Niño year, the lean months can start early and run long.',
+     tip: 'Have stock bought in May–June. Avoid buying large amounts at lean-season prices.'}
+  ],
+  ups: ['El Niño turns out stronger than expected (dry spells in Jan–May)', 'Typhoons damage the remaining harvest', 'Weaker peso or higher freight costs (DA blames both for 2026 increases)', 'World rice prices keep rising (FAO rice index +1.4% in September)'],
+  downs: ['Large government imports or a lower import tariff', 'A normal dry-season harvest if El Niño is milder (DA says it may be less severe)', 'Government price controls (suggested retail prices) on imported rice'],
+  sources: [
+    ['PSA OpenSTAT: Wholesale selling prices of cereals, 2010–Sep 2026', 'https://openstat.psa.gov.ph/PXWeb/pxweb/en/DB/DB__2M__NWSNEW/0052M4AWB01.px/'],
+    ['PSA: Price situationer of selected agricultural commodities', 'https://psa.gov.ph/statistics/price-situationer/selected-agri-commodities/index'],
+    ['SunStar (Sept 2026): Regular rice nears ₱50, +24% year on year', 'https://www.sunstar.com.ph/cebu/psa-sept-1-5-food-prices-mixed'],
+    ['Manila Times (Oct 9, 2026): Farm output to shrink through early 2027 – DA', 'https://www.manilatimes.net/2026/10/09/business/top-business/farm-output-to-shrink-through-early-2027-da/2442099'],
+    ['GMA (2026): Very strong El Niño likely Oct 2026 – Jan 2027 – PAGASA', 'https://www.gmanetwork.com/news/weather/content/996484/very-strong-el-ni-o-likely-from-october-2026-to-january-2027-pagasa/story/'],
+    ['Manila Bulletin (May 2026): Strong El Niño may cut rice output by 700,000 MT', 'https://mb.com.ph/2026/05/28/strong-el-nino-may-slash-philippine-rice-output-by-700000-mt'],
+    ['USDA FAS (Feb 2026): Quarterly rice import tariff based on world prices', 'https://www.fas.usda.gov/data/gain/2026/02/philippines-philippines-implements-quarterly-rice-import-tariff-adjustment-based-international'],
+    ['BusinessMirror (Sept 2026): Rice tariff remains at 15%', 'https://businessmirror.com.ph/2026/09/09/phl-rice-tariff-scheme-transparent-predictable/'],
+    ['FAO Food Price Index (Sept 2026): rice prices up 1.4%', 'https://www.fao.org/worldfoodsituation/foodpricesindex/en/']
+  ]
+};
+const ADVICE = {
+  stock: {label: 'Good time to stock up', cls: 'ok', icon: '↓'},
+  need: {label: 'Buy only what you need', cls: 'warn', icon: '→'},
+  hold: {label: 'Avoid big orders', cls: 'low', icon: '↑'}
+};
+const pct = x => (x > 0 ? '+' : x < 0 ? '−' : '') + nf(Math.abs(x), 1) + '%';
+const rng = (base, r) => `${pesoP(r2(base * (1 + r[0] / 100)))} – ${pesoP(r2(base * (1 + r[1] / 100)))}`;
+function mountOutlook(el){
+  S.ui.olKind = S.ui.olKind || 'rmr';
+  const asOf = parseD(OUTLOOK.asOf).toLocaleDateString('en-PH', {month:'long', day:'numeric', year:'numeric'});
+  const now = OUTLOOK.periods[0], adv = ADVICE[now.advice];
+  el.innerHTML = head('Rice price outlook', `What rice prices will likely do in each season, based on official prices and the latest weather and policy news. Updated ${esc(asOf)}.`) +
+  `<section class="ol-now ${adv.cls}"><div class="ol-now-k">Right now · ${esc(now.months)}</div><div class="ol-now-v"><span class="ol-icon" aria-hidden="true">${adv.icon}</span>${adv.label}</div><p>${esc(now.tip)}</p></section>
+  <div class="tabs ol-kind" role="tablist">${[['rmr', 'Regular milled'], ['wmr', 'Well-milled']].map(([k, l]) => `<button role="tab" data-olk="${k}" aria-selected="${S.ui.olKind === k}">${l}</button>`).join('')}</div>
+  <div id="ol-body"></div>`;
+  el.addEventListener('click', e => { const b = e.target.closest('[data-olk]'); if (!b) return; S.ui.olKind = b.dataset.olk; $$('[data-olk]', el).forEach(x => x.setAttribute('aria-selected', x === b)); renderOutlook(); });
+  renderOutlook();
+}
+function renderOutlook(){
+  const box = $('#ol-body'); if (!box) return;
+  const kind = S.ui.olKind, retail = OUTLOOK.retail[kind], hist = OUTLOOK.hist[kind], base = hist[hist.length - 1][1];
+  const kname = kind === 'rmr' ? 'regular milled' : 'well-milled';
+  const ps = activeProducts();
+  box.innerHTML = `
+  <section class="ol-seasons">${OUTLOOK.periods.map(p => { const a = ADVICE[p.advice], r = p[kind]; return `<article class="ol-card">
+      <div class="ol-card-top"><div><h3>${esc(p.name)}</h3><p class="muted small">${esc(p.months)}</p></div><span class="pill ${a.cls}">${a.icon} ${a.label}</span></div>
+      <div class="ol-price"><span class="muted small">Likely ${kname} retail price</span><b>${rng(retail, r)}</b><span class="small muted">a kilo · ${pct(r[0])} to ${pct(r[1])} vs. September</span></div>
+      <p class="small"><b>Usually:</b> ${esc(p.usual)}</p>
+      <p class="small"><b>This year:</b> ${esc(p.thisYear)}</p>
+      <p class="ol-tip">${esc(p.tip)}</p>
+      <p class="small muted">Confidence: ${esc(p.confidence)}</p>
+    </article>`; }).join('')}</section>
+  <section class="panel ol-chart-panel"><div class="panel-head"><h2>National ${kname} rice price, ₱ per kilo (wholesale)</h2><span class="small muted">Shaded = likely range ahead</span></div>
+    <div class="ol-chart" id="ol-chart"></div>
+    <p class="small muted">Wholesale is what stores like yours pay; retail is usually ₱4–7 higher. Source: PSA, national averages.</p></section>
+  ${ps.length ? `<section class="panel"><div class="panel-head"><h2>Your rice: possible prices ahead</h2><span class="small muted">Your current price per kilo, moved by the same ranges</span></div>
+    <div class="tablewrap"><table class="t rt"><thead><tr><th>Rice</th><th class="r">Now</th>${OUTLOOK.periods.map(p => `<th class="r">${esc(p.months.replace(' 2026', '').replace(' 2027', ''))}</th>`).join('')}</tr></thead><tbody>${ps.map(p => {
+      const k = /well|premium|special|jasmine|dinorado|malagkit|sinandomeng/i.test(p.name) ? 'wmr' : 'rmr', sell = priceOf(p).kg, cost = costKgOf(p);
+      return `<tr><td data-l="Rice"><b>${esc(p.name)}</b><div class="small muted">follows ${k === 'wmr' ? 'well-milled' : 'regular milled'}</div></td><td data-l="Now" class="r num">${pesoP(sell)}<div class="small muted">cost ${pesoP(cost)}</div></td>${OUTLOOK.periods.map(per => `<td data-l="${esc(per.months)}" class="r num">${rng(sell, per[k])}<div class="small muted">cost ${rng(cost, per[k])}</div></td>`).join('')}</tr>`;
+    }).join('')}</tbody></table></div></section>` : ''}
+  <section class="panel"><div class="panel-head"><h2>The usual yearly pattern</h2><span class="small muted">Median of 2010–2025, regular milled</span></div>
+    <div class="ol-cal">${OUTLOOK.season.map(([v, up], i) => `<div class="ol-m ${v < -0.5 ? 'cheap' : v > 0.5 ? 'dear' : ''}"><b>${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][i]}</b><span class="num">${pct(v)}</span><small>rose in ${up}% of years</small></div>`).join('')}</div>
+    <p class="small muted">Season alone moves prices only 1–2%. The big jumps come from weather and government decisions: −19% in 2024–25 after the import tariff was cut, +30% in 2025–26 after the import ban.</p></section>
+  <div class="grid2 ol-risks"><section class="panel"><h2>Could push prices up</h2><ul>${OUTLOOK.ups.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
+    <section class="panel"><h2>Could bring prices down</h2><ul>${OUTLOOK.downs.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section></div>
+  <section class="panel"><details class="more"><summary>How this is worked out</summary>
+    <div class="ol-how"><p>1. Starting point: the latest official national prices (September 2026: wholesale ₱${nf(base)} a kilo; retail ₱${nf(retail)}).</p>
+    <p>2. Low end of each range: what usually happened from September to that season in 2010–2025 (the middle year of 16).</p>
+    <p>3. High end: the average of a usual high year (75th percentile) and the last strong El Niño (2023–24), because PAGASA expects a very strong El Niño through mid-2027.</p>
+    <p>4. Advice compares the seasons: buy when the coming months look higher than now, and avoid big orders when prices are likely at their peak.</p>
+    <p class="muted">These are estimates, not promises. Prices in your area can differ from national averages. Large imports, typhoons or new government rules can move prices faster than any season.</p></div></details></section>
+  <section class="panel"><h2 style="margin-bottom:8px">Sources</h2><ol class="ol-src">${OUTLOOK.sources.map(([t, u]) => `<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a></li>`).join('')}</ol></section>`;
+  drawOutlookChart(kind);
+}
+function drawOutlookChart(kind){
+  const box = $('#ol-chart'); if (!box) return;
+  const hist = OUTLOOK.hist[kind], base = hist[hist.length - 1][1];
+  const fc = OUTLOOK.periods.map(p => ({k: p.end, lo: base * (1 + p[kind][0] / 100), hi: base * (1 + p[kind][1] / 100)}));
+  const months = [...hist.map(h => h[0])];
+  for (const f of fc) { let [y, m] = months[months.length - 1].split('-').map(Number); while (`${y}-${String(m).padStart(2, '0')}` < f.k) { m++; if (m > 12) { m = 1; y++; } months.push(`${y}-${String(m).padStart(2, '0')}`); } }
+  const W = 760, H = 280, L = 44, R = 14, T = 16, B = 34;
+  const all = [...hist.map(h => h[1]), ...fc.map(f => f.lo), ...fc.map(f => f.hi)];
+  const lo = Math.floor((Math.min(...all) - 1) / 5) * 5, hi = Math.ceil((Math.max(...all) + 1) / 5) * 5;
+  const x = i => L + i * (W - L - R) / (months.length - 1), y = v => T + (hi - v) * (H - T - B) / (hi - lo);
+  const iOf = k => months.indexOf(k);
+  const band = [[hist.length - 1, base, base], ...fc.map(f => [iOf(f.k), f.lo, f.hi])];
+  const area = 'M' + band.map(b => `${x(b[0]).toFixed(1)},${y(b[2]).toFixed(1)}`).join(' L') + ' L' + band.slice().reverse().map(b => `${x(b[0]).toFixed(1)},${y(b[1]).toFixed(1)}`).join(' L') + 'Z';
+  const mid = band.map(b => `${x(b[0]).toFixed(1)},${y((b[1] + b[2]) / 2).toFixed(1)}`).join(' L');
+  const line = hist.map((h, i) => `${x(i).toFixed(1)},${y(h[1]).toFixed(1)}`).join(' L');
+  let grid = '';
+  for (let v = lo; v <= hi; v += 5) grid += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" style="stroke:var(--line)" stroke-width="1"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end" style="fill:var(--muted);font:12px var(--f-body)">₱${v}</text>`;
+  months.forEach((mk, i) => { if (mk.endsWith('-01') || i === months.length - 1) grid += `<text x="${x(i)}" y="${H - 12}" text-anchor="${i === months.length - 1 ? 'end' : 'middle'}" style="fill:var(--muted);font:12px var(--f-body)">${mk.endsWith('-01') ? mk.slice(0, 4) : parseD(mk + '-01').toLocaleDateString('en-PH', {month:'short'}) + ' ’' + mk.slice(2, 4)}</text>`; });
+  const today = x(hist.length - 1);
+  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Price from January 2024 to September 2026 with the likely range to September 2027">
+    ${grid}
+    <line x1="${today}" x2="${today}" y1="${T}" y2="${H - B}" style="stroke:var(--muted)" stroke-dasharray="3 4"/>
+    <text x="${today + 6}" y="${T + 12}" style="fill:var(--muted);font:600 12px var(--f-body)">Today</text>
+    <path d="${area}" style="fill:var(--accent-soft)"/>
+    <path d="M${mid}" style="stroke:var(--accent);fill:none" stroke-width="2" stroke-dasharray="6 5"/>
+    <path d="M${line}" style="stroke:var(--accent);fill:none" stroke-width="2" stroke-linejoin="round"/>
+    <circle cx="${today}" cy="${y(base)}" r="5" style="fill:var(--accent);stroke:var(--surface)" stroke-width="2"/>
+    <text x="${today - 8}" y="${y(base) - 10}" text-anchor="end" style="fill:var(--fg);font:700 13px var(--f-body)">₱${nf(base)}</text>
+    <line class="ol-x" x1="0" x2="0" y1="${T}" y2="${H - B}" style="stroke:var(--fg);opacity:0" stroke-width="1"/>
+    <rect class="ol-hit" x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent"/>
+  </svg><div class="ol-tip-box" hidden></div>`;
+  const svgEl = $('svg', box), tip = $('.ol-tip-box', box), xl = $('.ol-x', box);
+  const show = ev => {
+    const r = svgEl.getBoundingClientRect(), px = (ev.clientX - r.left) * W / r.width;
+    const i = Math.max(0, Math.min(months.length - 1, Math.round((px - L) / ((W - L - R) / (months.length - 1)))));
+    const mk = months[i], h = hist.find(q => q[0] === mk), f = fc.find(q => q.k === mk);
+    const label = parseD(mk + '-01').toLocaleDateString('en-PH', {month:'long', year:'numeric'});
+    let txt;
+    if (h) txt = `<b>${label}</b><br>₱${nf(h[1])} a kilo`;
+    else if (f) txt = `<b>${label}</b><br>likely ₱${nf(f.lo)} – ₱${nf(f.hi)}`;
+    else { const nxt = fc.find(q => q.k > mk) || fc[fc.length - 1]; txt = `<b>${label}</b><br>forecast (see ${parseD(nxt.k + '-01').toLocaleDateString('en-PH', {month:'short'})})`; }
+    xl.setAttribute('x1', x(i)); xl.setAttribute('x2', x(i)); xl.style.opacity = .35;
+    tip.innerHTML = txt; tip.hidden = false;
+    const bx = box.getBoundingClientRect(), left = (x(i) / W) * r.width + (r.left - bx.left);
+    tip.style.left = Math.max(0, Math.min(bx.width - 170, left + 10)) + 'px'; tip.style.top = '8px';
+  };
+  const hide = () => { tip.hidden = true; xl.style.opacity = 0; };
+  svgEl.addEventListener('pointermove', show); svgEl.addEventListener('pointerdown', show); svgEl.addEventListener('pointerleave', hide);
+}
+
+/* ---------- RECEIPTS: photo library of delivery and purchase receipts ---------- */
+let receiptsSub = null;
+function watchReceipts(){
+  if (receiptsSub || !S.db) return;
+  S.receipts = S.receipts || []; S.receiptsLoaded = false;
+  receiptsSub = S.db.collection('receipts').orderBy('createdAt', 'desc').limit(500).onSnapshot(
+    s => { S.receipts = s.docs.map(d => Object.assign({id: d.id}, d.data())); S.receiptsLoaded = true; S.receiptsErr = null; schedule(); },
+    e => { S.receiptsLoaded = true; S.receiptsErr = e; receiptsSub = null; schedule(); });
+}
+/* shrink a camera photo: big copy for storage, tiny copy for the library grid */
+async function shrinkImage(file, max, q){
+  let src, w, h;
+  try { src = await createImageBitmap(file, {imageOrientation: 'from-image'}); w = src.width; h = src.height; }
+  catch(e){ src = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = URL.createObjectURL(file); }); w = src.naturalWidth; h = src.naturalHeight; }
+  const sc = Math.min(1, max / Math.max(w, h)), cw = Math.max(1, Math.round(w * sc)), ch = Math.max(1, Math.round(h * sc));
+  const c = document.createElement('canvas'); c.width = cw; c.height = ch;
+  const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, cw, ch); ctx.drawImage(src, 0, 0, cw, ch);
+  const blob = await new Promise(res => c.toBlob(res, 'image/jpeg', q));
+  return {blob, w: cw, h: ch, dataUrl: c.toDataURL('image/jpeg', q)};
+}
+async function prepPhoto(file){
+  const big = await shrinkImage(file, 1600, 0.72), small = await shrinkImage(file, 200, 0.6);
+  if (!big.blob) throw new Error('decode');
+  return {blob: big.blob, w: big.w, h: big.h, thumb: small.dataUrl, preview: URL.createObjectURL(big.blob)};
+}
+function receiptErr(e){
+  if (e && e.code === 'no_bucket') return 'Photo storage is not set up yet. Run receipts-setup.sql in Supabase (see SETUP.md, step 1b).';
+  return e instanceof UserError ? e.message : explainDbError(e);
+}
+async function saveReceipt(photo, meta){
+  if (!S.files) throw new UserError('Receipt photos are not available here.');
+  const id = 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const d = meta.date || today(), path = `${d.slice(0, 4)}/${d.slice(5, 7)}/${id}.jpg`;
+  await S.files.upload(path, photo.blob);
+  const doc = {date: d, supplierId: meta.supplierId || null, amount: +meta.amount || 0, ref: meta.ref || '', notes: meta.notes || '', txnId: meta.txnId || null,
+    path, thumb: photo.thumb, size: photo.blob.size, w: photo.w, h: photo.h, createdAt: new Date().toISOString(), by: S.uid || null, staff: staffList().length ? pref('staff', staffList()[0]) : ''};
+  try { await withRetry(() => S.db.collection('receipts').doc(id).set(doc)); }
+  catch(e){ try { await S.files.remove(path); } catch(_){} throw e; }
+  return id;
+}
+function deliveryText(txnId){
+  const t = S.txns.find(x => x.id === txnId); if (!t) return '';
+  const p = prod(t.productId);
+  return `${qtyEntered(t)} of ${p ? p.name : 'rice'} to ${LOC[(t.moves[0] || {}).loc] || ''} on ${fmtDate(t.date)}`;
+}
+function mountReceipts(el){
+  watchReceipts();
+  S.ui.rcpt = S.ui.rcpt || {month: '', sup: '', q: ''};
+  const off = !S.files || S.canWrite === false;
+  el.innerHTML = head('Receipts', 'Photos of delivery and purchase receipts, kept safe online.',
+    `<div class="quick"><label class="btn primary big${off ? ' is-off' : ''}">${svg('camera')}Take photo<input type="file" id="rc-cam" accept="image/*" capture="environment" hidden ${off ? 'disabled' : ''}></label><label class="btn big${off ? ' is-off' : ''}">${svg('image')}Choose photo<input type="file" id="rc-pick" accept="image/*" hidden ${off ? 'disabled' : ''}></label></div>`) + readOnlyNotice() +
+    `<div class="filters" id="rc-f"><div class="field"><label for="rc-month">Month</label><select id="rc-month"></select></div><div class="field"><label for="rc-sup">Supplier</label><select id="rc-sup"></select></div><div class="field"><label for="rc-q">Search</label><input id="rc-q" type="search" placeholder="Receipt no. or note" autocomplete="off"></div></div><div id="rc-grid"></div>`;
+  const onPick = e => { const f = e.target.files && e.target.files[0]; e.target.value = ''; if (f) openReceiptForm(f, {}); };
+  $('#rc-cam', el).addEventListener('change', onPick);
+  $('#rc-pick', el).addEventListener('change', onPick);
+  $('#rc-f', el).addEventListener('input', () => { S.ui.rcpt = {month: $('#rc-month').value, sup: $('#rc-sup').value, q: $('#rc-q').value.trim().toLowerCase()}; updateReceipts(); });
+  el.addEventListener('click', e => { const c = e.target.closest('[data-rc]'); if (c) openReceipt(c.dataset.rc); });
+  $('#rc-q', el).value = S.ui.rcpt.q;
+  updateReceipts();
+}
+function updateReceipts(){
+  const g = $('#rc-grid'); if (!g) return;
+  const list = S.receipts || [], f = S.ui.rcpt;
+  const months = [...new Set(list.map(r => String(r.date).slice(0, 7)))].sort().reverse();
+  $('#rc-month').innerHTML = `<option value="">All months</option>` + months.map(m => `<option value="${m}" ${m === f.month ? 'selected' : ''}>${parseD(m + '-01').toLocaleDateString('en-PH', {month: 'long', year: 'numeric'})}</option>`).join('');
+  $('#rc-sup').innerHTML = `<option value="">All suppliers</option>` + supplierList().map(s => `<option value="${esc(s.id)}" ${s.id === f.sup ? 'selected' : ''}>${esc(s.name)}</option>`).join('');
+  if (!S.files) { g.innerHTML = `<div class="banner"><p>Receipt photos need the online version of the app.</p></div>`; return; }
+  if (!S.receiptsLoaded) { g.innerHTML = `<div class="loading"><p class="eyebrow">Loading receipts…</p></div>`; return; }
+  if (S.receiptsErr) { g.innerHTML = `<div class="form-err">${esc(receiptErr(S.receiptsErr))}</div>`; return; }
+  const rows = list.filter(r => (!f.month || String(r.date).startsWith(f.month)) && (!f.sup || r.supplierId === f.sup) &&
+    (!f.q || `${r.ref} ${r.notes} ${supName(r.supplierId)}`.toLowerCase().includes(f.q)));
+  const total = rows.reduce((a, r) => a + (+r.amount || 0), 0);
+  if (!list.length) { g.innerHTML = `<div class="panel"><div class="empty rc-empty">${svg('camera')}<p>No receipts yet. Tap <b>Take photo</b> to save your first one.</p></div></div>`; return; }
+  if (!rows.length) { g.innerHTML = `<div class="panel"><div class="empty"><p>No receipts match these filters.</p></div></div>`; return; }
+  g.innerHTML = `<p class="small muted rc-sum">${rows.length} receipt${rows.length === 1 ? '' : 's'}${total ? ' · ' + peso(total) + ' total' : ''}</p>
+    <div class="rc-grid">${rows.map(r => `<button type="button" class="rc-card" data-rc="${esc(r.id)}" aria-label="Receipt ${esc(fmtDate(r.date))}${r.amount ? ', ' + esc(peso(r.amount)) : ''}">
+      <img src="${esc(r.thumb || '')}" alt="" loading="lazy">
+      <span class="rc-meta"><b>${fmtDate(r.date)}</b><span class="rc-sup">${esc(supName(r.supplierId) || 'No supplier')}</span>${r.amount ? `<span class="num rc-amt">${peso(r.amount)}</span>` : ''}${r.ref ? `<span class="small muted">#${esc(r.ref)}</span>` : ''}${r.txnId ? '<span class="pill ok">Delivery</span>' : ''}</span>
+    </button>`).join('')}</div>`;
+}
+function openReceiptForm(file, opts){
+  const r = opts.receipt; let photo = null;
+  const v = r || {date: opts.date || today(), supplierId: opts.supplierId || '', amount: opts.amount || '', ref: opts.ref || '', notes: ''};
+  openModal(`<h2>${r ? 'Receipt details' : 'Save receipt'}</h2>
+    <div class="rc-preview" id="rcf-prev">${r ? `<img src="${esc(r.thumb)}" alt="Receipt photo">` : '<p class="muted">Getting the photo ready…</p>'}</div>
+    <form id="rcf" class="form" novalidate><div class="grid2">
+      <div class="field"><label for="rcf-date">Date on the receipt</label><input type="date" id="rcf-date" value="${esc(v.date)}"></div>
+      <div class="field"><label for="rcf-sup">Supplier</label><select id="rcf-sup">${supplierOptions(v.supplierId || '')}</select></div>
+      <div class="field"><label for="rcf-amt">Amount (₱)</label><input type="number" id="rcf-amt" min="0" step="any" inputmode="decimal" value="${esc(v.amount || '')}" placeholder="0"></div>
+      <div class="field"><label for="rcf-ref">Receipt / DR number</label><input id="rcf-ref" autocomplete="off" value="${esc(v.ref || '')}" placeholder="e.g. DR-10482"></div>
+      <div class="field full"><label for="rcf-notes">Notes</label><input id="rcf-notes" autocomplete="off" value="${esc(v.notes || '')}" placeholder="Optional"></div>
+    </div>
+    <div class="form-err" id="rcf-err" role="alert"></div>
+    <div class="modal-actions"><button type="button" class="btn" data-act="close-modal">Cancel</button><button class="btn primary" id="rcf-go" ${r && S.canWrite !== false ? '' : 'disabled'}>${r ? 'Save changes' : 'Save receipt'}</button></div></form>`, m => {
+    const err = $('#rcf-err', m), go = $('#rcf-go', m);
+    if (!r) prepPhoto(file).then(p => {
+      photo = p;
+      $('#rcf-prev', m).innerHTML = `<img src="${p.preview}" alt="Receipt photo"><span class="small muted">${nf(p.blob.size / 1024, 0)} KB</span>`;
+      go.disabled = S.canWrite === false;
+    }).catch(() => { $('#rcf-prev', m).innerHTML = ''; err.textContent = 'This photo could not be read. Try taking it again.'; });
+    $('#rcf', m).addEventListener('submit', async e => {
+      e.preventDefault(); err.textContent = '';
+      const meta = {date: $('#rcf-date', m).value || today(), supplierId: $('#rcf-sup', m).value || null, amount: +$('#rcf-amt', m).value || 0, ref: $('#rcf-ref', m).value.trim(), notes: $('#rcf-notes', m).value.trim(), txnId: opts.txnId || (r && r.txnId) || null};
+      go.disabled = true; go.textContent = r ? 'Saving…' : 'Uploading…';
+      try {
+        if (r) await withRetry(() => S.db.collection('receipts').doc(r.id).update({date: meta.date, supplierId: meta.supplierId, amount: meta.amount, ref: meta.ref, notes: meta.notes}));
+        else await saveReceipt(photo, meta);
+        closeModal(); toast(r ? 'Receipt updated' : 'Receipt saved');
+        if (opts.onDone) opts.onDone();
+      } catch(e2){ err.textContent = receiptErr(e2); go.disabled = false; go.textContent = r ? 'Save changes' : 'Save receipt'; }
+    });
+  });
+}
+function openReceipt(id){
+  const r = (S.receipts || []).find(x => x.id === id); if (!r) return;
+  const dl = r.txnId ? deliveryText(r.txnId) : '';
+  openModal(`<div class="rc-view">
+      <div class="rc-img"><img id="rcv-img" src="${esc(r.thumb || '')}" alt="Receipt photo" class="loading-img"></div>
+      <dl class="rc-dl"><dt>Date</dt><dd>${fmtDate(r.date)}</dd><dt>Supplier</dt><dd>${esc(supName(r.supplierId) || '—')}</dd><dt>Amount</dt><dd class="num">${r.amount ? peso(r.amount) : '—'}</dd><dt>Receipt no.</dt><dd>${esc(r.ref || '—')}</dd>${dl ? `<dt>Delivery</dt><dd>${esc(dl)}</dd>` : ''}${r.notes ? `<dt>Notes</dt><dd>${esc(r.notes)}</dd>` : ''}<dt>Saved by</dt><dd>${esc(r.staff || '—')}</dd></dl>
+      <div class="form-err" id="rcv-err" role="alert"></div>
+      <div class="modal-actions"><button type="button" class="btn spacer" id="rcv-del" ${S.canWrite === false ? 'disabled' : ''}>Delete</button><a class="btn" id="rcv-open" target="_blank" rel="noopener">Open full size</a><button type="button" class="btn" id="rcv-edit" ${S.canWrite === false ? 'disabled' : ''}>Edit details</button><button type="button" class="btn primary" data-act="close-modal">Close</button></div>
+    </div>`, m => {
+    const img = $('#rcv-img', m), open = $('#rcv-open', m), err = $('#rcv-err', m);
+    open.hidden = true;
+    S.files.url(r.path).then(u => { const full = new Image(); full.onload = () => { img.src = u; img.classList.remove('loading-img'); }; full.src = u; open.href = u; open.hidden = false; })
+      .catch(e => { err.textContent = 'The full photo could not be loaded. ' + receiptErr(e); });
+    $('#rcv-edit', m).addEventListener('click', () => openReceiptForm(null, {receipt: r}));
+    $('#rcv-del', m).addEventListener('click', async () => {
+      const ok = await confirmBox('Delete this receipt?', `<p>The photo from <b>${esc(fmtDate(r.date))}</b>${r.amount ? ` (${esc(peso(r.amount))})` : ''} will be removed for good. Stock is not changed.</p>`, 'Delete receipt', true);
+      if (!ok) return;
+      try { try { await S.files.remove(r.path); } catch(_){} await withRetry(() => S.db.collection('receipts').doc(r.id).delete()); toast('Receipt deleted'); }
+      catch(e){ toast(receiptErr(e), 'err'); }
+    });
+  });
+}
+
 /* ---------- page table ---------- */
 const PAGES = {
   dashboard:{mount: mountDashboard, update: updateDashboard},
@@ -2173,6 +2535,8 @@ const PAGES = {
   reports:{mount: mountReports, update: () => { if (S.ui.rep.tab === 'inventory') runReport(); else updateReports(); }},
   settings:{mount: mountSettings},
   prices:{mount: mountPrices, update: updatePrices},
+  outlook:{mount: mountOutlook},
+  receipts:{mount: mountReceipts, update: updateReceipts},
   simple:{mount: mountSimple, update: updateSimple}
 };
 

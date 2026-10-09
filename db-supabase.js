@@ -189,7 +189,30 @@
       online(true);
       dispatch({ type: 'UPSERT', col: 'txns', id: txnId, data: data.txn });
       dispatch({ type: 'UPSERT', col: 'stock', id: productId, data: data.stock });
-      return data.txn;
+      return Object.assign({ id: txnId }, data.txn);
+    }
+  });
+
+  /* ---------- receipt photos (Supabase Storage, private bucket "receipts") ---------- */
+  const urlCache = {};
+  const storageErr = e => /bucket not found/i.test((e && e.message) || '') ? { code: 'no_bucket', message: e.message } : mapErr(e);
+  const files = Object.freeze({
+    upload: async (path, blob) => {
+      const { error } = await sb.storage.from('receipts').upload(path, blob, { contentType: blob.type || 'image/jpeg', upsert: false });
+      if (error) throw storageErr(error);
+      online(true); return path;
+    },
+    url: async path => {
+      const c = urlCache[path]; if (c && c.exp > Date.now()) return c.url;
+      const { data, error } = await sb.storage.from('receipts').createSignedUrl(path, 3600);
+      if (error) throw storageErr(error);
+      urlCache[path] = { url: data.signedUrl, exp: Date.now() + 3300 * 1000 };
+      return data.signedUrl;
+    },
+    remove: async path => {
+      const { error } = await sb.storage.from('receipts').remove([path]);
+      if (error) throw storageErr(error);
+      delete urlCache[path];
     }
   });
 
@@ -292,7 +315,7 @@
   window.claude = Object.freeze({
     use: async name => {
       if (!(await ready)) return null;
-      return name === 'db' ? db : name === 'user' ? user : name === 'downloads' ? downloads : null;
+      return name === 'db' ? db : name === 'user' ? user : name === 'downloads' ? downloads : name === 'files' ? files : null;
     }
   });
 })();
