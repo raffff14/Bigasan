@@ -21,6 +21,8 @@
   --danger:#B9332A; --danger-soft:#FBE4E1; --ok:#2B7A4B; --ok-soft:#DDF0E4; --warn:#9A5B00; --warn-soft:#FBEBCB;
   --shadow:0 1px 2px rgba(20,40,28,.06),0 4px 14px rgba(20,40,28,.05);
   --sm-move:#24597A; --sm-move-fg:#FFFFFF;
+  --tr:#24597A; --tr-soft:#DDEAF2;
+  --rc-blue:#2a78d6; --rc-orange:#eb6834; --rc-teal:#1baf7a; --rc-yellow:#eda100; --rc-pink:#e87ba4; --rc-green:#008300; --rc-purple:#4a3aa7;
   --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
   --f-body:"Atkinson Hyperlegible Next","Segoe UI",system-ui,-apple-system,sans-serif;
   --f-num:"Atkinson Hyperlegible Next","Segoe UI",system-ui,sans-serif;
@@ -33,6 +35,8 @@
   --danger:#F07A6E; --danger-soft:#3A1E1B; --ok:#6BCB8F; --ok-soft:#183223; --warn:#E9B35A; --warn-soft:#352812;
   --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark;
   --sm-move:#2F6F95; --sm-move-fg:#FFFFFF;
+  --tr:#7DBFE3; --tr-soft:#162C39;
+  --rc-blue:#3987e5; --rc-orange:#d95926; --rc-teal:#199e70; --rc-yellow:#c98500; --rc-pink:#d55181; --rc-green:#008300; --rc-purple:#9085e9;
 }}
 :root[data-theme="dark"]{
   --bg:#101512; --surface:#18201B; --surface-2:#212B25; --fg:#E6ECE7; --muted:#9BA9A0; --line:#2C3830;
@@ -41,6 +45,8 @@
   --danger:#F07A6E; --danger-soft:#3A1E1B; --ok:#6BCB8F; --ok-soft:#183223; --warn:#E9B35A; --warn-soft:#352812;
   --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark;
   --sm-move:#2F6F95; --sm-move-fg:#FFFFFF;
+  --tr:#7DBFE3; --tr-soft:#162C39;
+  --rc-blue:#3987e5; --rc-orange:#d95926; --rc-teal:#199e70; --rc-yellow:#c98500; --rc-pink:#d55181; --rc-green:#008300; --rc-purple:#9085e9;
 }
 *{box-sizing:border-box}
 html,body{background:var(--bg);color:var(--fg)}
@@ -127,13 +133,30 @@ main{min-width:0;padding-inline:clamp(16px,3vw,40px);padding-block:28px 60px;max
 .qtile:hover{background:var(--surface-2)}
 .qtile:active{transform:translateY(3px);border-bottom-width:2px;box-shadow:none}
 .qtile:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.qtile.low{border-color:var(--danger);border-bottom-color:var(--danger)}
+.qtile{border-top:7px solid var(--rc,var(--line))}
+.qtile.lv-low{border-left-color:var(--danger);border-right-color:var(--danger);border-bottom-color:var(--danger);background:var(--danger-soft)}
+.qtile.lv-empty{border-left-style:dashed;border-right-style:dashed;background:var(--surface-2)}
+.qtile.lv-empty .qt-total{color:var(--muted)}
+.pill.lv{background:var(--surface-2);color:var(--muted)}
+.qt-legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.8rem;color:var(--muted)}
+.qt-legend span{display:inline-flex;align-items:center;gap:6px}
+.qt-legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.qt-legend .qlg-ok{background:var(--ok)} .qt-legend .qlg-warn{background:var(--warn)} .qt-legend .qlg-low{background:var(--danger)} .qt-legend .qlg-empty{background:var(--muted)}
+.btn.act-in{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.btn.act-out{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.btn.act-tr{background:var(--tr-soft);border-color:var(--tr);color:var(--tr)}
+.btn.act-in:hover,.btn.act-out:hover,.btn.act-tr:hover{filter:brightness(.97)}
+.rd-actions3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rd-actions3 .btn{flex-direction:column;gap:4px;min-height:64px;padding:8px 6px}
+.rd-actions3 .btn svg{width:22px;height:22px}
+.rd-more summary{font-size:1.02rem}
+.rd-more .rd-count{border-top:0;padding-top:4px}
 .qtile .qt-name{font-weight:700;font-size:1rem;line-height:1.2}
-.qtile.low .qt-name{padding-right:44px}
+
 .qtile .qt-total{font-family:var(--f-display);font-weight:700;font-size:1.35rem;line-height:1.15;margin-top:auto}
 .qtile .qt-split{display:flex;flex-wrap:wrap;gap:2px 10px;font-size:.8rem;color:var(--muted)}
 .qtile .qt-split span{display:inline-flex;align-items:center;gap:4px}
-.qtile .qt-badge{position:absolute;top:10px;right:10px;font-size:.68rem;padding:2px 7px}
+.qtile .qt-badge{order:-1;font-size:.68rem;padding:2px 8px}
 .qtile.saved{animation:qtflash 1.2s ease-out}
 @media (max-width:520px){.qtile{padding:12px 12px 10px}.qtile .qt-total{font-size:1.12rem}}
 @keyframes qtflash{0%{background:var(--ok-soft)}100%{background:var(--surface)}}
@@ -244,6 +267,14 @@ input[readonly]{background:var(--surface-2)}
 .form-err{color:var(--danger);font-weight:700;background:var(--danger-soft);border-radius:var(--r-sm);padding:12px 14px}
 .form-err:empty{display:none}
 .side-note{display:flex;flex-direction:column;gap:12px}
+/* rice colours */
+.rice-ico{width:1.15em;height:1.15em;vertical-align:-.18em;margin-right:.4em;flex:none;display:inline-block}
+.rc-swatches{display:flex;flex-wrap:wrap;gap:8px}
+.rc-sw{position:relative;display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border:2px solid var(--line);border-radius:999px;cursor:pointer;font-weight:600;font-size:.9rem;min-height:44px}
+.rc-sw input{position:absolute;opacity:0;pointer-events:none}
+.rc-sw span{width:28px;height:28px;border-radius:50%;flex:none}
+.rc-sw:has(input:checked){border-color:var(--fg);background:var(--surface-2)}
+.rc-sw input:focus-visible + span{outline:3px solid var(--accent);outline-offset:2px}
 /* sub-page tabs (Prices, Products) */
 .subnav{margin-top:-6px}
 .tabs a{display:inline-flex;align-items:center;min-height:44px;padding:10px 14px;margin-bottom:-1px;border-bottom:3px solid transparent;color:var(--muted);font-weight:700;text-decoration:none}
@@ -321,7 +352,7 @@ input[readonly]{background:var(--surface-2)}
 .rd-tile.total{background:var(--accent-soft);border-color:var(--accent)}
 @media (max-width:480px){.rd-tiles{grid-template-columns:1fr 1fr}.rd-tile.total{grid-column:1/-1}}
 .rd-prices{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.95rem;padding:10px 12px;border-radius:var(--r-sm);background:var(--surface-2)}
-.rd-count{border-top:1px solid var(--line);padding-top:14px;gap:12px}
+.rd-count{gap:12px}
 .rd-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 @media (min-width:620px){.rd-actions{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .rd-h{margin-bottom:6px}
@@ -390,7 +421,7 @@ body.simple main{max-width:620px;margin-inline:auto;padding-block:18px 48px}
 .sm-back{align-self:flex-start;background:var(--surface);color:var(--fg);border:2px solid var(--line);border-radius:14px;font-size:1.2rem;font-weight:700;padding:10px 20px;min-height:56px;cursor:pointer}
 .sm-q{font-size:1.9rem}
 .sm-list{display:grid;gap:10px}
-.sm-rice{display:flex;flex-direction:column;align-items:flex-start;gap:4px;width:100%;min-height:86px;padding:14px 18px;border:2px solid var(--line);border-radius:16px;background:var(--surface);color:var(--fg);text-align:left;cursor:pointer}
+.sm-rice{border-left:10px solid var(--rc,var(--line)) !important;display:flex;flex-direction:column;align-items:flex-start;gap:4px;width:100%;min-height:86px;padding:14px 18px;border:2px solid var(--line);border-radius:16px;background:var(--surface);color:var(--fg);text-align:left;cursor:pointer}
 .sm-rice b{font-size:1.35rem}
 .sm-rice small{font-size:1.05rem;color:var(--muted)}
 .sm-rice:active{border-color:var(--accent);background:var(--accent-soft)}
@@ -491,7 +522,7 @@ details.more .grid2{margin-top:10px}
 
 /* product cards */
 .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
-.pcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.pcard{border-top:6px solid var(--rc,var(--line)) !important;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
 .pcard.low{border-color:var(--danger)}
 .pcard .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
 .pcard dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0;font-size:.9rem}
@@ -618,6 +649,32 @@ const sackKgOf = id => +(prod(id) && prod(id).sackKg) || 25;
 function bal(id){ const s = S.stock[id] || {}; const b = r3(s.bodega||0), st = r3(s.stall||0); return {bodega:b, stall:st, total:r3(b+st)}; }
 function costKgOf(p){ if (!p) return 0; if (+p.costKg) return +p.costKg; return +p.sackKg ? r2((+p.costSack||0)/(+p.sackKg)) : 0; }
 function priceKgOf(p){ if (!p) return 0; if (+p.priceKg) return +p.priceKg; return +p.sackKg ? r2((+p.priceSack||0)/(+p.sackKg)) : 0; }
+/* each rice has its own colour (picked in Products; otherwise handed out in the order rice was added) */
+const RICE_COLORS = [['blue', 'Blue'], ['orange', 'Orange'], ['teal', 'Teal'], ['yellow', 'Yellow'], ['pink', 'Pink'], ['green', 'Green'], ['purple', 'Purple']];
+let _rcSrc = null, _rcMap = {};
+function riceColorMap(){
+  if (_rcSrc === S.products) return _rcMap;
+  const keys = RICE_COLORS.map(c => c[0]), map = {}, used = new Set();
+  const all = Object.keys(S.products).map(id => ({id, p: S.products[id]})).sort((a, b) => String(a.p.createdAt || '').localeCompare(String(b.p.createdAt || '')) || (a.id < b.id ? -1 : 1));
+  all.forEach(({id, p}) => { if (keys.includes(p.color)) { map[id] = p.color; used.add(p.color); } });
+  // rice without a chosen colour keep a fixed one by the order they were added, so changing one rice never repaints the others
+  all.forEach(({id}, i) => { if (!map[id]) map[id] = keys[i % keys.length]; });
+  _rcSrc = S.products; _rcMap = map; return map;
+}
+const riceKey = id => riceColorMap()[id] || 'blue';
+const riceVar = id => `var(--rc-${riceKey(id)})`;
+function nextRiceColor(){ const used = new Set(Object.values(riceColorMap())); const free = RICE_COLORS.find(c => !used.has(c[0])); return free ? free[0] : RICE_COLORS[Object.keys(S.products).length % RICE_COLORS.length][0]; }
+const SACK_D = 'M8 3h8l-1.2 3.2A7 7 0 0 1 19 12.5V17a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4v-4.5a7 7 0 0 1 4.2-6.3z';
+const riceIcon = id => `<svg class="rice-ico" viewBox="0 0 24 24" aria-hidden="true" style="color:${riceVar(id)}"><path d="${SACK_D}" fill="currentColor"/><path d="M9 6.5h6" stroke="var(--surface)" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+/* plenty / getting low / low / empty, for colour coding */
+function stockLevel(id){
+  const b = bal(id), k = sackKgOf(id), p = prod(id), min = +(p && p.minSacks) || 0;
+  if (b.total <= 0.0005) return 'empty';
+  if (isLow(id)) return 'low';
+  if (min && b.total / k < min * 1.5) return 'warn';
+  return 'ok';
+}
+const LEVEL = {ok: ['OK', 'ok'], warn: ['GETTING LOW', 'warn'], low: ['LOW', 'low'], empty: ['EMPTY', 'lv']};
 function isLow(id){ const p = prod(id); if (!p || p.archived || !(+p.minSacks)) return false; return bal(id).total / sackKgOf(id) < +p.minSacks - 1e-9; }
 function activeProducts(){ return Object.keys(S.products).filter(id => !S.products[id].archived).map(id => Object.assign({id}, S.products[id])).sort((a,b) => String(a.name).localeCompare(String(b.name))); }
 function allProducts(){ return Object.keys(S.products).map(id => Object.assign({id}, S.products[id])).sort((a,b) => String(a.name).localeCompare(String(b.name))); }
@@ -896,7 +953,7 @@ function emptyNoProducts(){ return `<div class="empty"><p>No rice varieties yet.
 function mountDashboard(el){
   const d = new Date().toLocaleDateString('en-PH', {weekday:'long', month:'long', day:'numeric', year:'numeric'});
   el.innerHTML = head(esc(bizName()), `<span class="eyebrow">${esc(d)}</span>`,
-    `<div class="quick"><a class="btn primary big" href="#stock-out" data-nav="stock-out">${svg('stock-out')}Record sale</a><a class="btn big" href="#stock-in" data-nav="stock-in">${svg('stock-in')}Stock in</a><a class="btn big" href="#transfer" data-nav="transfer">${svg('transfer')}Transfer</a><a class="btn big" href="#count" data-nav="count">${svg('count')}Count stock</a></div>`) +
+    `<div class="quick"><a class="btn primary big" href="#stock-out" data-nav="stock-out">${svg('stock-out')}Record sale</a><a class="btn big act-in" href="#stock-in" data-nav="stock-in">${svg('stock-in')}Stock in</a><a class="btn big act-tr" href="#transfer" data-nav="transfer">${svg('transfer')}Transfer</a><a class="btn big" href="#count" data-nav="count">${svg('count')}Count stock</a></div>`) +
     `<div id="d-banner"></div><section class="kpis" id="d-kpis" aria-label="Stock summary"></section>
      <section class="panel quick-rice" id="d-quick" aria-label="Rice quick access"></section>
      <div class="dash-grid"><section class="panel" id="d-low"></section><section class="panel" id="d-recent"></section></div>
@@ -907,7 +964,8 @@ function updateDashboard(){
   let tb = 0, ts = 0, sb = 0, ss = 0;
   ps.forEach(p => { const b = bal(p.id), k = sackKgOf(p.id); tb += b.bodega; ts += b.stall; sb += b.bodega / k; ss += b.stall / k; });
   const low = ps.filter(p => isLow(p.id));
-  $('#d-banner').innerHTML = (S.settings.sample ? `<div class="banner info"><p>This is sample data (Sep 24 – Oct 7, 2026) so you can try every screen. When you are ready to use your real stock, go to Settings → Start fresh.</p><a class="btn sm" href="#settings" data-nav="settings">Settings</a></div>` : '') + readOnlyNotice();
+  $('#d-banner').innerHTML = (sampleLoaded() ? `<div class="banner info"><p>Sample rice marked “(sample)” is loaded so you can try every screen. Your own rice is not affected. Remove it any time in Settings → Remove sample data.</p><a class="btn sm" href="#settings" data-nav="settings">Settings</a></div>`
+    : S.settings.sample ? `<div class="banner info"><p>This is sample data so you can try every screen. When you are ready to use your real stock, go to Settings → Start fresh.</p><a class="btn sm" href="#settings" data-nav="settings">Settings</a></div>` : '') + readOnlyNotice();
   $('#d-kpis').innerHTML = `
     <div class="kpi"><div class="k-label"><i class="dot total"></i>Total stock</div><div class="k-val">${nf(sb+ss,1)}<small>sacks</small></div><div class="k-sub num">${nf(tb+ts)} kg · ${ps.length} varieties</div></div>
     <div class="kpi"><div class="k-label"><i class="dot bodega"></i>Bodega stock</div><div class="k-val">${nf(sb,1)}<small>sacks</small></div><div class="k-sub num">${nf(tb)} kg</div></div>
@@ -917,12 +975,12 @@ function updateDashboard(){
   if (qb) {
     const before = S.ui.quickSeen || {}, seen = {}, now = Date.now(), flashAt = S.ui.quickFlash || (S.ui.quickFlash = {});
     qb.innerHTML = `<div class="panel-head"><h2>Rice</h2><span class="small muted">Tap a rice to see its stock or change it</span></div>` + (ps.length ? `<div class="qgrid">${ps.map(p => {
-      const b = bal(p.id), k = sackKgOf(p.id), low = isLow(p.id), sig = b.bodega + '|' + b.stall;
+      const b = bal(p.id), k = sackKgOf(p.id), lv = stockLevel(p.id), low = lv === 'low', sig = b.bodega + '|' + b.stall;
       seen[p.id] = sig;
       if (before[p.id] !== undefined && before[p.id] !== sig) flashAt[p.id] = now;
       const age = flashAt[p.id] ? now - flashAt[p.id] : 1e9, flash = age < 1200;
-      return `<button type="button" class="qtile${low ? ' low' : ''}${flash ? ' saved' : ''}"${flash ? ` style="animation-delay:-${age}ms"` : ''} data-rice="${esc(p.id)}" aria-label="${esc(p.name)}: ${esc(fmtStock(b.total, k))} in total${low ? ', low stock' : ''}">
-        <span class="qt-name">${esc(p.name)}</span>${low ? '<span class="pill low qt-badge">LOW</span>' : ''}
+      return `<button type="button" class="qtile lv-${lv}${low ? ' low' : ''}${flash ? ' saved' : ''}" style="--rc:${riceVar(p.id)}${flash ? `;animation-delay:-${age}ms` : ''}" data-rice="${esc(p.id)}" aria-label="${esc(p.name)}: ${esc(fmtStock(b.total, k))} in total, ${LEVEL[lv][0].toLowerCase()}">
+        <span class="qt-name">${riceIcon(p.id)}${esc(p.name)}</span>${lv !== 'ok' ? `<span class="pill ${LEVEL[lv][1]} qt-badge">${LEVEL[lv][0]}</span>` : ''}
         <span class="qt-total num">${fmtStock(b.total, k, 1)}</span>
         <span class="qt-split num"><span><i class="dot bodega"></i>${fmtStock(b.bodega, k, 1)}</span><span><i class="dot stall"></i>${fmtStock(b.stall, k, 1)}</span></span>
       </button>`;
@@ -931,7 +989,7 @@ function updateDashboard(){
   }
   $('#d-low').innerHTML = `<div class="panel-head"><h2>Low stock</h2></div>` + (low.length ? `<div class="feed">${low.map(p => {
       const b = bal(p.id), k = sackKgOf(p.id);
-      return `<div class="feed-row" data-rice="${esc(p.id)}"><span class="pill low">LOW STOCK</span><div class="what"><button type="button" class="vlink" data-rice="${esc(p.id)}">${esc(p.name)}</button><span class="small muted num">${fmtStock(b.total, k)} left (minimum ${nf(p.minSacks)})</span></div><a class="btn sm" href="#stock-in" data-nav="stock-in" data-prod="${esc(p.id)}">Restock</a></div>`;
+      return `<div class="feed-row" data-rice="${esc(p.id)}"><span class="pill low">LOW STOCK</span><div class="what"><button type="button" class="vlink" data-rice="${esc(p.id)}">${riceIcon(p.id)}${esc(p.name)}</button><span class="small muted num">${fmtStock(b.total, k)} left (minimum ${nf(p.minSacks)})</span></div><a class="btn sm" href="#stock-in" data-nav="stock-in" data-prod="${esc(p.id)}">Restock</a></div>`;
     }).join('')}</div>` : `<div class="empty"><span class="pill ok">All good</span><p>Every variety is above its minimum stock level.</p></div>`);
   const recent = [];
   for (const t of S.txns) { for (const r of rowsOf(t)) { recent.push(r); } if (recent.length >= 8) break; }
@@ -949,7 +1007,7 @@ function varietyRows(ps, withActions){
     const b = bal(p.id), k = sackKgOf(p.id), tot = b.total || 1;
     const low = isLow(p.id);
     const status = low ? `<span class="pill low">LOW STOCK</span>` : (b.stall <= 0 && b.bodega > 0 ? `<span class="pill warn">Stall empty</span>` : `<span class="pill ok">OK</span>`);
-    return `<div class="vrow" data-rice="${esc(p.id)}"><div class="vname"><span><button type="button" class="vlink" data-rice="${esc(p.id)}">${esc(p.name)}</button> <span class="sub">· ${nf(k)} kg sacks${+p.minSacks ? ` · min ${nf(p.minSacks)}` : ''}</span></span>${withActions ? status : ''}<div class="split" title="Bodega ${nf(b.bodega)} kg · Stall ${nf(b.stall)} kg"><span class="b" style="width:${b.total ? b.bodega/tot*100 : 0}%"></span><span class="s" style="width:${b.total ? b.stall/tot*100 : 0}%"></span></div></div>
+    return `<div class="vrow" data-rice="${esc(p.id)}"><div class="vname"><span><button type="button" class="vlink" data-rice="${esc(p.id)}">${riceIcon(p.id)}${esc(p.name)}</button> <span class="sub">· ${nf(k)} kg sacks${+p.minSacks ? ` · min ${nf(p.minSacks)}` : ''}</span></span>${withActions ? status : ''}<div class="split" title="Bodega ${nf(b.bodega)} kg · Stall ${nf(b.stall)} kg"><span class="b" style="width:${b.total ? b.bodega/tot*100 : 0}%"></span><span class="s" style="width:${b.total ? b.stall/tot*100 : 0}%"></span></div></div>
       <div class="cell num"><span class="lbl">Bodega</span>${fmtStock(b.bodega,k,1)}<span class="kg">${nf(b.bodega)} kg</span></div>
       <div class="cell num"><span class="lbl">Stall</span>${fmtStock(b.stall,k,1)}<span class="kg">${nf(b.stall)} kg</span></div>
       <div class="cell num"><span class="lbl">Total</span><b>${fmtStock(b.total,k,1)}</b><span class="kg">${nf(b.total)} kg</span></div>
@@ -1466,7 +1524,7 @@ function renderCount(full){
     list.innerHTML = ps.length ? ps.map(p => {
       const k = sackKgOf(p.id), r = C.rows[p.id], sys = splitKg(bal(p.id)[C.loc], k);
       return `<div class="crow" data-pid="${esc(p.id)}">
-        <div class="ctop"><div class="cname">${esc(p.name)} <span class="muted small">· ${nf(k)} kg sacks</span></div><div class="csys small muted"></div></div>
+        <div class="ctop"><div class="cname">${riceIcon(p.id)}${esc(p.name)} <span class="muted small">· ${nf(k)} kg sacks</span></div><div class="csys small muted"></div></div>
         <div class="cinputs">${stepper('cs-' + p.id, r ? r.sacks : sys.sacks, 'c-s')}<span class="muted">sacks +</span><input type="number" class="c-k" min="0" step="any" inputmode="decimal" value="${r ? r.kg : sys.kg}" aria-label="Loose kilograms of ${esc(p.name)}"><span class="muted">kg</span><button type="button" class="btn sm" data-pile>Count by piles</button></div>
         <div class="cdiff"></div></div>`;
     }).join('') : `<div class="panel">${emptyNoProducts()}</div>`;
@@ -1525,7 +1583,7 @@ function updateProducts(){
   if (!list.length) { box.innerHTML = `<div class="panel">${emptyNoProducts()}</div>`; return; }
   box.innerHTML = `<div class="pgrid">${list.map(p => {
     const b = bal(p.id), k = sackKgOf(p.id), low = isLow(p.id);
-    return `<article class="pcard ${low ? 'low' : ''}" data-rice="${esc(p.id)}"><div class="top"><div><h3><button type="button" class="vlink" data-rice="${esc(p.id)}">${esc(p.name)}</button></h3><p class="small muted">${esc(supName(p.supplierId) || 'No supplier')} · ${nf(k)} kg sacks</p></div>${p.archived ? '<span class="pill muted">Archived</span>' : low ? '<span class="pill low">LOW STOCK</span>' : ''}</div>
+    return `<article class="pcard ${low ? 'low' : ''}" data-rice="${esc(p.id)}" style="--rc:${riceVar(p.id)}"><div class="top"><div><h3><button type="button" class="vlink" data-rice="${esc(p.id)}">${riceIcon(p.id)}${esc(p.name)}</button></h3><p class="small muted">${esc(supName(p.supplierId) || 'No supplier')} · ${nf(k)} kg sacks</p></div>${p.archived ? '<span class="pill muted">Archived</span>' : low ? '<span class="pill low">LOW STOCK</span>' : ''}</div>
       <div class="stockline num"><span>${locTag('bodega')} ${fmtStock(b.bodega,k,1)}</span><span>${locTag('stall')} ${fmtStock(b.stall,k,1)}</span></div>
       <div class="stockline"><b>Current stock</b><b class="num">${fmtStock(b.total,k)}</b></div>
       <dl><dt>Minimum stock</dt><dd>${+p.minSacks ? sacksTxt(+p.minSacks) : '—'}</dd><dt>Cost per sack</dt><dd>${peso(p.costSack)}</dd><dt>Selling price per sack</dt><dd>${peso(p.priceSack)}</dd><dt>Cost per kg</dt><dd>${peso(costKgOf(p))}</dd><dt>Selling price per kg</dt><dd>${peso(priceKgOf(p))}</dd></dl>
@@ -1540,6 +1598,7 @@ function openProduct(id){
   <form id="pf" class="form" novalidate>
     <div class="grid2">
       <div class="field full"><label for="pf-name">Rice name</label><input id="pf-name" value="${esc(p.name || '')}" placeholder="e.g. Premium Sinandomeng" autocomplete="off"></div>
+      <div class="field full"><span class="lbl">Colour</span><div class="rc-swatches" role="radiogroup">${RICE_COLORS.map(([k, l]) => `<label class="rc-sw"><input type="radio" name="pf-color" value="${k}" ${k === (id ? riceKey(id) : nextRiceColor()) ? 'checked' : ''}><span style="background:var(--rc-${k})"></span>${l}</label>`).join('')}</div><span class="hint">Shown next to this rice everywhere, so staff can spot it fast.</span></div>
       <div class="field"><label for="pf-sup">Supplier</label><select id="pf-sup">${supplierOptions(p.supplierId || '')}</select></div>
       <div class="field"><label for="pf-sack">Sack size (kg)</label><input type="number" id="pf-sack" min="1" step="any" inputmode="decimal" value="${esc(p.sackKg || '')}"></div>
       <div class="field"><label for="pf-min">Minimum stock level (sacks)</label><input type="number" id="pf-min" min="0" step="any" inputmode="decimal" value="${esc(p.minSacks == null ? '' : p.minSacks)}"><span class="hint">Shows LOW STOCK when Bodega + Stall falls below this.</span></div>
@@ -1570,7 +1629,7 @@ function openProduct(id){
       }
       const data = {name, supplierId: $('#pf-sup', m).value || null, sackKg: sack, minSacks: +$('#pf-min', m).value || 0,
         costSack: +$('#pf-cs', m).value || 0, priceSack: +$('#pf-ps', m).value || 0, costKg: +$('#pf-ck', m).value || 0, priceKg: +$('#pf-pk', m).value || 0,
-        archived: !!p.archived, createdAt: p.createdAt || new Date().toISOString()};
+        archived: !!p.archived, color: ($('input[name="pf-color"]:checked', m) || {}).value || null, createdAt: p.createdAt || new Date().toISOString()};
       const btn = $('#pf-go', m); btn.disabled = true; btn.textContent = 'Saving…';
       try {
         const pid = id || (slug(name) + '-' + Math.random().toString(36).slice(2,6));
@@ -1857,6 +1916,28 @@ async function checkStock(btn){
   } catch(e){ toast(explainDbError(e), 'err'); }
   finally { btn.disabled = false; btn.textContent = label; }
 }
+/* sample data (sample-data.sql) is tagged so it can be removed without touching real rice */
+const isSampleDoc = (id, d) => (d && d.sample === true) || String(id).startsWith('sample-');
+const sampleLoaded = () => Object.keys(S.products).some(id => isSampleDoc(id, S.products[id]));
+async function removeSampleData(){
+  const ok = await confirmBox('Remove sample data?', '<p>This deletes the rice, suppliers and history marked “(sample)”. Your own rice, stock and receipts are not touched.</p>', 'Remove sample data', true);
+  if (!ok) return;
+  openModal(`<h2>Removing sample data…</h2><p class="muted">Keep this page open.</p><div class="progress"><span id="rsd-bar"></span></div><p class="small muted" id="rsd-txt">Finding sample items…</p>`);
+  try {
+    const lists = {};
+    for (const c of ['products', 'suppliers', 'stock']) lists[c] = (await fetchCollection(c)).filter(d => isSampleDoc(d.id, d));
+    lists.txns = (await fetchTxns('', '')).filter(d => isSampleDoc(d.id, d));
+    const all = ['txns', 'stock', 'products', 'suppliers'].flatMap(c => lists[c].map(d => [c, d.id]));
+    let done = 0;
+    for (const [c, id] of all) {
+      await withRetry(() => S.db.collection(c).doc(id).delete()); done++;
+      const bar = $('#rsd-bar'), tx = $('#rsd-txt');
+      if (bar) bar.style.width = (done / all.length * 100) + '%'; if (tx) tx.textContent = `${done} of ${all.length}`;
+    }
+    closeModal(); toast(`Removed ${lists.products.length} sample rice and ${lists.txns.length} sample transactions`);
+    const row = $('#rmsample-row'); if (row) row.hidden = true;
+  } catch(e){ closeModal(); toast(explainDbError(e) + ' Tap Remove sample data again to finish.', 'err'); }
+}
 async function startFresh(){
   openModal(`<h2>Start fresh</h2><p>This deletes every transaction and sets all stock to zero. Download a backup first if you want to keep anything.</p>
     <label class="small"><input type="checkbox" id="sf-all"> Also delete all rice varieties and suppliers</label>
@@ -1897,6 +1978,7 @@ function mountSettings(el){
     <div class="setting-row"><div><b>Check stock against history</b><span class="small muted">Adds up every transaction and compares it with the stock shown. Run it if numbers ever look wrong.</span><div id="chk-result" style="margin-top:8px"></div></div><button class="btn" id="chk-go">Run check</button></div>
   </section>
   <section class="panel"><h2 style="margin-bottom:4px">Start fresh</h2>
+    <div class="setting-row" id="rmsample-row" ${sampleLoaded() ? '' : 'hidden'}><div><b>Remove sample data</b><span class="small muted">Deletes only the rice, suppliers and history marked “(sample)”. Your own rice stays.</span></div><button class="btn" id="rmsample-go" ${S.canWrite === false ? 'disabled' : ''}>Remove sample data</button></div>
     <div class="setting-row"><div><b>Delete sample or old data</b><span class="small muted">Clears transactions and stock so you can enter your real opening count. You can keep your rice varieties and suppliers.</span></div><button class="btn" id="fresh-go" ${S.canWrite === false ? 'disabled' : ''}>Start fresh…</button></div>
   </section></div>`;
   $('#set-f').addEventListener('submit', async e => {
@@ -1909,6 +1991,7 @@ function mountSettings(el){
   $('#csv-go').addEventListener('click', e => exportAllTxns(e.currentTarget));
   $('#chk-go').addEventListener('click', e => checkStock(e.currentTarget));
   $('#fresh-go').addEventListener('click', startFresh);
+  $('#rmsample-go').addEventListener('click', removeSampleData);
   const app = window.bigasanApp || {};
   $('#acct-email').textContent = app.email || '';
   $('#acct-out').addEventListener('click', () => app.signOut && app.signOut());
@@ -1965,7 +2048,7 @@ function smHome(){
       <button type="button" class="sm-btn move" data-sm="start-move">${svg('transfer', 2.4)}<span><b>MOVE TO STALL</b><small>From the Bodega to the Stall</small></span></button>
     </div>
     <button type="button" class="sm-btn2 sm-pl" data-sm="prices">${svg('prices', 2.2)}<span>PRICE LIST</span></button>
-    <section class="sm-left"><h2>Left at the ${LOC[c.loc]}</h2>${ps.length ? ps.map(p => { const k = sackKgOf(p.id); return `<div class="sm-stock"><span>${esc(p.name)}</span><span class="sm-stock-v"><b>${fmtTL(bal(p.id)[c.loc], k)}</b>${isLow(p.id) ? '<i class="pill low">LOW</i>' : ''}</span></div>`; }).join('') : '<p class="muted">No rice added yet.</p>'}</section>
+    <section class="sm-left"><h2>Left at the ${LOC[c.loc]}</h2>${ps.length ? ps.map(p => { const k = sackKgOf(p.id); return `<div class="sm-stock"><span>${riceIcon(p.id)}${esc(p.name)}</span><span class="sm-stock-v"><b>${fmtTL(bal(p.id)[c.loc], k)}</b>${isLow(p.id) ? '<i class="pill low">LOW</i>' : ''}</span></div>`; }).join('') : '<p class="muted">No rice added yet.</p>'}</section>
     <button type="button" class="sm-exit" data-sm="exit">For the owner: open the full app</button>`;
 }
 function smPick(){
@@ -1973,13 +2056,13 @@ function smPick(){
   return `${smBack('home')}<h1 class="sm-q">${sell ? 'Which rice was sold?' : 'Which rice are you moving?'}</h1>
     <div class="sm-list">${activeProducts().map(p => {
       const k = sackKgOf(p.id), have = bal(p.id)[from];
-      return `<button type="button" class="sm-rice" data-sm="pick" data-id="${esc(p.id)}" ${have <= 0.0005 ? 'disabled' : ''}><b>${esc(p.name)}</b><small>${have > 0.0005 ? `At the ${LOC[from]}: ${fmtTL(have, k)}` : `None left at the ${LOC[from]}`}</small></button>`;
+      return `<button type="button" class="sm-rice" data-sm="pick" data-id="${esc(p.id)}" style="--rc:${riceVar(p.id)}" ${have <= 0.0005 ? 'disabled' : ''}><b>${riceIcon(p.id)}${esc(p.name)}</b><small>${have > 0.0005 ? `At the ${LOC[from]}: ${fmtTL(have, k)}` : `None left at the ${LOC[from]}`}</small></button>`;
     }).join('')}</div>`;
 }
 function smAmount(){
   const sell = SM.task === 'sell', p = prod(SM.pid), k = sackKgOf(SM.pid);
   const chips = SM.unit === 'kg' ? [1, 2, 3, 5, 10, 25] : [1, 2, 3, 4, 5, 10];
-  return `${smBack('pick')}<p class="sm-rice-name">${esc(p ? p.name : '')}</p>
+  return `${smBack('pick')}<p class="sm-rice-name">${p ? riceIcon(SM.pid) : ''}${esc(p ? p.name : '')}</p>
     <h1 class="sm-q">${SM.unit === 'kg' ? 'How many kilos?' : 'How many sacks?'}</h1>
     <div class="sm-units">${[['kg', 'Kilos'], ['sack', `Sacks (${nf(k)} kg)`]].map(([u, l]) => `<button type="button" data-sm="unit" data-u="${u}" class="${SM.unit === u ? 'on' : ''}">${l}</button>`).join('')}</div>
     <div class="sm-amount"><button type="button" data-sm="minus" aria-label="One less">−</button><input id="sm-qty" type="number" inputmode="decimal" min="0" step="any" value="${esc(SM.qty)}" placeholder="0" aria-label="${SM.unit === 'kg' ? 'How many kilos' : 'How many sacks'}"><button type="button" data-sm="plus" aria-label="One more">+</button></div>
@@ -2109,11 +2192,16 @@ function openRice(pid){
   const p = prod(pid); if (!p) return;
   const k = sackKgOf(pid);
   let touched = false;
-  openModal(`<div class="rd-head"><div><h2>${esc(p.name)}</h2><p class="muted small">${nf(k)} kg sacks${supName(p.supplierId) ? ' · ' + esc(supName(p.supplierId)) : ''}</p></div><span id="rd-pill"></span></div>
+  openModal(`<div class="rd-head"><div><h2>${riceIcon(pid)}${esc(p.name)}</h2><p class="muted small">${nf(k)} kg sacks${supName(p.supplierId) ? ' · ' + esc(supName(p.supplierId)) : ''}</p></div><span id="rd-pill"></span></div>
     <div class="rd-tiles" id="rd-tiles"></div>
     <div class="rd-prices" id="rd-prices"></div>
+    <div class="rd-actions3">
+      <button type="button" class="btn act-in" data-rd="stock-in">${svg('stock-in')}Stock in</button>
+      <button type="button" class="btn act-out" data-rd="stock-out">${svg('stock-out')}Sell</button>
+      <button type="button" class="btn act-tr" data-rd="transfer">${svg('transfer')}Transfer</button>
+    </div>
+    <details class="more rd-more" id="rd-count-d"><summary>Change stock count</summary>
     <form id="rd-f" class="rd-count form" novalidate>
-      <h3>Change stock</h3>
       <div class="field"><span class="lbl">Location</span>${seg('rd-loc', locSegOpts, pref('count.loc', 'bodega'))}</div>
       <div class="field"><span class="lbl">What is really there</span>
         <div class="cinputs">${stepper('rd-sacks', 0)}<span class="muted">sacks +</span><input type="number" id="rd-kg" class="c-k" min="0" step="any" inputmode="decimal" value="0" aria-label="Loose kilograms"><span class="muted">kg</span></div>
@@ -2121,15 +2209,9 @@ function openRice(pid){
       <div class="calc" id="rd-calc"></div>
       <div class="form-err" id="rd-err" role="alert"></div>
       <button class="btn primary block" id="rd-go" disabled>Save new count</button>
-    </form>
-    <div class="rd-actions">
-      <button type="button" class="btn" data-rd="stock-in">${svg('stock-in')}Stock in</button>
-      <button type="button" class="btn" data-rd="stock-out">${svg('stock-out')}Sell</button>
-      <button type="button" class="btn" data-rd="transfer">${svg('transfer')}Transfer</button>
-      <button type="button" class="btn" data-rd="edit">${svg('products')}Edit prices</button>
-    </div>
-    <div><h3 class="rd-h">Recent movements</h3><div id="rd-feed"></div></div>
-    <div class="modal-actions"><button type="button" class="btn" data-act="close-modal">Close</button></div>`, m => {
+    </form></details>
+    <details class="more rd-more"><summary>Recent movements</summary><div id="rd-feed"></div></details>
+    <div class="modal-actions"><button type="button" class="btn spacer" data-rd="edit">${svg('products')}Edit prices</button><button type="button" class="btn primary" data-act="close-modal">Close</button></div>`, m => {
     const f = $('#rd-f', m);
     const loc = () => segVal(f, 'rd-loc');
     const counted = () => r3(Math.max(0, Math.floor(+$('#rd-sacks', m).value || 0)) * k + Math.max(0, +$('#rd-kg', m).value || 0));
@@ -2145,10 +2227,10 @@ function openRice(pid){
       if (!document.body.contains(f)) { if (S.ui.riceRefresh === paint) S.ui.riceRefresh = null; return; }
       const pp = prod(pid); if (!pp) { closeModal(); return; }
       const b = bal(pid), pr = priceOf(pp);
-      $('#rd-pill', m).innerHTML = isLow(pid) ? '<span class="pill low">LOW STOCK</span>' : '<span class="pill ok">OK</span>';
+      const lv = stockLevel(pid); $('#rd-pill', m).innerHTML = `<span class="pill ${LEVEL[lv][1]}">${lv === 'low' ? 'LOW STOCK' : LEVEL[lv][0]}</span>`;
       $('#rd-tiles', m).innerHTML = [['bodega', 'Bodega'], ['stall', 'Stall'], ['total', 'Total']].map(([key, l]) =>
         `<div class="rd-tile ${key}"><span class="k-label"><i class="dot ${key}"></i>${l}</span><b class="num">${fmtStock(b[key], k)}</b><span class="small muted num">${nf(b[key])} kg</span></div>`).join('');
-      $('#rd-prices', m).innerHTML = `<span>Sells for <b>${pesoP(pr.kg)}</b> a kilo · <b>${pesoP(pr.sack)}</b> a sack</span><span class="muted">Minimum: ${+pp.minSacks ? sacksTxt(+pp.minSacks) : 'not set'}</span>`;
+      $('#rd-prices', m).innerHTML = `<span>${pr.kg > 0 || pr.sack > 0 ? `Sells for <b>${pesoP(pr.kg)}</b> a kilo · <b>${pesoP(pr.sack)}</b> a sack` : 'No selling price set yet. Tap <b>Edit prices</b>.'}</span><span class="muted">Minimum: ${+pp.minSacks ? sacksTxt(+pp.minSacks) : 'not set'}</span>`;
       const rows = []; for (const t of S.txns) { if (t.productId !== pid) continue; rows.push(...rowsOf(t)); if (rows.length >= 6) break; }
       $('#rd-feed', m).innerHTML = rows.length ? `<div class="feed">${rows.slice(0, 6).map(feedRow).join('')}</div>` : '<p class="muted small">No movements yet.</p>';
       if (!touched) preset(); else showCount();
@@ -2190,7 +2272,7 @@ function priceRows(showCost, clickable){
     const margin = pr.kg && ck ? (pr.kg - ck) / pr.kg * 100 : null;
     const upd = p.pricesUpdatedAt ? ' · updated ' + fmtDateShort(localDate(new Date(p.pricesUpdatedAt))) : '';
     return `<div class="prow"${clickable ? ` data-rice="${esc(p.id)}"` : ''}>
-      <div class="pleft">${clickable ? `<button type="button" class="vlink pname" data-rice="${esc(p.id)}">${esc(p.name)}</button>` : `<div class="pname">${esc(p.name)}</div>`}<div class="psub">${nf(k)} kg sack${upd}</div></div>
+      <div class="pleft">${clickable ? `<button type="button" class="vlink pname" data-rice="${esc(p.id)}">${riceIcon(p.id)}${esc(p.name)}</button>` : `<div class="pname">${riceIcon(p.id)}${esc(p.name)}</div>`}<div class="psub">${nf(k)} kg sack${upd}</div></div>
       <div class="pright"><div class="pkg">${pesoP(pr.kg)}<small> / kilo</small></div><div class="psack">${pesoP(pr.sack)} / sack</div></div>
       ${showCost ? `<div class="pcost">Cost ${pesoP(ck)} / kilo · ${pesoP(cs)} / sack · profit ${pesoP(r2(pr.kg - ck))} a kilo${margin != null ? ` (${nf(margin, 1)}%)` : ''}</div>` : ''}
     </div>`;
@@ -2212,7 +2294,7 @@ function renderPriceEdit(){
   const ps = activeProducts();
   const num = (cls, label, v) => `<label class="field"><span class="lbl">${label}</span><input type="number" class="${cls}" min="0" step="any" inputmode="decimal" value="${v || ''}"></label>`;
   b.innerHTML = `<form id="pe-f" class="form" novalidate><div class="plist">${ps.map(p => `<div class="prow edit" data-pid="${esc(p.id)}">
-      <div><div class="pname">${esc(p.name)}</div><div class="psub">${nf(sackKgOf(p.id))} kg sack</div></div>
+      <div><div class="pname">${riceIcon(p.id)}${esc(p.name)}</div><div class="psub">${nf(sackKgOf(p.id))} kg sack</div></div>
       <div class="pedit">${num('pe-pk', 'Selling / kilo (₱)', p.priceKg)}${num('pe-ps', 'Selling / sack (₱)', p.priceSack)}${num('pe-ck', 'Cost / kilo (₱)', p.costKg)}${num('pe-cs', 'Cost / sack (₱)', p.costSack)}</div>
     </div>`).join('')}</div>
     <div class="form-err" id="pe-err" role="alert"></div>
