@@ -68,7 +68,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 .brand-name{font-family:var(--f-display);font-weight:700;font-size:1.05rem;line-height:1.1}
 .brand-sub{font-size:.78rem;color:var(--muted)}
 .nav{display:flex;flex-direction:column;gap:2px}
-.nav a{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;text-decoration:none;color:var(--fg);font-weight:600}
+.nav-h{font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:14px 12px 4px}
+.nav-h:first-child{padding-top:0}
+.nav a{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:10px;text-decoration:none;color:var(--fg);font-weight:600}
 .nav a:hover{background:var(--surface-2)}
 .nav a[aria-current="page"]{background:var(--accent-soft);color:var(--accent)}
 .nav svg{width:20px;height:20px;flex:none}
@@ -89,7 +91,9 @@ main{min-width:0;padding-inline:clamp(16px,3vw,40px);padding-block:28px 60px;max
 
 /* sheet (phone "More") */
 .sheet-back{position:fixed;inset:0;background:rgba(10,20,14,.45);z-index:40;display:flex;align-items:flex-end}
-.sheet{background:var(--surface);width:100%;border-radius:18px 18px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom,0px));display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sheet{background:var(--surface);width:100%;max-height:85vh;overflow-y:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px}
+.sheet-h{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px}
+.sheet-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .sheet a{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 6px;border-radius:12px;background:var(--surface-2);text-decoration:none;color:var(--fg);font-weight:600;font-size:.85rem;text-align:center}
 .sheet a svg{width:24px;height:24px;color:var(--accent)}
 
@@ -240,7 +244,14 @@ input[readonly]{background:var(--surface-2)}
 .form-err{color:var(--danger);font-weight:700;background:var(--danger-soft);border-radius:var(--r-sm);padding:12px 14px}
 .form-err:empty{display:none}
 .side-note{display:flex;flex-direction:column;gap:12px}
+/* sub-page tabs (Prices, Products) */
+.subnav{margin-top:-6px}
+.tabs a{display:inline-flex;align-items:center;min-height:44px;padding:10px 14px;margin-bottom:-1px;border-bottom:3px solid transparent;color:var(--muted);font-weight:700;text-decoration:none}
+.tabs a[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
 /* receipts */
+.rc-meter{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.rc-meter .progress span{background:var(--accent)}
+.rc-meter.warn .progress span{background:var(--warn)}
 .rc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
 @media (max-width:520px){.rc-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
 .rc-card{display:flex;flex-direction:column;padding:0;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--fg);overflow:hidden;cursor:pointer;text-align:left;min-width:0}
@@ -767,13 +778,26 @@ function onData(){
 
 /* ---------- navigation ---------- */
 const NAV = [
-  ['dashboard','Dashboard'],['inventory','Inventory'],['stock-in','Stock In'],['stock-out','Stock Out'],['transfer','Transfer'],['count','Count stock'],
+  ['prices','Prices'],['dashboard','Dashboard'],['inventory','Inventory'],['stock-in','Stock In'],['stock-out','Stock Out'],['transfer','Transfer'],['count','Count stock'],
   ['products','Products'],['prices','Price list'],['outlook','Price outlook'],['suppliers','Suppliers'],['receipts','Receipts'],['reports','Reports'],['settings','Settings']
 ];
+const NAV_GROUPS = [
+  ['Daily', [['dashboard','Dashboard'],['stock-in','Stock In'],['stock-out','Stock Out'],['transfer','Transfer'],['count','Count stock']]],
+  ['Records', [['inventory','Inventory'],['receipts','Receipts'],['reports','Reports']]],
+  ['Business', [['prices','Prices'],['products','Products'],['settings','Settings']]]
+];
+/* pages that live as tabs under one menu item */
+const SUBPAGES = {prices: [['prices','Price list'],['outlook','Price outlook']], products: [['products','Rice varieties'],['suppliers','Suppliers']]};
+const PARENT = {outlook: 'prices', suppliers: 'products'};
+const navOn = k => S.page === k || PARENT[S.page] === k;
+function subTabs(){
+  const parent = PARENT[S.page] || S.page, items = SUBPAGES[parent];
+  return items ? `<div class="tabs subnav" role="tablist">${items.map(([k, l]) => `<a role="tab" href="#${k}" data-nav="${k}" aria-selected="${S.page === k}">${l}</a>`).join('')}</div>` : '';
+}
 function lowCount(){ return activeProducts().filter(p => isLow(p.id)).length; }
 function renderNav(){
   const low = dataReady() ? lowCount() : 0;
-  $('#nav').innerHTML = NAV.map(([k, l]) => `<a href="#${k}" data-nav="${k}" ${S.page === k ? 'aria-current="page"' : ''}>${svg(k)}<span>${l}</span>${k === 'inventory' && low ? `<span class="badge" title="${low} low-stock">${low}</span>` : ''}</a>`).join('');
+  $('#nav').innerHTML = NAV_GROUPS.map(([g, items]) => `<div class="nav-h">${g}</div>` + items.map(([k, l]) => `<a href="#${k}" data-nav="${k}" ${navOn(k) ? 'aria-current="page"' : ''}>${svg(k)}<span>${l}</span>${k === 'inventory' && low ? `<span class="badge" title="${low} low-stock">${low}</span>` : ''}</a>`).join('')).join('');
 }
 function renderTabbar(){
   const items = [['dashboard','Home'],['stock-in','Stock In'],['stock-out','Sell'],['transfer','Transfer']];
@@ -786,7 +810,8 @@ function renderFoot(){
   f.textContent = S.status !== 'live' ? '' : (S.canWrite === false ? 'View only on this account' : 'Saved online · syncs across devices');
 }
 function openSheet(){
-  $('#sheet-root').innerHTML = `<div class="sheet-back" data-act="close-sheet"><div class="sheet" role="menu">${NAV.map(([k, l]) => `<a href="#${k}" data-nav="${k}" role="menuitem">${svg(k)}${l}</a>`).join('')}</div></div>`;
+  const onBar = ['dashboard', 'stock-in', 'stock-out', 'transfer'];
+  $('#sheet-root').innerHTML = `<div class="sheet-back" data-act="close-sheet"><div class="sheet" role="menu">${NAV_GROUPS.map(([g, items]) => { const rest = items.filter(([k]) => !onBar.includes(k)); return rest.length ? `<div><div class="sheet-h">${g}</div><div class="sheet-grid">${rest.map(([k, l]) => `<a href="#${k}" data-nav="${k}" role="menuitem">${svg(k)}${l}</a>`).join('')}</div></div>` : ''; }).join('')}</div></div>`;
 }
 function closeSheet(){ $('#sheet-root').innerHTML = ''; }
 function go(page){
@@ -805,6 +830,8 @@ function mountPage(){
   main.innerHTML = '';
   const wrap = document.createElement('div'); main.appendChild(wrap);
   pg.mount(wrap);
+  const tabsHtml = subTabs(), ph = wrap.querySelector('.page-head');
+  if (tabsHtml && ph) ph.insertAdjacentHTML('afterend', tabsHtml);
   S.mounted = true;
   if (pg.update) pg.update();
 }
@@ -2455,12 +2482,14 @@ function updateReceipts(){
   if (!S.files) { g.innerHTML = `<div class="banner"><p>Receipt photos need the online version of the app.</p></div>`; return; }
   if (!S.receiptsLoaded) { g.innerHTML = `<div class="loading"><p class="eyebrow">Loading receipts…</p></div>`; return; }
   if (S.receiptsErr) { g.innerHTML = `<div class="form-err">${esc(receiptErr(S.receiptsErr))}</div>`; return; }
+  const used = list.reduce((a, r) => a + (+r.size || 0), 0), LIMIT = 1024 * 1024 * 1024, share = used / LIMIT;
+  const meter = `<div class="rc-meter${share > .8 ? ' warn' : ''}"><div class="small"><b>Photo storage:</b> ${used < 1024 * 1024 ? nf(used / 1024, 0) + ' KB' : nf(used / 1048576, 1) + ' MB'} of 1 GB used (${nf(share * 100, share < .01 ? 2 : 0)}%)${share > .8 ? ' · getting full: delete old receipts or download them first' : ''}</div><div class="progress"><span style="width:${Math.max(share * 100, used ? 0.5 : 0)}%"></span></div></div>`;
   const rows = list.filter(r => (!f.month || String(r.date).startsWith(f.month)) && (!f.sup || r.supplierId === f.sup) &&
     (!f.q || `${r.ref} ${r.notes} ${supName(r.supplierId)}`.toLowerCase().includes(f.q)));
   const total = rows.reduce((a, r) => a + (+r.amount || 0), 0);
   if (!list.length) { g.innerHTML = `<div class="panel"><div class="empty rc-empty">${svg('camera')}<p>No receipts yet. Tap <b>Take photo</b> to save your first one.</p></div></div>`; return; }
-  if (!rows.length) { g.innerHTML = `<div class="panel"><div class="empty"><p>No receipts match these filters.</p></div></div>`; return; }
-  g.innerHTML = `<p class="small muted rc-sum">${rows.length} receipt${rows.length === 1 ? '' : 's'}${total ? ' · ' + peso(total) + ' total' : ''}</p>
+  if (!rows.length) { g.innerHTML = meter + `<div class="panel"><div class="empty"><p>No receipts match these filters.</p></div></div>`; return; }
+  g.innerHTML = meter + `<p class="small muted rc-sum">${rows.length} receipt${rows.length === 1 ? '' : 's'}${total ? ' · ' + peso(total) + ' total' : ''}</p>
     <div class="rc-grid">${rows.map(r => `<button type="button" class="rc-card" data-rc="${esc(r.id)}" aria-label="Receipt ${esc(fmtDate(r.date))}${r.amount ? ', ' + esc(peso(r.amount)) : ''}">
       <img src="${esc(r.thumb || '')}" alt="" loading="lazy">
       <span class="rc-meta"><b>${fmtDate(r.date)}</b><span class="rc-sup">${esc(supName(r.supplierId) || 'No supplier')}</span>${r.amount ? `<span class="num rc-amt">${peso(r.amount)}</span>` : ''}${r.ref ? `<span class="small muted">#${esc(r.ref)}</span>` : ''}${r.txnId ? '<span class="pill ok">Delivery</span>' : ''}</span>
